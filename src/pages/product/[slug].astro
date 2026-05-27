@@ -1,83 +1,112 @@
 ---
 import ProductLayout from '../../layouts/ProductLayout.astro';
 
+import { getCollection } from 'astro:content';
+
 export async function getStaticPaths() {
-  return [
-    {
-      params: {
-        slug: 'american-eagle-tshirt'
-      },
-      props: {
-        product: {
-          title: 'American Eagle T-Shirt',
-          price: '$16',
-          oldPrice: '$24',
-          image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=1200&auto=format&fit=crop',
-          description: 'Modern POD storefront product page built with Astro.'
-        }
-      }
+
+  const products =
+    await getCollection('product');
+
+  return products.map(product => ({
+    params: {
+      slug: product.slug
+    },
+
+    props: {
+      product
     }
-  ];
+  }));
 }
 
 const { product } = Astro.props;
+
+const { Content } =
+  await product.render();
 ---
 
 <ProductLayout
-  title={`${product.title} | AI PRINT`}
-  description={product.description}
-  image={product.image}
+  title={`${product.data.title} | AI PRINT`}
+  description={product.data.description}
+  image={product.data.image}
+  product={product.data}
 >
 
 <section class="product-layout">
 
   <aside class="gallery">
-    <div class="thumb active">
-      <img src={product.image} alt={product.title} />
-    </div>
 
-    <div class="thumb">
-      <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=1200&auto=format&fit=crop" alt="preview" />
-    </div>
+    {
+      (
+        product.data.gallery ||
+        [product.data.image]
+      ).map((img,index)=>(
 
-    <div class="thumb">
-      <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=1200&auto=format&fit=crop" alt="preview" />
-    </div>
+        <div
+          class={`thumb ${index===0?'active':''}`}
+        >
+
+          <img
+            src={img}
+            alt={product.data.title}
+          />
+
+        </div>
+
+      ))
+    }
+
   </aside>
 
   <section class="preview">
-    <img id="mainImage" src={product.image} alt={product.title} />
+
+    <img
+      id="mainImage"
+      src={product.data.image}
+      alt={product.data.title}
+    />
+
   </section>
 
   <aside class="product-info">
-    <h1>{product.title}</h1>
+
+    <h1>
+      {product.data.title}
+    </h1>
 
     <div class="seller">
-      Designed and sold by Lily Rise
+      Designed and sold by AI PRINT
     </div>
 
     <div class="price-wrap">
-      <div class="price">{product.price}</div>
-      <div class="old-price">{product.oldPrice}</div>
+
+      <div class="price">
+        {product.data.price}
+      </div>
+
+      {
+        product.data.oldPrice && (
+          <div class="old-price">
+            {product.data.oldPrice}
+          </div>
+        )
+      }
+
     </div>
 
-    <div class="label">Fit</div>
+    <div class="label">
+      Category
+    </div>
 
     <div class="options">
-      <button class="active-btn">Male Fit</button>
-      <button>Female Fit</button>
+      <button class="active-btn">
+        {product.data.category}
+      </button>
     </div>
 
-    <div class="label">Style</div>
-
-    <div class="options">
-      <button class="active-btn">Classic</button>
-      <button>Premium</button>
-      <button>Vintage</button>
-      <button>Heavyweight</button>
+    <div class="label">
+      Size
     </div>
-
-    <div class="label">Size</div>
 
     <div class="options">
       <button>S</button>
@@ -90,22 +119,21 @@ const { product } = Astro.props;
     <button class="cart-btn">
       ADD TO CART
     </button>
+
   </aside>
 
 </section>
 
 <section class="description-section">
+
   <div class="description-box">
-    <h2>Product Description</h2>
 
-    <p>
-      Ultra fast POD marketplace product page built using Astro with SEO optimized architecture, responsive ecommerce UI, and modern marketplace experience.
-    </p>
+    <article class="content">
+      <Content />
+    </article>
 
-    <p>
-      Includes sticky sidebar, responsive gallery, Core Web Vitals optimization, lazy loading image support, and mobile-first responsive layouts.
-    </p>
   </div>
+
 </section>
 
 <style>
@@ -236,12 +264,24 @@ line-height:1.9;
 color:#555;
 }
 
-.description-box h2{
-margin-bottom:20px;
+.content h1,
+.content h2,
+.content h3{
+margin-bottom:18px;
 color:var(--dark);
 }
 
+.content p{
+margin-bottom:18px;
+}
+
+.content ul{
+padding-left:22px;
+margin-bottom:18px;
+}
+
 @media(max-width:1200px){
+
 .product-layout{
 grid-template-columns:1fr;
 }
@@ -254,9 +294,11 @@ flex-direction:row;
 position:relative;
 top:0;
 }
+
 }
 
 @media(max-width:768px){
+
 .preview{
 min-height:auto;
 padding:20px;
@@ -269,6 +311,7 @@ padding:24px;
 .product-info h1{
 font-size:30px;
 }
+
 }
 </style>
 
@@ -279,8 +322,11 @@ const mainImage=document.getElementById('mainImage');
 thumbs.forEach(thumb=>{
   thumb.addEventListener('click',()=>{
     thumbs.forEach(t=>t.classList.remove('active'));
+
     thumb.classList.add('active');
-    mainImage.src=thumb.querySelector('img').src;
+
+    mainImage.src=
+      thumb.querySelector('img').src;
   });
 });
 </script>
