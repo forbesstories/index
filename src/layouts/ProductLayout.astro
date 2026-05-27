@@ -1,0 +1,590 @@
+---
+const {
+  title = 'Modern POD Store',
+  description = 'Modern ecommerce storefront built with Astro',
+  image = '/cover.jpg',
+  canonical = Astro.url.href
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{title}</title>
+
+  <meta name="description" content={description} />
+  <meta name="theme-color" content="#0f172a" />
+
+  <link rel="canonical" href={canonical} />
+
+  <!-- OPEN GRAPH -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={image} />
+
+  <!-- TWITTER -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={image} />
+
+  <style is:global>
+    :root{
+      --bg:#f4f6fb;
+      --card:#fff;
+      --text:#111827;
+      --muted:#6b7280;
+      --primary:#5865f2;
+      --dark:#0f172a;
+      --border:#e5e7eb;
+      --shadow:0 10px 30px rgba(0,0,0,.08);
+      --radius:28px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:Inter,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+    }
+
+    img{
+      max-width:100%;
+      display:block;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .topbar{
+      background:#ffb703;
+      padding:12px;
+      text-align:center;
+      font-weight:800;
+      font-size:14px;
+    }
+
+    .navbar{
+      position:sticky;
+      top:0;
+      z-index:999;
+      background:rgba(15,23,42,.96);
+      backdrop-filter:blur(10px);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      padding:18px 24px;
+    }
+
+    .logo{
+      font-size:28px;
+      font-weight:900;
+      color:#fff;
+    }
+
+    .search{
+      flex:1;
+      display:flex;
+      max-width:650px;
+    }
+
+    .search input{
+      flex:1;
+      padding:14px 16px;
+      border:none;
+      outline:none;
+      border-radius:14px 0 0 14px;
+    }
+
+    .search button{
+      border:none;
+      background:var(--primary);
+      color:#fff;
+      padding:14px 22px;
+      font-weight:800;
+      border-radius:0 14px 14px 0;
+      cursor:pointer;
+    }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      color:#fff;
+    }
+
+    .cta{
+      background:#fff;
+      color:#111 !important;
+      padding:10px 14px;
+      border-radius:12px;
+      font-weight:800;
+    }
+
+    .category-bar{
+      background:#111c4d;
+      color:#fff;
+      display:flex;
+      gap:18px;
+      overflow:auto;
+      padding:14px 24px;
+      font-size:14px;
+    }
+
+    .category-bar span{
+      white-space:nowrap;
+    }
+
+    .container{
+      max-width:1440px;
+      margin:auto;
+      padding:40px 20px;
+    }
+
+    .footer{
+      margin-top:80px;
+      background:#0b1120;
+      color:#fff;
+      padding:70px 20px;
+    }
+
+    .footer-grid{
+      max-width:1440px;
+      margin:auto;
+      display:grid;
+      grid-template-columns:2fr 1fr 1fr 1.5fr;
+      gap:40px;
+    }
+
+    .footer h3,
+    .footer h4{
+      margin-bottom:18px;
+    }
+
+    .footer a{
+      display:block;
+      margin-bottom:12px;
+      color:#d1d5db;
+    }
+
+    .footer input{
+      width:100%;
+      padding:14px;
+      border:none;
+      border-radius:14px;
+      margin-bottom:12px;
+    }
+
+    .footer button{
+      padding:14px 18px;
+      border:none;
+      border-radius:14px;
+      background:var(--primary);
+      color:#fff;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    @media(max-width:768px){
+      .navbar{
+        flex-direction:column;
+      }
+
+      .search{
+        width:100%;
+        max-width:none;
+      }
+
+      .nav-links{
+        flex-wrap:wrap;
+        justify-content:center;
+      }
+
+      .footer-grid{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+🔥 Up To 35% Off Sitewide • Premium POD Marketplace
+</div>
+
+<header class="navbar">
+  <a href="/" class="logo">AI PRINT</a>
+
+  <div class="search">
+    <input type="text" placeholder="Find your favorite content" />
+    <button>Search</button>
+  </div>
+
+  <nav class="nav-links">
+    <a href="#">For You</a>
+    <a href="#">Account</a>
+    <a href="#">Cart</a>
+    <a href="#" class="cta">Create Account</a>
+  </nav>
+</header>
+
+<div class="category-bar">
+  <span>T-Shirts</span>
+  <span>Gaming</span>
+  <span>Anime</span>
+  <span>Vintage</span>
+  <span>Funny</span>
+  <span>Music</span>
+  <span>Movies</span>
+  <span>Memes</span>
+</div>
+
+<main class="container">
+  <slot />
+</main>
+
+<footer class="footer">
+  <div class="footer-grid">
+
+    <div>
+      <h3>AI PRINT</h3>
+      <p>
+        Modern POD marketplace powered by Astro.
+      </p>
+    </div>
+
+    <div>
+      <h4>Shop</h4>
+      <a href="#">T-Shirts</a>
+      <a href="#">Hoodies</a>
+      <a href="#">Accessories</a>
+    </div>
+
+    <div>
+      <h4>Artists</h4>
+      <a href="#">Trending</a>
+      <a href="#">Collections</a>
+      <a href="#">Featured</a>
+    </div>
+
+    <div>
+      <h4>Newsletter</h4>
+      <input type="email" placeholder="Your email" />
+      <button>Join Newsletter</button>
+    </div>
+
+  </div>
+</footer>
+
+</body>
+</html>
+
+
+// =========================================================
+// src/pages/product/[slug].astro
+// =========================================================
+---
+import ProductLayout from '../../layouts/ProductLayout.astro';
+
+export async function getStaticPaths() {
+  return [
+    {
+      params: {
+        slug: 'american-eagle-tshirt'
+      },
+      props: {
+        product: {
+          title: 'American Eagle T-Shirt',
+          price: '$16',
+          oldPrice: '$24',
+          image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=1200&auto=format&fit=crop',
+          description: 'Modern POD storefront product page built with Astro.'
+        }
+      }
+    }
+  ];
+}
+
+const { product } = Astro.props;
+---
+
+<ProductLayout
+  title={`${product.title} | AI PRINT`}
+  description={product.description}
+  image={product.image}
+>
+
+<section class="product-layout">
+
+  <aside class="gallery">
+    <div class="thumb active">
+      <img src={product.image} alt={product.title} />
+    </div>
+
+    <div class="thumb">
+      <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=1200&auto=format&fit=crop" alt="preview" />
+    </div>
+
+    <div class="thumb">
+      <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=1200&auto=format&fit=crop" alt="preview" />
+    </div>
+  </aside>
+
+  <section class="preview">
+    <img id="mainImage" src={product.image} alt={product.title} />
+  </section>
+
+  <aside class="product-info">
+    <h1>{product.title}</h1>
+
+    <div class="seller">
+      Designed and sold by Lily Rise
+    </div>
+
+    <div class="price-wrap">
+      <div class="price">{product.price}</div>
+      <div class="old-price">{product.oldPrice}</div>
+    </div>
+
+    <div class="label">Fit</div>
+
+    <div class="options">
+      <button class="active-btn">Male Fit</button>
+      <button>Female Fit</button>
+    </div>
+
+    <div class="label">Style</div>
+
+    <div class="options">
+      <button class="active-btn">Classic</button>
+      <button>Premium</button>
+      <button>Vintage</button>
+      <button>Heavyweight</button>
+    </div>
+
+    <div class="label">Size</div>
+
+    <div class="options">
+      <button>S</button>
+      <button>M</button>
+      <button class="active-btn">L</button>
+      <button>XL</button>
+      <button>2XL</button>
+    </div>
+
+    <button class="cart-btn">
+      ADD TO CART
+    </button>
+  </aside>
+
+</section>
+
+<section class="description-section">
+  <div class="description-box">
+    <h2>Product Description</h2>
+
+    <p>
+      Ultra fast POD marketplace product page built using Astro with SEO optimized architecture, responsive ecommerce UI, and modern marketplace experience.
+    </p>
+
+    <p>
+      Includes sticky sidebar, responsive gallery, Core Web Vitals optimization, lazy loading image support, and mobile-first responsive layouts.
+    </p>
+  </div>
+</section>
+
+<style>
+.product-layout{
+display:grid;
+grid-template-columns:110px 1fr 420px;
+gap:30px;
+align-items:start;
+}
+
+.gallery{
+display:flex;
+flex-direction:column;
+gap:14px;
+}
+
+.thumb{
+background:#fff;
+padding:6px;
+border-radius:22px;
+border:2px solid transparent;
+box-shadow:var(--shadow);
+cursor:pointer;
+}
+
+.thumb.active{
+border-color:var(--primary);
+}
+
+.preview,
+.product-info,
+.description-box{
+background:#fff;
+border-radius:32px;
+box-shadow:var(--shadow);
+}
+
+.preview{
+padding:40px;
+display:flex;
+align-items:center;
+justify-content:center;
+min-height:720px;
+}
+
+.preview img{
+max-width:600px;
+}
+
+.product-info{
+padding:34px;
+position:sticky;
+top:110px;
+}
+
+.product-info h1{
+font-size:38px;
+line-height:1.1;
+}
+
+.seller{
+margin-top:10px;
+color:var(--muted);
+}
+
+.price-wrap{
+display:flex;
+align-items:center;
+gap:14px;
+margin:24px 0;
+}
+
+.price{
+font-size:48px;
+font-weight:900;
+}
+
+.old-price{
+text-decoration:line-through;
+color:#999;
+}
+
+.label{
+margin:28px 0 12px;
+font-weight:700;
+}
+
+.options{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+}
+
+.options button{
+padding:12px 18px;
+border-radius:14px;
+border:1px solid var(--border);
+background:#fff;
+cursor:pointer;
+}
+
+.active-btn{
+background:var(--dark)!important;
+color:#fff;
+border-color:var(--dark)!important;
+}
+
+.cart-btn{
+width:100%;
+margin-top:30px;
+padding:18px;
+border:none;
+border-radius:18px;
+background:linear-gradient(135deg,#5865f2,#7c3aed);
+color:#fff;
+font-size:18px;
+font-weight:900;
+cursor:pointer;
+}
+
+.description-section{
+margin-top:60px;
+}
+
+.description-box{
+padding:40px;
+line-height:1.9;
+color:#555;
+}
+
+.description-box h2{
+margin-bottom:20px;
+color:var(--dark);
+}
+
+@media(max-width:1200px){
+.product-layout{
+grid-template-columns:1fr;
+}
+
+.gallery{
+flex-direction:row;
+}
+
+.product-info{
+position:relative;
+top:0;
+}
+}
+
+@media(max-width:768px){
+.preview{
+min-height:auto;
+padding:20px;
+}
+
+.product-info{
+padding:24px;
+}
+
+.product-info h1{
+font-size:30px;
+}
+}
+</style>
+
+<script>
+const thumbs=document.querySelectorAll('.thumb');
+const mainImage=document.getElementById('mainImage');
+
+thumbs.forEach(thumb=>{
+  thumb.addEventListener('click',()=>{
+    thumbs.forEach(t=>t.classList.remove('active'));
+    thumb.classList.add('active');
+    mainImage.src=thumb.querySelector('img').src;
+  });
+});
+</script>
+
+</ProductLayout>
