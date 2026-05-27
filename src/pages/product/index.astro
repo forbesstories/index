@@ -1,0 +1,154 @@
+---
+// src/pages/product/index.astro
+
+import ProductLayout from '../../layouts/ProductLayout.astro';
+
+import { getCollection } from 'astro:content';
+
+const products = await getCollection('products');
+---
+
+<ProductLayout
+  title="Products | AI PRINT"
+  description="Browse premium POD products."
+>
+
+<section class="products-grid">
+
+  {
+    products.map(product => (
+
+      <a
+        href={`/product/${product.slug}`}
+        class="card"
+      >
+
+        <img
+          src={product.data.image}
+          alt={product.data.title}
+          loading="lazy"
+        />
+
+        <div class="card-body">
+
+          <h2>
+            {product.data.title}
+          </h2>
+
+          <p>
+            {product.data.description}
+          </p>
+
+          <div class="price-wrap">
+
+            <span class="price">
+              {product.data.price}
+            </span>
+
+            {
+              product.data.oldPrice && (
+                <span class="old-price">
+                  {product.data.oldPrice}
+                </span>
+              )
+            }
+
+          </div>
+
+        </div>
+
+      </a>
+
+    ))
+  }
+
+</section>
+
+<style>
+.products-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:24px;
+}
+
+.card{
+  background:#fff;
+
+  border-radius:28px;
+
+  overflow:hidden;
+
+  box-shadow:var(--shadow);
+
+  transition:.25s;
+}
+
+.card:hover{
+  transform:
+    translateY(-5px);
+}
+
+.card img{
+  width:100%;
+
+  height:340px;
+
+  object-fit:cover;
+}
+
+.card-body{
+  padding:22px;
+}
+
+.card h2{
+  font-size:22px;
+
+  margin-bottom:12px;
+}
+
+.card p{
+  color:#6b7280;
+
+  line-height:1.7;
+
+  margin-bottom:18px;
+}
+
+.price-wrap{
+  display:flex;
+
+  gap:12px;
+
+  align-items:center;
+}
+
+.price{
+  font-size:28px;
+
+  font-weight:900;
+}
+
+.old-price{
+  color:#999;
+
+  text-decoration:line-through;
+}
+
+@media(max-width:1100px){
+  .products-grid{
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+}
+
+@media(max-width:768px){
+  .products-grid{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+
+</ProductLayout>
