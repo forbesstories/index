@@ -6,6 +6,45 @@ import {
   getCollection
 } from 'astro:content';
 
+/* =========================
+   STATIC SEARCH PATHS
+========================= */
+
+export async function getStaticPaths(){
+
+  const products =
+    await getCollection('product');
+
+  const keywords = new Set();
+
+  products.forEach(product=>{
+
+    keywords.add(
+      product.data.category
+      .toLowerCase()
+    );
+
+    product.data.title
+      .toLowerCase()
+      .split(' ')
+      .forEach(word=>{
+
+        if(word.length > 2){
+          keywords.add(word);
+        }
+
+      });
+
+  });
+
+  return [...keywords].map(query=>({
+
+    params:{ query }
+
+  }));
+
+}
+
 const { query } = Astro.params;
 
 const products =
@@ -15,7 +54,7 @@ const search =
   query.toLowerCase();
 
 const filtered =
-  products.filter(product => {
+  products.filter(product=>{
 
     const title =
       product.data.title.toLowerCase();
