@@ -9,6 +9,19 @@ import {
 } from 'astro:content';
 
 /* =========================
+   NORMALIZE
+========================= */
+
+const normalize = str =>
+
+  str
+    ?.toString()
+    .toLowerCase()
+    .replace(/-/g,' ')
+    .replace(/[^a-z0-9\s]/g,'')
+    .trim() || '';
+
+/* =========================
    STATIC SEARCH PATHS
 ========================= */
 
@@ -21,56 +34,73 @@ export async function getStaticPaths(){
 
   products.forEach(product=>{
 
-    /* CATEGORY */
+    /* =========================
+       CATEGORY
+    ========================= */
 
     if(product.data.category){
 
       keywords.add(
         product.data.category
-          .toLowerCase()
+          .replace(/\s+/g,'-')
+      );
+
+      keywords.add(
+        product.data.category
       );
 
     }
 
-    /* TITLE */
+    /* =========================
+       FULL TITLE
+    ========================= */
 
-    product.data.title
-      ?.toLowerCase()
-      .split(/\s+/)
-      .forEach(word=>{
+    if(product.data.title){
 
-        if(word.length > 2){
+      keywords.add(
+        product.data.title
+      );
 
-          keywords.add(
-            word.replace(
-              /[^a-z0-9-]/g,
-              ''
-            )
-          );
+      keywords.add(
+        product.data.title
+          .replace(/\s+/g,'-')
+      );
 
-        }
+      /* SINGLE WORDS */
 
-      });
+      product.data.title
+        .split(/\s+/)
+        .forEach(word=>{
 
-    /* DESCRIPTION */
+          if(word.length > 2){
 
-    product.data.description
-      ?.toLowerCase()
-      .split(/\s+/)
-      .forEach(word=>{
+            keywords.add(word);
 
-        if(word.length > 3){
+          }
 
-          keywords.add(
-            word.replace(
-              /[^a-z0-9-]/g,
-              ''
-            )
-          );
+        });
 
-        }
+    }
 
-      });
+    /* =========================
+       DESCRIPTION
+    ========================= */
+
+    if(product.data.description){
+
+      product.data.description
+        .split(/\s+/)
+        .forEach(word=>{
+
+          if(word.length > 3){
+
+            keywords.add(word);
+
+          }
+
+        });
+
+    }
 
   });
 
@@ -88,33 +118,41 @@ export async function getStaticPaths(){
    PAGE DATA
 ========================= */
 
-const { query } = Astro.params;
+const { query } =
+  Astro.params;
 
 const products =
   await getCollection('product');
 
 const search =
-  query.toLowerCase();
+  normalize(query);
 
 const filtered =
   products.filter(product=>{
 
     const title =
-      product.data.title
-        ?.toLowerCase() || '';
+      normalize(
+        product.data.title
+      );
 
     const category =
-      product.data.category
-        ?.toLowerCase() || '';
+      normalize(
+        product.data.category
+      );
 
     const desc =
-      product.data.description
-        ?.toLowerCase() || '';
+      normalize(
+        product.data.description
+      );
 
     return (
+
       title.includes(search) ||
+
       category.includes(search) ||
+
       desc.includes(search)
+
     );
 
   });
@@ -131,13 +169,17 @@ const filtered =
   <div class="search-head">
 
     <h1>
+
       Search:
       <span>{query}</span>
+
     </h1>
 
     <p>
+
       {filtered.length}
       products found
+
     </p>
 
   </div>
