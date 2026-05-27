@@ -1,0 +1,160 @@
+---
+// src/layouts/ProductLayout/Categories.astro
+
+const categories = [
+  'Trending',
+  'Gaming',
+  'Anime',
+  'Cyberpunk',
+  'Vintage',
+  'Streetwear',
+  'Movies',
+  'Music',
+  'Sports',
+  'Meme',
+  'Technology',
+  'AI Art',
+];
+---
+
+<section class="categories">
+
+  <div class="categories-scroll">
+
+    {
+      categories.map(category => (
+
+        <a
+          href={`/search/${category.toLowerCase()}`}
+          class="category-pill"
+        >
+
+          {category}
+
+        </a>
+
+      ))
+    }
+
+  </div>
+
+</section>
+
+<style>
+.categories{
+background:#fff;
+
+border-bottom:
+1px solid var(--border);
+
+position:sticky;
+
+top:74px;
+
+z-index:998;
+
+backdrop-filter:blur(10px);
+}
+
+/* =========================
+   SCROLL AREA
+========================= */
+
+.categories-scroll{
+max-width:1440px;
+
+margin:auto;
+
+padding:14px 20px;
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+overflow-x:auto;
+
+scrollbar-width:none;
+}
+
+.categories-scroll::-webkit-scrollbar{
+display:none;
+}
+
+/* =========================
+   CATEGORY BUTTON
+========================= */
+
+.category-pill{
+flex:none;
+
+display:inline-flex;
+
+align-items:center;
+
+justify-content:center;
+
+padding:12px 18px;
+
+border-radius:999px;
+
+background:#f4f6fb;
+
+border:
+1px solid transparent;
+
+font-size:14px;
+
+font-weight:700;
+
+white-space:nowrap;
+
+transition:.25s;
+}
+
+.category-pill:hover{
+background:#fff;
+
+border-color:var(--primary);
+
+color:var(--primary);
+
+transform:translateY(-2px);
+
+box-shadow:
+0 8px 20px rgba(88,101,242,.12);
+}
+
+/* =========================
+   ACTIVE STYLE
+========================= */
+
+.category-pill.active{
+background:var(--dark);
+
+color:#fff;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+.categories{
+top:132px;
+}
+
+.categories-scroll{
+padding:12px 14px;
+gap:10px;
+}
+
+.category-pill{
+padding:10px 14px;
+font-size:13px;
+}
+
+}
+</style>
