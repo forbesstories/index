@@ -1,82 +1,413 @@
 <header class="navbar">
 
+  <!-- =========================
+       LOGO
+  ========================== -->
+
   <a href="/" class="logo">
+
+    <span class="logo-dot"></span>
+
     AI PRINT
+
   </a>
 
-  <div class="search">
+  <!-- =========================
+       SEARCH
+  ========================== -->
+
+  <form
+    class="search"
+    id="searchForm"
+  >
 
     <input
       type="text"
-      placeholder="Search products"
+      id="searchInput"
+      placeholder="Search anime, gaming, cyberpunk..."
+      autocomplete="off"
     />
 
-    <button>
-      Search
+    <button type="submit">
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.3-4.3"></path>
+      </svg>
+
+      <span>
+        Search
+      </span>
+
     </button>
 
-  </div>
+  </form>
+
+  <!-- =========================
+       NAVIGATION
+  ========================== -->
 
   <nav class="nav-links">
 
-    <a href="#">
+    <a href="/product">
       Explore
     </a>
 
-    <a href="#">
+    <a href="/account">
       Account
     </a>
 
-    <a href="#">
+    <a href="/cart" class="cart-link">
+
       Cart
+
+      <span class="cart-count">
+        2
+      </span>
+
     </a>
 
   </nav>
 
+  <!-- =========================
+       MOBILE MENU
+  ========================== -->
+
+  <button class="menu-btn">
+
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+
+  </button>
+
 </header>
 
 <style>
+
+/* =========================
+   NAVBAR
+========================= */
+
 .navbar{
 position:sticky;
 top:0;
 z-index:999;
-background:#111827;
-padding:18px 24px;
+
 display:flex;
 align-items:center;
 justify-content:space-between;
-gap:20px;
+gap:24px;
+
+padding:18px 28px;
+
+background:
+rgba(17,24,39,.92);
+
+backdrop-filter:
+blur(14px);
+
+border-bottom:
+1px solid rgba(255,255,255,.06);
 }
 
+/* =========================
+   LOGO
+========================= */
+
 .logo{
+display:flex;
+align-items:center;
+gap:12px;
+
 font-size:30px;
 font-weight:900;
+letter-spacing:-1px;
+
 color:#fff;
 }
 
+.logo-dot{
+width:14px;
+height:14px;
+
+border-radius:999px;
+
+background:
+linear-gradient(
+135deg,
+#5865f2,
+#7c3aed
+);
+
+box-shadow:
+0 0 20px rgba(124,58,237,.6);
+}
+
+/* =========================
+   SEARCH
+========================= */
+
 .search{
 flex:1;
+
 display:flex;
-max-width:700px;
+align-items:center;
+
+max-width:720px;
+
+background:
+rgba(255,255,255,.06);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+border-radius:18px;
+
+overflow:hidden;
 }
 
 .search input{
 flex:1;
-padding:14px;
+
+height:58px;
+
+padding:0 20px;
+
+background:transparent;
+
 border:none;
+outline:none;
+
+color:#fff;
+
+font-size:15px;
+}
+
+.search input::placeholder{
+color:#9ca3af;
 }
 
 .search button{
+height:58px;
+
+display:flex;
+align-items:center;
+gap:10px;
+
+padding:0 22px;
+
 border:none;
-padding:14px 20px;
-background:#5865f2;
+
+background:
+linear-gradient(
+135deg,
+#5865f2,
+#7c3aed
+);
+
 color:#fff;
-font-weight:700;
+
+font-weight:800;
+
+cursor:pointer;
+
+transition:.25s;
 }
+
+.search button:hover{
+filter:brightness(1.08);
+}
+
+/* =========================
+   NAVIGATION
+========================= */
 
 .nav-links{
 display:flex;
-gap:18px;
+align-items:center;
+gap:10px;
+}
+
+.nav-links a{
+display:flex;
+align-items:center;
+justify-content:center;
+
+height:50px;
+
+padding:0 18px;
+
+border-radius:14px;
+
+color:#fff;
+
+font-size:14px;
+font-weight:700;
+
+transition:.2s;
+}
+
+.nav-links a:hover{
+background:
+rgba(255,255,255,.08);
+}
+
+.cart-link{
+position:relative;
+}
+
+.cart-count{
+position:absolute;
+top:-4px;
+right:-4px;
+
+width:20px;
+height:20px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+border-radius:999px;
+
+background:#ef4444;
+
+font-size:11px;
+font-weight:800;
+
 color:#fff;
 }
+
+/* =========================
+   MOBILE BUTTON
+========================= */
+
+.menu-btn{
+display:none;
+
+width:52px;
+height:52px;
+
+border:none;
+
+border-radius:16px;
+
+background:
+rgba(255,255,255,.08);
+
+color:#fff;
+
+cursor:pointer;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:980px){
+
+.nav-links{
+display:none;
+}
+
+.menu-btn{
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.search{
+max-width:none;
+}
+
+}
+
+@media(max-width:768px){
+
+.navbar{
+padding:16px;
+gap:14px;
+}
+
+.logo{
+font-size:24px;
+}
+
+.search{
+order:3;
+width:100%;
+}
+
+.search input{
+font-size:14px;
+height:54px;
+}
+
+.search button{
+padding:0 18px;
+height:54px;
+}
+
+.search button span{
+display:none;
+}
+
+.navbar{
+flex-wrap:wrap;
+}
+
+}
+
 </style>
+
+<script>
+
+const form =
+  document.getElementById(
+    'searchForm'
+  );
+
+const input =
+  document.getElementById(
+    'searchInput'
+  );
+
+form?.addEventListener(
+  'submit',
+  e=>{
+
+    e.preventDefault();
+
+    const value =
+      input.value.trim();
+
+    if(!value) return;
+
+    window.location.href =
+      `/product/search/${
+        encodeURIComponent(value)
+      }`;
+
+  }
+);
+
+</script>
