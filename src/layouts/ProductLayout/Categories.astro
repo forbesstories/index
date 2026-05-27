@@ -15,6 +15,9 @@ const categories = [
   'Technology',
   'AI Art',
 ];
+
+const currentPath =
+  Astro.url.pathname;
 ---
 
 <section class="categories">
@@ -22,18 +25,35 @@ const categories = [
   <div class="categories-scroll">
 
     {
-      categories.map(category => (
+      categories.map(category => {
 
-        <a
-          href={`/search/${category.toLowerCase()}`}
-          class="category-pill"
-        >
+        const slug =
+          category
+            .toLowerCase()
+            .replace(/\s+/g,'-');
 
-          {category}
+        const isActive =
+          currentPath ===
+          `/product/search/${slug}`;
 
-        </a>
+        return (
 
-      ))
+          <a
+            href={`/product/search/${slug}`}
+            class={`category-pill ${
+              isActive
+                ? 'active'
+                : ''
+            }`}
+          >
+
+            {category}
+
+          </a>
+
+        );
+
+      })
     }
 
   </div>
@@ -41,19 +61,26 @@ const categories = [
 </section>
 
 <style>
+
+/* =========================
+   WRAPPER
+========================= */
+
 .categories{
-background:#fff;
-
-border-bottom:
-1px solid var(--border);
-
 position:sticky;
 
-top:74px;
+top:94px;
 
 z-index:998;
 
-backdrop-filter:blur(10px);
+background:
+rgba(255,255,255,.88);
+
+backdrop-filter:
+blur(14px);
+
+border-bottom:
+1px solid var(--border);
 }
 
 /* =========================
@@ -65,12 +92,10 @@ max-width:1440px;
 
 margin:auto;
 
-padding:14px 20px;
+padding:14px 24px;
 
 display:flex;
-
 align-items:center;
-
 gap:14px;
 
 overflow-x:auto;
@@ -90,12 +115,12 @@ display:none;
 flex:none;
 
 display:inline-flex;
-
 align-items:center;
-
 justify-content:center;
 
-padding:12px 18px;
+height:48px;
+
+padding:0 18px;
 
 border-radius:999px;
 
@@ -105,35 +130,53 @@ border:
 1px solid transparent;
 
 font-size:14px;
-
-font-weight:700;
+font-weight:800;
 
 white-space:nowrap;
+
+color:#111827;
 
 transition:.25s;
 }
 
+/* =========================
+   HOVER
+========================= */
+
 .category-pill:hover{
 background:#fff;
 
-border-color:var(--primary);
+border-color:
+rgba(88,101,242,.25);
 
 color:var(--primary);
 
 transform:translateY(-2px);
 
 box-shadow:
-0 8px 20px rgba(88,101,242,.12);
+0 10px 24px
+rgba(88,101,242,.14);
 }
 
 /* =========================
-   ACTIVE STYLE
+   ACTIVE
 ========================= */
 
 .category-pill.active{
-background:var(--dark);
+background:
+linear-gradient(
+135deg,
+#5865f2,
+#7c3aed
+);
+
+border-color:transparent;
 
 color:#fff;
+
+box-shadow:
+0 12px 30px
+rgba(88,101,242,.25);
 }
 
 /* =========================
@@ -143,7 +186,7 @@ color:#fff;
 @media(max-width:768px){
 
 .categories{
-top:132px;
+top:140px;
 }
 
 .categories-scroll{
@@ -152,9 +195,13 @@ gap:10px;
 }
 
 .category-pill{
-padding:10px 14px;
+height:42px;
+
+padding:0 14px;
+
 font-size:13px;
 }
 
 }
+
 </style>
