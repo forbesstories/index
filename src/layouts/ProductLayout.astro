@@ -1,36 +1,116 @@
 ---
 const {
-  title = 'Modern POD Store',
-  description = 'Modern ecommerce storefront built with Astro',
+  title = 'AI PRINT',
+  description = 'Modern POD marketplace',
   image = '/cover.jpg',
-  canonical = Astro.url.href
+  product = {}
 } = Astro.props;
+
+const canonical = Astro.url.href;
 ---
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>{title}</title>
 
-  <meta name="description" content={description} />
-  <meta name="theme-color" content="#0f172a" />
+  <meta
+    name="description"
+    content={description}
+  />
 
-  <link rel="canonical" href={canonical} />
+  <meta
+    name="theme-color"
+    content="#0f172a"
+  />
+
+  <link
+    rel="canonical"
+    href={canonical}
+  />
 
   <!-- OPEN GRAPH -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
-  <meta property="og:image" content={image} />
+
+  <meta
+    property="og:type"
+    content="product"
+  />
+
+  <meta
+    property="og:title"
+    content={title}
+  />
+
+  <meta
+    property="og:description"
+    content={description}
+  />
+
+  <meta
+    property="og:image"
+    content={image}
+  />
 
   <!-- TWITTER -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={title} />
-  <meta name="twitter:description" content={description} />
-  <meta name="twitter:image" content={image} />
+
+  <meta
+    name="twitter:card"
+    content="summary_large_image"
+  />
+
+  <meta
+    name="twitter:title"
+    content={title}
+  />
+
+  <meta
+    name="twitter:description"
+    content={description}
+  />
+
+  <meta
+    name="twitter:image"
+    content={image}
+  />
+
+  <!-- PRODUCT JSON-LD -->
+
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+
+      name: product.title,
+
+      description: product.description,
+
+      image: product.image,
+
+      category: product.category,
+
+      sku: product.sku,
+
+      offers: {
+        '@type': 'Offer',
+
+        price: product.price?.replace('$', ''),
+
+        priceCurrency: 'USD',
+
+        availability:
+          'https://schema.org/InStock'
+      }
+    })}
+  />
 
   <style is:global>
     :root{
@@ -42,7 +122,7 @@ const {
       --dark:#0f172a;
       --border:#e5e7eb;
       --shadow:0 10px 30px rgba(0,0,0,.08);
-      --radius:28px;
+      --radius:30px;
     }
 
     *{
@@ -56,10 +136,17 @@ const {
     }
 
     body{
-      font-family:Inter,Arial,sans-serif;
       background:var(--bg);
+
       color:var(--text);
-      -webkit-font-smoothing:antialiased;
+
+      font-family:
+        Inter,
+        Arial,
+        sans-serif;
+
+      -webkit-font-smoothing:
+        antialiased;
     }
 
     img{
@@ -72,79 +159,128 @@ const {
       text-decoration:none;
     }
 
+    button,
+    input{
+      font:inherit;
+    }
+
     .topbar{
       background:#ffb703;
-      padding:12px;
+
       text-align:center;
-      font-weight:800;
+
+      padding:12px;
+
       font-size:14px;
+
+      font-weight:800;
     }
 
     .navbar{
       position:sticky;
+
       top:0;
+
       z-index:999;
-      background:rgba(15,23,42,.96);
-      backdrop-filter:blur(10px);
+
+      background:
+        rgba(15,23,42,.96);
+
+      backdrop-filter:
+        blur(10px);
+
       display:flex;
+
       align-items:center;
+
       justify-content:space-between;
+
       gap:20px;
+
       padding:18px 24px;
     }
 
     .logo{
-      font-size:28px;
+      font-size:30px;
+
       font-weight:900;
+
       color:#fff;
     }
 
     .search{
       flex:1;
+
+      max-width:700px;
+
       display:flex;
-      max-width:650px;
     }
 
     .search input{
       flex:1;
-      padding:14px 16px;
+
       border:none;
+
       outline:none;
-      border-radius:14px 0 0 14px;
+
+      padding:14px 16px;
+
+      border-radius:
+        14px 0 0 14px;
     }
 
     .search button{
       border:none;
+
       background:var(--primary);
+
       color:#fff;
+
       padding:14px 22px;
+
       font-weight:800;
-      border-radius:0 14px 14px 0;
+
+      border-radius:
+        0 14px 14px 0;
+
       cursor:pointer;
     }
 
     .nav-links{
       display:flex;
+
       align-items:center;
+
       gap:18px;
+
       color:#fff;
     }
 
     .cta{
       background:#fff;
+
       color:#111 !important;
+
       padding:10px 14px;
+
       border-radius:12px;
+
       font-weight:800;
     }
 
     .category-bar{
       background:#111c4d;
+
       color:#fff;
+
       display:flex;
+
       gap:18px;
+
       overflow:auto;
+
       padding:14px 24px;
+
       font-size:14px;
     }
 
@@ -154,22 +290,32 @@ const {
 
     .container{
       max-width:1440px;
+
       margin:auto;
+
       padding:40px 20px;
     }
 
     .footer{
-      margin-top:80px;
+      margin-top:90px;
+
       background:#0b1120;
+
       color:#fff;
+
       padding:70px 20px;
     }
 
     .footer-grid{
       max-width:1440px;
+
       margin:auto;
+
       display:grid;
-      grid-template-columns:2fr 1fr 1fr 1.5fr;
+
+      grid-template-columns:
+        2fr 1fr 1fr 1.5fr;
+
       gap:40px;
     }
 
@@ -180,72 +326,122 @@ const {
 
     .footer a{
       display:block;
-      margin-bottom:12px;
+
       color:#d1d5db;
+
+      margin-bottom:12px;
     }
 
     .footer input{
       width:100%;
-      padding:14px;
+
       border:none;
+
+      padding:14px;
+
       border-radius:14px;
+
       margin-bottom:12px;
     }
 
     .footer button{
-      padding:14px 18px;
       border:none;
-      border-radius:14px;
+
       background:var(--primary);
+
       color:#fff;
+
+      padding:14px 18px;
+
+      border-radius:14px;
+
       font-weight:800;
+
       cursor:pointer;
     }
 
     @media(max-width:768px){
+
       .navbar{
         flex-direction:column;
       }
 
       .search{
         width:100%;
+
         max-width:none;
       }
 
       .nav-links{
         flex-wrap:wrap;
+
         justify-content:center;
       }
 
       .footer-grid{
         grid-template-columns:1fr;
       }
+
     }
   </style>
+
 </head>
+
 <body>
 
 <div class="topbar">
-🔥 Up To 35% Off Sitewide • Premium POD Marketplace
+🔥 Up To 35% Off Sitewide
 </div>
 
 <header class="navbar">
-  <a href="/" class="logo">AI PRINT</a>
+
+  <a
+    href="/"
+    class="logo"
+  >
+    AI PRINT
+  </a>
 
   <div class="search">
-    <input type="text" placeholder="Find your favorite content" />
-    <button>Search</button>
+
+    <input
+      type="text"
+      placeholder="Find your favorite content"
+    />
+
+    <button>
+      Search
+    </button>
+
   </div>
 
   <nav class="nav-links">
-    <a href="#">For You</a>
-    <a href="#">Account</a>
-    <a href="#">Cart</a>
-    <a href="#" class="cta">Create Account</a>
+
+    <a href="#">
+      Explore
+    </a>
+
+    <a href="#">
+      Account
+    </a>
+
+    <a href="#">
+      Cart
+    </a>
+
+    <a
+      href="#"
+      class="cta"
+    >
+      Create Account
+    </a>
+
   </nav>
+
 </header>
 
 <div class="category-bar">
+
   <span>T-Shirts</span>
   <span>Gaming</span>
   <span>Anime</span>
@@ -254,6 +450,7 @@ const {
   <span>Music</span>
   <span>Movies</span>
   <span>Memes</span>
+
 </div>
 
 <main class="container">
@@ -261,36 +458,80 @@ const {
 </main>
 
 <footer class="footer">
+
   <div class="footer-grid">
 
     <div>
-      <h3>AI PRINT</h3>
+
+      <h3>
+        AI PRINT
+      </h3>
+
       <p>
         Modern POD marketplace powered by Astro.
       </p>
+
     </div>
 
     <div>
-      <h4>Shop</h4>
-      <a href="#">T-Shirts</a>
-      <a href="#">Hoodies</a>
-      <a href="#">Accessories</a>
+
+      <h4>
+        Shop
+      </h4>
+
+      <a href="#">
+        T-Shirts
+      </a>
+
+      <a href="#">
+        Hoodies
+      </a>
+
+      <a href="#">
+        Accessories
+      </a>
+
     </div>
 
     <div>
-      <h4>Artists</h4>
-      <a href="#">Trending</a>
-      <a href="#">Collections</a>
-      <a href="#">Featured</a>
+
+      <h4>
+        Artists
+      </h4>
+
+      <a href="#">
+        Trending
+      </a>
+
+      <a href="#">
+        Collections
+      </a>
+
+      <a href="#">
+        Featured
+      </a>
+
     </div>
 
     <div>
-      <h4>Newsletter</h4>
-      <input type="email" placeholder="Your email" />
-      <button>Join Newsletter</button>
+
+      <h4>
+        Newsletter
+      </h4>
+
+      <input
+        type="email"
+        placeholder="Your email"
+      />
+
+      <button>
+        Join Newsletter
+      </button>
+
     </div>
 
   </div>
+
 </footer>
 
 </body>
