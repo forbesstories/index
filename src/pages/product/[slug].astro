@@ -1,5 +1,5 @@
 ---
-import ProductLayout from '../../layouts/ProductLayout.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
 import RelatedPosts from '../../components/RelatedPosts.astro';
 import { getCollection } from 'astro:content';
 
@@ -8,11 +8,11 @@ export async function getStaticPaths() {
 
   return products.map((product) => ({
     params: {
-      slug: product.slug,
+      slug: product.slug
     },
     props: {
-      product,
-    },
+      product
+    }
   }));
 }
 
@@ -33,172 +33,154 @@ const productImage =
   `/api/og/${product.slug}.svg`;
 
 const galleryImages =
-  product.data.gallery?.filter((img) => img?.trim()).length
-    ? product.data.gallery.filter((img) => img?.trim())
+  product.data.gallery?.filter(img => img?.trim()).length
+    ? product.data.gallery.filter(img => img?.trim())
     : [productImage];
 ---
 
-<ProductLayout
+<MainLayout
   title={`${product.data.title} | AI PRINT`}
   description={product.data.description}
-  slug={product.slug}
-  product={product.data}
+  canonical={`/product/${product.slug}`}
 >
 
-  <section class="product-layout">
+<section class="product-layout">
 
-    <aside class="gallery">
+  <aside class="gallery">
 
-      {
-        galleryImages.map((img, index) => (
-          <div
-            class={`thumb ${index === 0 ? 'active' : ''}`}
-          >
-            <img
-              src={img}
-              alt={product.data.title}
-              loading={index === 0 ? 'eager' : 'lazy'}
-              decoding="async"
-            />
-          </div>
-        ))
-      }
-
-    </aside>
-
-
-    <section class="preview">
-
-      <img
-        id="mainImage"
-        src={productImage}
-        alt={product.data.title}
-        loading="eager"
-        decoding="async"
-      />
-
-    </section>
-
-
-    <aside class="product-info">
-
-      <h1>
-        {product.data.title}
-      </h1>
-
-      <div class="seller">
-        Designed and sold by AI PRINT
-      </div>
-
-
-      <div class="price-wrap">
-
-        <div class="price">
-          {product.data.price}
+    {
+      galleryImages.map((img, index) => (
+        <div
+          class={`thumb ${index === 0 ? 'active' : ''}`}
+        >
+          <img
+            src={img}
+            alt={product.data.title}
+            loading={index === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+          />
         </div>
+      ))
+    }
 
-        {
-          product.data.oldPrice && (
-            <div class="old-price">
-              {product.data.oldPrice}
-            </div>
-          )
-        }
-
-      </div>
+  </aside>
 
 
-      <div class="label">
-        Category
-      </div>
+  <section class="preview">
 
-      <div class="options">
-
-        <button
-          class="active-btn"
-          type="button"
-        >
-          {product.data.category}
-        </button>
-
-      </div>
-
-
-      <div class="label">
-        Size
-      </div>
-
-      <div class="options">
-
-        <button type="button">
-          S
-        </button>
-
-        <button type="button">
-          M
-        </button>
-
-        <button
-          class="active-btn"
-          type="button"
-        >
-          L
-        </button>
-
-        <button type="button">
-          XL
-        </button>
-
-        <button type="button">
-          2XL
-        </button>
-
-      </div>
-
-
-      <button
-        class="cart-btn"
-        type="button"
-      >
-        ADD TO CART
-      </button>
-
-    </aside>
+    <img
+      id="mainImage"
+      src={productImage}
+      alt={product.data.title}
+      loading="eager"
+      decoding="async"
+    />
 
   </section>
 
 
-  <section class="description-section">
+  <aside class="product-info">
 
-    <div class="description-box">
+    <h1>
+      {product.data.title}
+    </h1>
 
-      <article class="content">
-        <Content />
-      </article>
+    <div class="seller">
+      Designed and sold by AI PRINT
+    </div>
+
+    <div class="price-wrap">
+
+      <div class="price">
+        {product.data.price}
+      </div>
+
+      {
+        product.data.oldPrice && (
+          <div class="old-price">
+            {product.data.oldPrice}
+          </div>
+        )
+      }
 
     </div>
 
-  </section>
+
+    <div class="label">
+      Category
+    </div>
+
+    <div class="options">
+
+      <button
+        class="active-btn"
+        type="button"
+      >
+        {product.data.category}
+      </button>
+
+    </div>
 
 
-  {
-    relatedProducts.length > 0 && (
-      <section class="related-section">
+    <div class="label">
+      Size
+    </div>
 
-        <RelatedPosts
-          posts={relatedProducts}
-          title="Produk Terkait"
-          baseUrl="/product"
-        />
+    <div class="options">
 
-      </section>
-    )
-  }
+      <button type="button">S</button>
+      <button type="button">M</button>
+      <button class="active-btn" type="button">L</button>
+      <button type="button">XL</button>
+      <button type="button">2XL</button>
 
-</ProductLayout>
+    </div>
 
 
-<style is="global">
+    <button
+      class="cart-btn"
+      type="button"
+    >
+      ADD TO CART
+    </button>
+
+  </aside>
+
+</section>
+
+
+<section class="description-section">
+
+  <div class="description-box">
+
+    <article class="content">
+      <Content />
+    </article>
+
+  </div>
+
+</section>
+
+
+{
+  relatedProducts.length > 0 && (
+    <section class="related-section">
+
+      <RelatedPosts
+        posts={relatedProducts}
+        title="Produk Terkait"
+        baseUrl="/product"
+      />
+
+    </section>
+  )
+}
+
+</MainLayout>
+
+
+<style is:global>
+
 .product-layout{
 display:grid;
 grid-template-columns:110px minmax(0,1fr) 420px;
@@ -335,7 +317,12 @@ margin-top:30px;
 padding:18px;
 border:none;
 border-radius:18px;
-background:linear-gradient(135deg,#5865f2,#7c3aed);
+background:
+linear-gradient(
+135deg,
+#5865f2,
+#7c3aed
+);
 color:#fff;
 font-size:18px;
 font-weight:900;
@@ -463,19 +450,21 @@ font-size:16px;
 }
 
 }
+
 </style>
 
 
-<script is="global">
+<script is:global>
+
 const thumbs = document.querySelectorAll('.thumb');
 const mainImage = document.getElementById('mainImage');
 
-thumbs.forEach((thumb) => {
+thumbs.forEach(thumb => {
 
   thumb.addEventListener('click', () => {
 
-    thumbs.forEach((item) => {
-      item.classList.remove('active');
+    thumbs.forEach(t => {
+      t.classList.remove('active');
     });
 
     thumb.classList.add('active');
@@ -489,4 +478,5 @@ thumbs.forEach((thumb) => {
   });
 
 });
+
 </script>
