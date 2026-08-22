@@ -1,131 +1,201 @@
 ---
 import { SITE } from "../lib/site";
 
-const navItems = [
-  { href: "https://aimrferdy.com", label: "Home" },
-  { href: "/blog", label: "Blog" },
-  { href: "/tools", label: "Tools" },
-  { href: "/product", label: "Product" },
-  { href: "/contact", label: "Contact" },
+const linkalt = "/";
+
+const aboutItems = [
+  { href: linkalt, label: "About" },
+  { href: linkalt, label: "Technology" },
+  { href: linkalt, label: "Security" },
+  { href: linkalt, label: "Privacy" },
+  { href: linkalt, label: "Disclaimer" },
+  { href: linkalt, label: "Contact" },
+];
+
+const productItems = [
+  { href: linkalt, label: "Roboragma APK" },
+  { href: linkalt, label: "AI Tools" },
+  { href: linkalt, label: "Gaming Tools" },
+  { href: linkalt, label: "AI Assistant" },
+  { href: linkalt, label: "Gamer Assistant" },
+];
+
+const featureItems = [
+  { href: linkalt, label: "AI Analysis" },
+  { href: linkalt, label: "AI Gaming" },
+  { href: linkalt, label: "Game Analysis" },
+  { href: linkalt, label: "Gaming Assistant" },
+  { href: linkalt, label: "Android Tools" },
+];
+
+const downloadItems = [
+  { href: linkalt, label: "Download APK" },
+  { href: linkalt, label: "Latest Version" },
+  { href: linkalt, label: "Installation" },
+  { href: linkalt, label: "Update" },
+  { href: linkalt, label: "Requirements" },
+];
+
+const guideItems = [
+  { href: linkalt, label: "Getting Started" },
+  { href: linkalt, label: "User Guide" },
+  { href: linkalt, label: "Installation Guide" },
+  { href: linkalt, label: "Update Guide" },
+  { href: linkalt, label: "FAQ" },
+];
+
+const supportItems = [
+  { href: linkalt, label: "Help Center" },
+  { href: linkalt, label: "FAQ" },
+  { href: linkalt, label: "Troubleshooting" },
+  { href: linkalt, label: "Support" },
+];
+
+const menus = [
+  { label: "Tentang", items: aboutItems },
+  { label: "Produk", items: productItems },
+  { label: "Fitur", items: featureItems },
+  { label: "Download", items: downloadItems },
+  { label: "Panduan", items: guideItems },
+  { label: "Support", items: supportItems },
 ];
 ---
 
+<header class="header">
+  <div class="header-wrap">
 
-<!-- HEADER -->
+    <button
+      class="menu-toggle"
+      id="menuToggle"
+      type="button"
+      aria-label="Buka menu"
+      aria-expanded="false"
+    >
+      ☰
+    </button>
 
-<header class="main-header">
+    <a href={linkalt} class="header-logo">
+      PRIMAL<span>SUPER</span>
+    </a>
 
-<div class="container">
+    <nav class="nav" id="nav">
 
-<div class="header-wrap">
+      <a href={linkalt}>Home</a>
 
-<div class="left-nav">
+      {
+        menus.map((menu) => (
+          <div class="dropdown">
 
-<div class="menu-btn" onclick="openMenu()">
-☰
-</div>
+            <button
+              class="drop-btn"
+              type="button"
+              aria-expanded="false"
+            >
+              {menu.label}
 
-<a href="/" class="logo">
-AI MR FERDY
-</a>
-<style>
-@keyframes animate{to{background-position:200% center}} 
-.logo{background:linear-gradient(330deg,#6d1989 0%,#1f70d9 25%,#6140b6 50%,#7f00ff 75%,#6d1989 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:animate 1.5s linear infinite; overflow:hidden;white-space:nowrap;text-overflow:ellipsis; display:block} 
-</style>
-</div>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
 
-<nav class="desktop-nav">
+            <div class="drop-menu">
 
- {navItems.map((item) => (
-    <a href={item.href}>{item.label}</a>
-  ))}
+              {
+                menu.items.map((item) => (
+                  <a href={item.href}>
+                    {item.label}
+                  </a>
+                ))
+              }
 
-</nav>
+            </div>
 
-<div class="right-nav">
+          </div>
+        ))
+      }
 
-<button
-  class="theme-btn"
-  id="themeToggle"
-  aria-label="Toggle Theme"
->
+    </nav>
 
-  <!-- MOON -->
-  <svg
-    class="moon-icon"
-    viewBox="0 0 24 24"
-    fill="none"
-  >
-    <path
-      d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-  </svg>
+    <div class="header-actions">
 
-  <!-- SUN -->
-  <svg
-    class="sun-icon"
-    viewBox="0 0 24 24"
-    fill="none"
-  >
-    <circle
-      cx="12"
-      cy="12"
-      r="5"
-      stroke="currentColor"
-      stroke-width="2"
-    />
+      <a href="/login" class="header-btn">
+        Login
+      </a>
 
-    <path
-      d="M12 1v2 M12 21v2 M4.22 4.22l1.42 1.42 M18.36 18.36l1.42 1.42 M1 12h2 M21 12h2 M4.22 19.78l1.42-1.42 M18.36 5.64l1.42-1.42"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-    />
-  </svg>
+      <button
+        class="theme-toggle"
+        id="themeToggle"
+        type="button"
+        aria-label="Ganti tema"
+      >
 
-</button>
+        <svg
+          class="sun"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2"/>
+          <path d="M12 20v2"/>
+          <path d="M4.93 4.93l1.41 1.41"/>
+          <path d="M17.66 17.66l1.41 1.41"/>
+          <path d="M2 12h2"/>
+          <path d="M20 12h2"/>
+          <path d="M4.93 19.07l1.41-1.41"/>
+          <path d="M17.66 6.34l1.41-1.41"/>
+        </svg>
 
-</div>
+        <svg
+          class="moon"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path d="M20 14.5A8.5 8.5 0 1 1 12.5 4A7 7 0 0 0 20 14.5z"/>
+        </svg>
 
-</div>
+      </button>
 
-</div>
+    </div>
 
+  </div>
 </header>
 
-<!-- MOBILE MENU -->
+<script>
+  const menuToggle = document.getElementById("menuToggle");
+  const nav = document.getElementById("nav");
 
-<div class="mobile-menu" id="mobileMenu">
+  menuToggle?.addEventListener("click", () => {
+    nav?.classList.toggle("open");
 
-<div class="close-btn" onclick="closeMenu()">
-✕
-</div>
+    menuToggle.setAttribute(
+      "aria-expanded",
+      String(nav?.classList.contains("open"))
+    );
+  });
 
-<div class="mobile-nav">
+  document.querySelectorAll(".drop-btn").forEach((button) => {
+    button.addEventListener("click", () => {
 
-  {navItems.map((item) => (
-    <a href={item.href}>{item.label}</a>
-  ))}
+      const dropdown = button.closest(".dropdown");
 
-</div>
+      if (!dropdown) return;
 
-<div class="mobile-contact">
+      const isOpen = dropdown.classList.toggle("open");
 
-<p>Jakarta, Indonesia</p>
-<p>hello@aimrferdy.com</p>
+      button.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
 
-
-</div>
-
-<!-- <div class="mobile-social">
-
-<a href="#">Instagram</a>
-<a href="#">Telegram</a>
-<a href="#">Facebook</a>
-<a href="#">Pinterest</a>
-
-</div> -->
+    });
+  });
+</script>
