@@ -32,11 +32,14 @@ const product = defineCollection({
 
     image: z.string(),
 
+    gallery: z.array(z.string()).optional(),
+
     category: z.string(),
 
     featured: z.boolean().optional(),
   }),
 });
+
 
 export const collections = {
   blog,
