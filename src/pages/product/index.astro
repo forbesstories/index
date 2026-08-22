@@ -154,16 +154,19 @@ const featuredProducts = products
 .hero{
   position:relative;
   overflow:hidden;
-  border-radius:40px;
+  border-radius:var(--radius-lg);
   padding:90px 50px;
   margin-bottom:60px;
   background:
-    linear-gradient(
-      135deg,
-      #111827,
-      #1e293b
-    );
-  color:#fff;
+    radial-gradient(
+      circle at top right,
+      color-mix(in srgb,var(--primary) 20%,transparent),
+      transparent 35%
+    ),
+    var(--surface);
+  color:var(--text);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
 }
 
 .hero::before{
@@ -172,10 +175,11 @@ const featuredProducts = products
   inset:0;
   background:
     radial-gradient(
-      circle at top right,
-      rgba(88,101,242,.35),
-      transparent 35%
+      circle at 80% 20%,
+      color-mix(in srgb,var(--primary) 10%,transparent),
+      transparent 40%
     );
+  pointer-events:none;
 }
 
 .hero-content{
@@ -188,23 +192,25 @@ const featuredProducts = products
   display:inline-flex;
   padding:10px 16px;
   border-radius:999px;
-  background:rgba(255,255,255,.12);
-  border:1px solid rgba(255,255,255,.15);
+  background:var(--surface-hover);
+  border:1px solid var(--border);
+  color:var(--primary);
   font-size:13px;
   font-weight:800;
   margin-bottom:20px;
 }
 
 .hero h1{
+  color:var(--text);
   font-size:68px;
   line-height:1;
   margin-bottom:24px;
 }
 
 .hero p{
+  color:var(--text-secondary);
   font-size:18px;
   line-height:1.9;
-  color:#d1d5db;
 }
 
 .products-section{
@@ -220,12 +226,13 @@ const featuredProducts = products
 }
 
 .section-head h2{
+  color:var(--text);
   font-size:42px;
   margin-bottom:6px;
 }
 
 .section-head p{
-  color:#6b7280;
+  color:var(--text-secondary);
 }
 
 .filters{
@@ -235,47 +242,69 @@ const featuredProducts = products
 }
 
 .filters button{
-  border:none;
-  background:#fff;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--text);
   padding:12px 18px;
-  border-radius:14px;
+  border-radius:var(--radius);
   font-weight:700;
   cursor:pointer;
   box-shadow:var(--shadow);
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    color var(--transition),
+    transform var(--transition);
+}
+
+.filters button:hover{
+  background:var(--surface-hover);
+  border-color:var(--primary);
 }
 
 .filters .active{
-  background:var(--dark);
-  color:#fff;
+  background:var(--bgbtn);
+  color:var(--textbtn);
+  border-color:transparent;
 }
 
 .products-grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(4,minmax(0,1fr));
   gap:24px;
 }
 
 .card{
-  background:#fff;
-  border-radius:30px;
+  display:block;
+  background:var(--surface);
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
   overflow:hidden;
   box-shadow:var(--shadow);
-  transition:.25s;
+  transition:
+    transform var(--transition),
+    border-color var(--transition),
+    background var(--transition),
+    box-shadow var(--transition);
 }
 
 .card:hover{
   transform:translateY(-6px);
+  border-color:var(--primary);
 }
 
 .card-image{
   overflow:hidden;
+  background:var(--surface-hover);
 }
 
 .card-image img{
+  display:block;
   width:100%;
   height:360px;
   object-fit:cover;
-  transition:.4s;
+  transition:transform .4s ease;
 }
 
 .card:hover img{
@@ -284,6 +313,7 @@ const featuredProducts = products
 
 .card-body{
   padding:22px;
+  background:var(--surface);
 }
 
 .card-top{
@@ -296,28 +326,40 @@ const featuredProducts = products
 
 .tag{
   display:inline-flex;
-  background:#eef2ff;
-  color:#4338ca;
+  background:
+    color-mix(
+      in srgb,
+      var(--primary) 10%,
+      var(--surface)
+    );
+  color:var(--primary);
   padding:8px 12px;
+  border:1px solid
+    color-mix(
+      in srgb,
+      var(--primary) 20%,
+      var(--border)
+    );
   border-radius:999px;
   font-size:12px;
   font-weight:800;
 }
 
 .category{
-  color:#6b7280;
+  color:var(--text-secondary);
   font-size:13px;
   font-weight:700;
 }
 
 .card h2{
+  color:var(--text);
   font-size:22px;
   line-height:1.3;
   margin-bottom:12px;
 }
 
 .desc{
-  color:#6b7280;
+  color:var(--text-secondary);
   line-height:1.8;
   margin-bottom:18px;
   font-size:15px;
@@ -330,19 +372,21 @@ const featuredProducts = products
 }
 
 .price{
+  color:var(--text);
   font-size:28px;
   font-weight:900;
 }
 
 .old-price{
-  color:#9ca3af;
+  color:var(--text-secondary);
   text-decoration:line-through;
+  opacity:.7;
 }
 
 @media(max-width:1200px){
 
   .products-grid{
-    grid-template-columns:repeat(2,1fr);
+    grid-template-columns:repeat(2,minmax(0,1fr));
   }
 
   .hero h1{
