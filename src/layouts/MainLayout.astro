@@ -94,9 +94,7 @@ const faqSchema = generateFaqSchema(html);
 
 
 <script is:inline>
-  if (localStorage.getItem("theme") === "light") {
-    document.documentElement.classList.add("light-mode");
-  }
+(()=>{const savedTheme=localStorage.getItem("theme");const systemTheme=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=savedTheme||systemTheme})()
 </script>
 </head>
 
@@ -130,67 +128,10 @@ const faqSchema = generateFaqSchema(html);
   <Footer />
 
 <script is:inline>
+const html=document.documentElement;const themeToggle=document.getElementById("themeToggle");const mediaQuery=window.matchMedia("(prefers-color-scheme: dark)");themeToggle.onclick=()=>{const nextTheme=html.dataset.theme==="dark"?"light":"dark";html.dataset.theme=nextTheme;localStorage.setItem("theme",nextTheme)};mediaQuery.addEventListener("change",event=>{const savedTheme=localStorage.getItem("theme");if(!savedTheme){html.dataset.theme=event.matches?"dark":"light"}});
 
-const html = document.documentElement;
-
-const themeBtn =
-  document.getElementById("themeToggle");
-
-/* LOAD */
-
-if(localStorage.getItem("theme")==="light"){
-  html.classList.add("light-mode");
-}
-
-/* TOGGLE */
-
-themeBtn?.addEventListener("click",()=>{
-
-  html.classList.toggle("light-mode");
-
-  localStorage.setItem(
-    "theme",
-    html.classList.contains("light-mode")
-      ? "light"
-      : "dark"
-  );
-
-});
-
-</script>
-
-<script is:inline>
-
-function openMenu(){
-  document
-    .getElementById("mobileMenu")
-    .classList.add("active");
-}
-
-function closeMenu(){
-  document
-    .getElementById("mobileMenu")
-    .classList.remove("active");
-}
-
-
-/* FAQ */
-
-const faqItems =
-  document.querySelectorAll(".faq-item");
-
-faqItems.forEach(item=>{
-
-  item
-    .querySelector(".faq-question")
-    .addEventListener("click",()=>{
-
-      item.classList.toggle("active");
-
-    });
-
-});
-
+const menu=document.getElementById("menuToggle");const nav=document.getElementById("nav");menu.onclick=()=>{nav.classList.toggle("active");menu.textContent=nav.classList.contains("active")?"✕":"☰"};document.querySelectorAll(".nav a").forEach(link=>{link.onclick=()=>{nav.classList.remove("active");menu.textContent="☰"}})
+document.querySelectorAll(".drop-btn").forEach(btn=>{btn.onclick=e=>{if(window.innerWidth>768)return;e.preventDefault();btn.parentElement.classList.toggle("open")}})
 </script>
 
 </body>
