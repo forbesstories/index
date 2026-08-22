@@ -75,7 +75,7 @@ const menus = [
     </button>
 
     <a href={linkalt} class="header-logo">
-      PRIMAL<span>SUPER</span>
+      AI<span> Mr Ferdy</span>
     </a>
 
     <nav class="nav" id="nav">
@@ -168,34 +168,3 @@ const menus = [
 
   </div>
 </header>
-
-<script>
-  const menuToggle = document.getElementById("menuToggle");
-  const nav = document.getElementById("nav");
-
-  menuToggle?.addEventListener("click", () => {
-    nav?.classList.toggle("open");
-
-    menuToggle.setAttribute(
-      "aria-expanded",
-      String(nav?.classList.contains("open"))
-    );
-  });
-
-  document.querySelectorAll(".drop-btn").forEach((button) => {
-    button.addEventListener("click", () => {
-
-      const dropdown = button.closest(".dropdown");
-
-      if (!dropdown) return;
-
-      const isOpen = dropdown.classList.toggle("open");
-
-      button.setAttribute(
-        "aria-expanded",
-        String(isOpen)
-      );
-
-    });
-  });
-</script>
