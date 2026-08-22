@@ -10,6 +10,7 @@ gallery:
   - "https://bcpturbo.com/cdn/shop/files/DSC_1941_35daab40-4139-4e7d-825b-3d014230e103.jpg?v=1764449527"
   - "https://bcpturbo.com/cdn/shop/files/DSC_2033_4b4ee3f2-729e-4752-b7d7-7617566753a5.jpg?v=1764449527"
 badge: "Bestseller"
+featured: true
 ---
 
 The BCP X500 FA20 Turbocharger allows you to take your 2015-2021 WRX to the next level. With its ability to produce over 400whp on the stock engine, it makes it a suitable upgrade for vehicles that already have intake and exhaust modifications.
