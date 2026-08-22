@@ -8,11 +8,11 @@ export async function getStaticPaths() {
 
   return products.map((product) => ({
     params: {
-      slug: product.slug
+      slug: product.slug,
     },
     props: {
-      product
-    }
+      product,
+    },
   }));
 }
 
@@ -29,14 +29,13 @@ const relatedProducts = (await getCollection('product'))
   .slice(0, 6);
 
 const productImage =
-  product.data.image?.trim()
-  || `/api/og/${product.slug}.svg`;
+  product.data.image?.trim() ||
+  `/api/og/${product.slug}.svg`;
 
 const galleryImages =
-  product.data.gallery?.filter(img => img?.trim()).length
-    ? product.data.gallery.filter(img => img?.trim())
+  product.data.gallery?.filter((img) => img?.trim()).length
+    ? product.data.gallery.filter((img) => img?.trim())
     : [productImage];
-
 ---
 
 <ProductLayout
@@ -46,137 +45,166 @@ const galleryImages =
   product={product.data}
 >
 
-<section class="product-layout">
+  <section class="product-layout">
 
-  <aside class="gallery">
-
-  {
-    galleryImages.map((img, index) => (
-
-      <div
-        class={`thumb ${index === 0 ? 'active' : ''}`}
-      >
-
-        <img
-          src={img}
-          alt={product.data.title}
-        />
-
-      </div>
-
-    ))
-  }
-
-</aside>
-
-  <section class="preview">
-<img
-  id="mainImage"
-  src={productImage}
-  alt={product.data.title}
-/>
-
-
-  </section>
-
-  <aside class="product-info">
-
-    <h1>
-      {product.data.title}
-    </h1>
-
-    <div class="seller">
-      Designed and sold by AI PRINT
-    </div>
-
-    <div class="price-wrap">
-
-      <div class="price">
-        {product.data.price}
-      </div>
+    <aside class="gallery">
 
       {
-        product.data.oldPrice && (
-          <div class="old-price">
-            {product.data.oldPrice}
+        galleryImages.map((img, index) => (
+          <div
+            class={`thumb ${index === 0 ? 'active' : ''}`}
+          >
+            <img
+              src={img}
+              alt={product.data.title}
+              loading={index === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+            />
           </div>
-        )
+        ))
       }
 
-    </div>
+    </aside>
 
-    <div class="label">
-      Category
-    </div>
 
-    <div class="options">
-      <button class="active-btn">
-        {product.data.category}
-      </button>
-    </div>
+    <section class="preview">
 
-    <div class="label">
-      Size
-    </div>
-
-    <div class="options">
-      <button>S</button>
-      <button>M</button>
-      <button class="active-btn">L</button>
-      <button>XL</button>
-      <button>2XL</button>
-    </div>
-
-    <button class="cart-btn">
-      ADD TO CART
-    </button>
-
-  </aside>
-
-</section>
-
-<section class="description-section">
-
-  <div class="description-box">
-
-    <article class="content">
-      <Content />
-    </article>
-
-  </div>
-
-</section>
-
-{
-  relatedProducts.length > 0 && (
-    <section class="related-section">
-
-      <RelatedPosts
-        posts={relatedProducts}
-        title="Produk Terkait"
-        baseUrl="/product"
+      <img
+        id="mainImage"
+        src={productImage}
+        alt={product.data.title}
+        loading="eager"
+        decoding="async"
       />
 
     </section>
-  )
-}
 
 
+    <aside class="product-info">
+
+      <h1>
+        {product.data.title}
+      </h1>
+
+      <div class="seller">
+        Designed and sold by AI PRINT
+      </div>
 
 
+      <div class="price-wrap">
+
+        <div class="price">
+          {product.data.price}
+        </div>
+
+        {
+          product.data.oldPrice && (
+            <div class="old-price">
+              {product.data.oldPrice}
+            </div>
+          )
+        }
+
+      </div>
 
 
-<style is:global>
+      <div class="label">
+        Category
+      </div>
+
+      <div class="options">
+
+        <button
+          class="active-btn"
+          type="button"
+        >
+          {product.data.category}
+        </button>
+
+      </div>
+
+
+      <div class="label">
+        Size
+      </div>
+
+      <div class="options">
+
+        <button type="button">
+          S
+        </button>
+
+        <button type="button">
+          M
+        </button>
+
+        <button
+          class="active-btn"
+          type="button"
+        >
+          L
+        </button>
+
+        <button type="button">
+          XL
+        </button>
+
+        <button type="button">
+          2XL
+        </button>
+
+      </div>
+
+
+      <button
+        class="cart-btn"
+        type="button"
+      >
+        ADD TO CART
+      </button>
+
+    </aside>
+
+  </section>
+
+
+  <section class="description-section">
+
+    <div class="description-box">
+
+      <article class="content">
+        <Content />
+      </article>
+
+    </div>
+
+  </section>
+
+
+  {
+    relatedProducts.length > 0 && (
+      <section class="related-section">
+
+        <RelatedPosts
+          posts={relatedProducts}
+          title="Produk Terkait"
+          baseUrl="/product"
+        />
+
+      </section>
+    )
+  }
+
+</ProductLayout>
+
+
+<style is="global">
 .product-layout{
 display:grid;
 grid-template-columns:110px minmax(0,1fr) 420px;
 gap:30px;
 align-items:start;
 }
-
-/* =========================
-   GALLERY
-========================= */
 
 .gallery{
 display:flex;
@@ -211,10 +239,6 @@ transform:translateY(-3px);
 border-color:var(--primary);
 }
 
-/* =========================
-   CARD BOXES
-========================= */
-
 .preview,
 .product-info,
 .description-box{
@@ -223,18 +247,12 @@ border-radius:32px;
 box-shadow:var(--shadow);
 }
 
-/* =========================
-   PREVIEW IMAGE
-========================= */
-
 .preview{
 padding:40px;
 display:flex;
 align-items:center;
 justify-content:center;
-
 aspect-ratio:1/1;
-
 overflow:hidden;
 position:relative;
 }
@@ -246,10 +264,6 @@ object-fit:contain;
 display:block;
 transition:.3s;
 }
-
-/* =========================
-   PRODUCT INFO
-========================= */
 
 .product-info{
 padding:34px;
@@ -285,10 +299,6 @@ text-decoration:line-through;
 color:#999;
 }
 
-/* =========================
-   OPTIONS
-========================= */
-
 .label{
 margin:28px 0 12px;
 font-weight:700;
@@ -319,23 +329,13 @@ color:#fff;
 border-color:var(--dark)!important;
 }
 
-/* =========================
-   BUTTON
-========================= */
-
 .cart-btn{
 width:100%;
 margin-top:30px;
 padding:18px;
 border:none;
 border-radius:18px;
-background:
-linear-gradient(
-135deg,
-#5865f2,
-#7c3aed
-);
-
+background:linear-gradient(135deg,#5865f2,#7c3aed);
 color:#fff;
 font-size:18px;
 font-weight:900;
@@ -346,10 +346,6 @@ transition:.25s;
 .cart-btn:hover{
 transform:translateY(-2px);
 }
-
-/* =========================
-   DESCRIPTION
-========================= */
 
 .description-section{
 margin-top:60px;
@@ -375,13 +371,26 @@ margin-bottom:18px;
 }
 
 .content ul{
-padding-left:22px;
-margin-bottom:18px;
+list-style:none;
+padding-left:20px;
+margin:20px 0;
 }
 
-/* =========================
-   TABLET
-========================= */
+.content li{
+position:relative;
+padding-left:28px;
+margin-bottom:12px;
+line-height:1.7;
+}
+
+.content li::before{
+content:"✓";
+position:absolute;
+left:0;
+top:0;
+color:var(--main-color,#7fff00);
+font-weight:700;
+}
 
 @media(max-width:1200px){
 
@@ -409,10 +418,6 @@ top:0;
 }
 
 }
-
-/* =========================
-   MOBILE
-========================= */
 
 @media(max-width:768px){
 
@@ -458,47 +463,30 @@ font-size:16px;
 }
 
 }
-
-
-
-
-.content ul{
-  list-style:none;
-  padding-left:20px;
-  margin:20px 0;
-}
-
-.content li{
-  position:relative;
-  padding-left:28px;
-  margin-bottom:12px;
-  line-height:1.7;
-}
-
-.content li::before{
-  content:"✓";
-  position:absolute;
-  left:0;
-  top:0;
-  color:var(--main-color,#7fff00);
-  font-weight:700;
-}
 </style>
 
 
-<script is:global>
-const thumbs=document.querySelectorAll('.thumb');
-const mainImage=document.getElementById('mainImage');
+<script is="global">
+const thumbs = document.querySelectorAll('.thumb');
+const mainImage = document.getElementById('mainImage');
 
-thumbs.forEach(thumb=>{
-  thumb.addEventListener('click',()=>{
-    thumbs.forEach(t=>t.classList.remove('active'));
+thumbs.forEach((thumb) => {
+
+  thumb.addEventListener('click', () => {
+
+    thumbs.forEach((item) => {
+      item.classList.remove('active');
+    });
 
     thumb.classList.add('active');
 
-    mainImage.src=
-      thumb.querySelector('img').src;
+    const image = thumb.querySelector('img');
+
+    if (image && mainImage) {
+      mainImage.src = image.src;
+    }
+
   });
+
 });
 </script>
-</ProductLayout>
