@@ -168,3 +168,21 @@ const menus = [
 
   </div>
 </header>
+
+<style is:global>
+.header-actions{display:flex;align-items:center;gap:10px}
+.header-btn{
+  height:44px;
+  padding:0 18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--textbtn);
+  background:var(--bgbtn);
+  border-radius:10px;
+  font-weight:600;
+  white-space:nowrap;
+  transition:.25s
+}
+.header-btn:hover{filter:brightness(1.08)}
+</style>
