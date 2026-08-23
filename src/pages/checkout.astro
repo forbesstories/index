@@ -1,0 +1,2217 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+---
+
+<MainLayout
+  title="Checkout | AI Mr Ferdy"
+  description="Checkout produk AI Mr Ferdy."
+  canonical="/checkout/"
+>
+
+<main class="checkout-page">
+
+  <div class="checkout-container">
+
+    <!-- HEADER -->
+
+    <div class="checkout-header">
+
+      <div>
+        <span class="checkout-label">
+          SECURE CHECKOUT
+        </span>
+
+        <h1>
+          Checkout
+        </h1>
+
+        <p>
+          Lengkapi informasi Anda untuk menyelesaikan pesanan.
+        </p>
+      </div>
+
+      <a
+        href="/cart/"
+        class="back-cart"
+      >
+        ← Kembali ke Cart
+      </a>
+
+    </div>
+
+
+    <!-- CHECKOUT -->
+
+    <div
+      class="checkout-layout"
+      id="checkoutLayout"
+    >
+
+      <!-- CUSTOMER FORM -->
+
+      <section class="checkout-form-card">
+
+        <div class="section-head">
+
+          <span class="section-number">
+            01
+          </span>
+
+          <div>
+            <h2>
+              Customer Information
+            </h2>
+
+            <p>
+              Informasi ini digunakan untuk proses pesanan.
+            </p>
+          </div>
+
+        </div>
+
+
+        <form
+          id="checkoutForm"
+          novalidate
+        >
+
+          <div class="form-grid">
+
+            <!-- NAME -->
+
+            <div class="form-group full">
+
+              <label for="name">
+                Full Name
+                <span>*</span>
+              </label>
+
+              <input
+                id="name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                placeholder="Nama lengkap"
+                required
+              />
+
+              <small
+                class="field-error"
+                id="nameError"
+              ></small>
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+              <label for="email">
+                Email
+                <span>*</span>
+              </label>
+
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                placeholder="nama@email.com"
+                required
+              />
+
+              <small
+                class="field-error"
+                id="emailError"
+              ></small>
+
+            </div>
+
+
+            <!-- PHONE -->
+
+            <div class="form-group">
+
+              <label for="phone">
+                Phone
+                <span>*</span>
+              </label>
+
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                autocomplete="tel"
+                placeholder="+62 812..."
+                required
+              />
+
+              <small
+                class="field-error"
+                id="phoneError"
+              ></small>
+
+            </div>
+
+
+            <!-- ADDRESS -->
+
+            <div class="form-group full">
+
+              <label for="address">
+                Address
+                <span>*</span>
+              </label>
+
+              <textarea
+                id="address"
+                name="address"
+                rows="4"
+                autocomplete="street-address"
+                placeholder="Alamat lengkap"
+                required
+              ></textarea>
+
+              <small
+                class="field-error"
+                id="addressError"
+              ></small>
+
+            </div>
+
+
+            <!-- CITY -->
+
+            <div class="form-group">
+
+              <label for="city">
+                City
+                <span>*</span>
+              </label>
+
+              <input
+                id="city"
+                name="city"
+                type="text"
+                autocomplete="address-level2"
+                placeholder="Kota"
+                required
+              />
+
+            </div>
+
+
+            <!-- POSTAL -->
+
+            <div class="form-group">
+
+              <label for="postal">
+                Postal Code
+                <span>*</span>
+              </label>
+
+              <input
+                id="postal"
+                name="postal"
+                type="text"
+                inputmode="numeric"
+                autocomplete="postal-code"
+                placeholder="Kode pos"
+                required
+              />
+
+            </div>
+
+          </div>
+
+
+          <!-- PAYMENT -->
+
+          <div class="section-head payment-head">
+
+            <span class="section-number">
+              02
+            </span>
+
+            <div>
+              <h2>
+                Payment Method
+              </h2>
+
+              <p>
+                Pilih metode pembayaran.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="payment-methods">
+
+            <label class="payment-option">
+
+              <input
+                type="radio"
+                name="payment"
+                value="bank_transfer"
+                checked
+              />
+
+              <span class="payment-radio"></span>
+
+              <span class="payment-content">
+
+                <strong>
+                  Bank Transfer
+                </strong>
+
+                <small>
+                  Pembayaran melalui transfer bank
+                </small>
+
+              </span>
+
+            </label>
+
+
+            <label class="payment-option">
+
+              <input
+                type="radio"
+                name="payment"
+                value="ewallet"
+              />
+
+              <span class="payment-radio"></span>
+
+              <span class="payment-content">
+
+                <strong>
+                  E-Wallet
+                </strong>
+
+                <small>
+                  GoPay, OVO, DANA, dan lainnya
+                </small>
+
+              </span>
+
+            </label>
+
+
+            <label class="payment-option">
+
+              <input
+                type="radio"
+                name="payment"
+                value="qris"
+              />
+
+              <span class="payment-radio"></span>
+
+              <span class="payment-content">
+
+                <strong>
+                  QRIS
+                </strong>
+
+                <small>
+                  Pembayaran menggunakan QRIS
+                </small>
+
+              </span>
+
+            </label>
+
+          </div>
+
+
+          <!-- NOTE -->
+
+          <div class="form-group">
+
+            <label for="note">
+              Order Note
+              <small>(Optional)</small>
+            </label>
+
+            <textarea
+              id="note"
+              name="note"
+              rows="3"
+              placeholder="Catatan untuk pesanan..."
+            ></textarea>
+
+          </div>
+
+
+          <!-- TERMS -->
+
+          <label class="terms">
+
+            <input
+              id="terms"
+              type="checkbox"
+            />
+
+            <span class="checkmark"></span>
+
+            <span>
+              Saya menyetujui
+              <a href="/terms/">
+                Terms & Conditions
+              </a>
+              dan
+              <a href="/privacy/">
+                Privacy Policy
+              </a>.
+            </span>
+
+          </label>
+
+
+          <button
+            type="submit"
+            class="place-order"
+            id="placeOrder"
+          >
+            <span>
+              Place Order
+            </span>
+
+            <span>
+              →
+            </span>
+          </button>
+
+
+          <div
+            class="checkout-message"
+            id="checkoutMessage"
+            role="alert"
+          ></div>
+
+        </form>
+
+      </section>
+
+
+      <!-- ORDER SUMMARY -->
+
+      <aside class="order-summary">
+
+        <div class="summary-card">
+
+          <div class="summary-title">
+
+            <div>
+              <span>
+                YOUR ORDER
+              </span>
+
+              <h2>
+                Order Summary
+              </h2>
+            </div>
+
+            <a href="/cart/">
+              Edit
+            </a>
+
+          </div>
+
+
+          <div
+            class="summary-items"
+            id="summaryItems"
+          ></div>
+
+
+          <div class="summary-divider"></div>
+
+
+          <div class="summary-row">
+
+            <span>
+              Items
+            </span>
+
+            <strong id="summaryQuantity">
+              0
+            </strong>
+
+          </div>
+
+
+          <div class="summary-row">
+
+            <span>
+              Subtotal
+            </span>
+
+            <strong id="summarySubtotal">
+              Rp 0
+            </strong>
+
+          </div>
+
+
+          <div class="summary-row">
+
+            <span>
+              Shipping
+            </span>
+
+            <strong class="free">
+              FREE
+            </strong>
+
+          </div>
+
+
+          <div class="summary-divider"></div>
+
+
+          <div class="summary-total">
+
+            <span>
+              Total
+            </span>
+
+            <strong id="summaryTotal">
+              Rp 0
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- BENEFITS -->
+
+        <div class="checkout-benefits">
+
+          <div class="checkout-benefit">
+
+            <span>✓</span>
+
+            <div>
+              <strong>
+                Secure Checkout
+              </strong>
+
+              <small>
+                Informasi checkout Anda aman.
+              </small>
+            </div>
+
+          </div>
+
+
+          <div class="checkout-benefit">
+
+            <span>✓</span>
+
+            <div>
+              <strong>
+                Fast Processing
+              </strong>
+
+              <small>
+                Pesanan diproses setelah pembayaran.
+              </small>
+            </div>
+
+          </div>
+
+
+          <div class="checkout-benefit">
+
+            <span>✓</span>
+
+            <div>
+              <strong>
+                Customer Support
+              </strong>
+
+              <small>
+                Kami siap membantu jika ada masalah.
+              </small>
+            </div>
+
+          </div>
+
+        </div>
+
+      </aside>
+
+    </div>
+
+
+    <!-- EMPTY CHECKOUT -->
+
+    <div
+      class="checkout-empty"
+      id="checkoutEmpty"
+      hidden
+    >
+
+      <div class="empty-icon">
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+        >
+          <circle cx="9" cy="20" r="1"/>
+          <circle cx="18" cy="20" r="1"/>
+          <path d="M3 4h2l2.4 11.5a2 2 0 0 0 2 1.5h7.7a2 2 0 0 0 2-1.5L21 8H6"/>
+        </svg>
+
+      </div>
+
+      <h2>
+        Your cart is empty
+      </h2>
+
+      <p>
+        Tambahkan produk terlebih dahulu sebelum checkout.
+      </p>
+
+      <a
+        href="/product/"
+        class="empty-button"
+      >
+        Browse Products
+      </a>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<script>
+
+const CART_KEY = 'ai-mr-ferdy-cart';
+
+const cartLayout =
+  document.getElementById('checkoutLayout');
+
+const checkoutEmpty =
+  document.getElementById('checkoutEmpty');
+
+const summaryItems =
+  document.getElementById('summaryItems');
+
+const summaryQuantity =
+  document.getElementById('summaryQuantity');
+
+const summarySubtotal =
+  document.getElementById('summarySubtotal');
+
+const summaryTotal =
+  document.getElementById('summaryTotal');
+
+const checkoutForm =
+  document.getElementById('checkoutForm');
+
+const checkoutMessage =
+  document.getElementById('checkoutMessage');
+
+
+/* =========================================================
+   CART
+========================================================= */
+
+function getCart(){
+
+  try{
+
+    return JSON.parse(
+      localStorage.getItem(CART_KEY) || '[]'
+    );
+
+  }catch{
+
+    return [];
+
+  }
+
+}
+
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+function getPrice(value){
+
+  if(typeof value === 'number'){
+    return value;
+  }
+
+  if(typeof value !== 'string'){
+    return 0;
+  }
+
+  return Number(
+    value.replace(/[^\d]/g,'')
+  ) || 0;
+
+}
+
+
+function formatPrice(value){
+
+  return new Intl.NumberFormat(
+    'id-ID',
+    {
+      style:'currency',
+      currency:'IDR',
+      maximumFractionDigits:0
+    }
+  ).format(value || 0);
+
+}
+
+
+/* =========================================================
+   ESCAPE
+========================================================= */
+
+function escapeHtml(value){
+
+  return String(value ?? '')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
+
+}
+
+
+/* =========================================================
+   RENDER SUMMARY
+========================================================= */
+
+function renderSummary(){
+
+  const cart = getCart();
+
+
+  if(!cart.length){
+
+    cartLayout.hidden = true;
+    checkoutEmpty.hidden = false;
+
+    return;
+
+  }
+
+
+  cartLayout.hidden = false;
+  checkoutEmpty.hidden = true;
+
+
+  summaryItems.innerHTML = '';
+
+
+  let quantity = 0;
+  let subtotal = 0;
+
+
+  cart.forEach((item) => {
+
+    const itemQuantity =
+      Math.max(
+        1,
+        Number(item.quantity || 1)
+      );
+
+
+    const price =
+      getPrice(item.price);
+
+
+    const itemTotal =
+      price * itemQuantity;
+
+
+    quantity += itemQuantity;
+    subtotal += itemTotal;
+
+
+    const itemElement =
+      document.createElement('div');
+
+    itemElement.className =
+      'summary-item';
+
+
+    itemElement.innerHTML = `
+
+      <div class="summary-image">
+
+        <img
+          src="${escapeHtml(item.image || '/api/og/default.svg')}"
+          alt="${escapeHtml(item.title || 'Product')}"
+        >
+
+        <span>
+          ${itemQuantity}
+        </span>
+
+      </div>
+
+
+      <div class="summary-product">
+
+        <strong>
+          ${escapeHtml(item.title || 'Product')}
+        </strong>
+
+        <small>
+          ${formatPrice(price)}
+        </small>
+
+      </div>
+
+
+      <strong class="summary-item-total">
+        ${formatPrice(itemTotal)}
+      </strong>
+
+    `;
+
+
+    summaryItems.appendChild(
+      itemElement
+    );
+
+  });
+
+
+  summaryQuantity.textContent =
+    quantity;
+
+
+  summarySubtotal.textContent =
+    formatPrice(subtotal);
+
+
+  summaryTotal.textContent =
+    formatPrice(subtotal);
+
+}
+
+
+/* =========================================================
+   VALIDATION
+========================================================= */
+
+function validateForm(){
+
+  let valid = true;
+
+
+  const name =
+    document.getElementById('name');
+
+  const email =
+    document.getElementById('email');
+
+  const phone =
+    document.getElementById('phone');
+
+  const address =
+    document.getElementById('address');
+
+  const city =
+    document.getElementById('city');
+
+  const postal =
+    document.getElementById('postal');
+
+  const terms =
+    document.getElementById('terms');
+
+
+  document
+    .querySelectorAll('.field-error')
+    .forEach(
+      el => el.textContent = ''
+    );
+
+
+  if(!name.value.trim()){
+
+    document.getElementById(
+      'nameError'
+    ).textContent =
+      'Nama wajib diisi.';
+
+    valid = false;
+
+  }
+
+
+  if(
+    !email.value.trim() ||
+    !email.validity.valid
+  ){
+
+    document.getElementById(
+      'emailError'
+    ).textContent =
+      'Masukkan email yang valid.';
+
+    valid = false;
+
+  }
+
+
+  if(!phone.value.trim()){
+
+    document.getElementById(
+      'phoneError'
+    ).textContent =
+      'Nomor telepon wajib diisi.';
+
+    valid = false;
+
+  }
+
+
+  if(!address.value.trim()){
+
+    document.getElementById(
+      'addressError'
+    ).textContent =
+      'Alamat wajib diisi.';
+
+    valid = false;
+
+  }
+
+
+  if(!city.value.trim()){
+
+    valid = false;
+
+  }
+
+
+  if(!postal.value.trim()){
+
+    valid = false;
+
+  }
+
+
+  if(!terms.checked){
+
+    checkoutMessage.textContent =
+      'Silakan setujui Terms & Conditions terlebih dahulu.';
+
+    valid = false;
+
+  }else{
+
+    checkoutMessage.textContent = '';
+
+  }
+
+
+  return valid;
+
+}
+
+
+/* =========================================================
+   SUBMIT
+========================================================= */
+
+checkoutForm?.addEventListener(
+  'submit',
+  (event) => {
+
+    event.preventDefault();
+
+
+    const cart =
+      getCart();
+
+
+    if(!cart.length){
+
+      renderSummary();
+
+      return;
+
+    }
+
+
+    if(!validateForm()){
+
+      checkoutMessage.classList.add(
+        'show'
+      );
+
+      return;
+
+    }
+
+
+    const formData =
+      new FormData(
+        checkoutForm
+      );
+
+
+    let subtotal = 0;
+
+
+    cart.forEach(
+      item => {
+
+        subtotal +=
+          getPrice(item.price) *
+          Math.max(
+            1,
+            Number(item.quantity || 1)
+          );
+
+      }
+    );
+
+
+    const orderId =
+      'AMF-' +
+      Date.now()
+        .toString(36)
+        .toUpperCase();
+
+
+    const order = {
+
+      id: orderId,
+
+      createdAt:
+        new Date().toISOString(),
+
+      customer: {
+
+        name:
+          formData.get('name'),
+
+        email:
+          formData.get('email'),
+
+        phone:
+          formData.get('phone'),
+
+        address:
+          formData.get('address'),
+
+        city:
+          formData.get('city'),
+
+        postal:
+          formData.get('postal'),
+
+      },
+
+      payment:
+        formData.get('payment'),
+
+      note:
+        formData.get('note'),
+
+      items:
+        cart,
+
+      subtotal,
+
+      total:
+        subtotal,
+
+      status:
+        'pending'
+
+    };
+
+
+    /*
+     * Simpan order lokal.
+     */
+
+    localStorage.setItem(
+      'ai-mr-ferdy-order',
+      JSON.stringify(order)
+    );
+
+
+    /*
+     * Kosongkan cart.
+     */
+
+    localStorage.removeItem(
+      CART_KEY
+    );
+
+
+    /*
+     * Beritahu Header
+     * bahwa cart berubah.
+     */
+
+    window.dispatchEvent(
+      new Event('cartUpdated')
+    );
+
+
+    /*
+     * Untuk tahap berikutnya:
+     * arahkan ke halaman order success.
+     */
+
+    window.location.href =
+      `/checkout/success/?order=${encodeURIComponent(orderId)}`;
+
+  }
+);
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+renderSummary();
+
+
+window.addEventListener(
+  'cartUpdated',
+  renderSummary
+);
+
+
+window.addEventListener(
+  'storage',
+  (event) => {
+
+    if(event.key === CART_KEY){
+
+      renderSummary();
+
+    }
+
+  }
+);
+
+</script>
+
+
+<style is:global>
+
+/* =========================================================
+   CHECKOUT PAGE
+========================================================= */
+
+.checkout-page{
+  min-height:70vh;
+
+  padding:
+    40px
+    20px
+    80px;
+}
+
+
+.checkout-container{
+  width:min(
+    1200px,
+    100%
+  );
+
+  margin:0 auto;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.checkout-header{
+  display:flex;
+
+  align-items:flex-end;
+  justify-content:space-between;
+
+  gap:25px;
+
+  margin-bottom:30px;
+}
+
+
+.checkout-label{
+  display:block;
+
+  margin-bottom:8px;
+
+  color:var(--primary);
+
+  font-size:11px;
+  font-weight:800;
+
+  letter-spacing:1.5px;
+
+  text-transform:uppercase;
+}
+
+
+.checkout-header h1{
+  margin:0;
+
+  color:var(--text);
+
+  font-size:
+    clamp(
+      30px,
+      5vw,
+      46px
+    );
+
+  line-height:1.1;
+}
+
+
+.checkout-header p{
+  margin:10px 0 0;
+
+  color:var(--text-secondary);
+
+  font-size:14px;
+}
+
+
+.back-cart{
+  flex:none;
+
+  color:var(--primary);
+
+  font-size:13px;
+  font-weight:700;
+
+  text-decoration:none;
+}
+
+
+.back-cart:hover{
+  text-decoration:underline;
+}
+
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+
+.checkout-layout{
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    380px;
+
+  gap:24px;
+
+  align-items:start;
+}
+
+
+/* =========================================================
+   FORM CARD
+========================================================= */
+
+.checkout-form-card{
+  padding:28px;
+
+  background:var(--surface);
+
+  border:1px solid var(--border);
+
+  border-radius:var(--radius-lg);
+
+  box-shadow:var(--shadow);
+}
+
+
+/* =========================================================
+   SECTION HEAD
+========================================================= */
+
+.section-head{
+  display:flex;
+
+  align-items:flex-start;
+
+  gap:13px;
+
+  margin-bottom:22px;
+}
+
+
+.section-number{
+  width:32px;
+  height:32px;
+
+  flex:0 0 32px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--primary) 10%,
+      transparent
+    );
+
+  color:var(--primary);
+
+  border-radius:9px;
+
+  font-size:10px;
+  font-weight:900;
+}
+
+
+.section-head h2{
+  margin:0;
+
+  color:var(--text);
+
+  font-size:18px;
+}
+
+
+.section-head p{
+  margin:4px 0 0;
+
+  color:var(--text-secondary);
+
+  font-size:12px;
+}
+
+
+.payment-head{
+  margin-top:35px;
+}
+
+
+/* =========================================================
+   FORM GRID
+========================================================= */
+
+.form-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:18px;
+}
+
+
+.form-group{
+  min-width:0;
+
+  margin-bottom:18px;
+}
+
+
+.form-group.full{
+  grid-column:1 / -1;
+}
+
+
+.form-group label{
+  display:block;
+
+  margin-bottom:7px;
+
+  color:var(--text);
+
+  font-size:12px;
+  font-weight:700;
+}
+
+
+.form-group label span{
+  color:#d93025;
+}
+
+
+.form-group label small{
+  color:var(--text-secondary);
+
+  font-weight:400;
+}
+
+
+.form-group input,
+.form-group textarea{
+  width:100%;
+
+  box-sizing:border-box;
+
+  padding:13px 14px;
+
+  border:1px solid var(--border);
+
+  border-radius:10px;
+
+  outline:none;
+
+  background:var(--surface);
+
+  color:var(--text);
+
+  font:inherit;
+
+  font-size:13px;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
+}
+
+
+.form-group textarea{
+  resize:vertical;
+
+  min-height:100px;
+}
+
+
+.form-group input:focus,
+.form-group textarea:focus{
+  border-color:var(--primary);
+
+  box-shadow:
+    0 0 0 3px
+    color-mix(
+      in srgb,
+      var(--primary) 10%,
+      transparent
+    );
+}
+
+
+.form-group input::placeholder,
+.form-group textarea::placeholder{
+  color:var(--text-secondary);
+
+  opacity:.6;
+}
+
+
+.field-error{
+  display:block;
+
+  margin-top:5px;
+
+  color:#d93025;
+
+  font-size:11px;
+}
+
+
+/* =========================================================
+   PAYMENT
+========================================================= */
+
+.payment-methods{
+  display:grid;
+
+  gap:10px;
+
+  margin-bottom:25px;
+}
+
+
+.payment-option{
+  position:relative;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+  padding:14px;
+
+  border:1px solid var(--border);
+
+  border-radius:11px;
+
+  cursor:pointer;
+
+  transition:
+    border-color .2s ease,
+    background .2s ease;
+}
+
+
+.payment-option:hover{
+  background:var(--surface-hover);
+}
+
+
+.payment-option:has(input:checked){
+  border-color:var(--primary);
+
+  background:
+    color-mix(
+      in srgb,
+      var(--primary) 5%,
+      var(--surface)
+    );
+}
+
+
+.payment-option input{
+  position:absolute;
+
+  opacity:0;
+}
+
+
+.payment-radio{
+  width:17px;
+  height:17px;
+
+  flex:0 0 17px;
+
+  border:2px solid var(--border);
+
+  border-radius:50%;
+
+  position:relative;
+}
+
+
+.payment-option input:checked + .payment-radio{
+  border-color:var(--primary);
+}
+
+
+.payment-option input:checked + .payment-radio::after{
+  content:"";
+
+  position:absolute;
+
+  width:7px;
+  height:7px;
+
+  top:3px;
+  left:3px;
+
+  border-radius:50%;
+
+  background:var(--primary);
+}
+
+
+.payment-content{
+  display:flex;
+
+  flex-direction:column;
+
+  gap:3px;
+}
+
+
+.payment-content strong{
+  color:var(--text);
+
+  font-size:13px;
+}
+
+
+.payment-content small{
+  color:var(--text-secondary);
+
+  font-size:11px;
+}
+
+
+/* =========================================================
+   TERMS
+========================================================= */
+
+.terms{
+  display:flex;
+
+  align-items:flex-start;
+
+  gap:9px;
+
+  margin-top:5px;
+
+  color:var(--text-secondary);
+
+  font-size:11px;
+
+  line-height:1.6;
+
+  cursor:pointer;
+}
+
+
+.terms input{
+  position:absolute;
+
+  opacity:0;
+}
+
+
+.checkmark{
+  width:17px;
+  height:17px;
+
+  flex:0 0 17px;
+
+  margin-top:1px;
+
+  border:1px solid var(--border);
+
+  border-radius:5px;
+
+  background:var(--surface);
+
+  position:relative;
+}
+
+
+.terms input:checked + .checkmark{
+  background:var(--primary);
+
+  border-color:var(--primary);
+}
+
+
+.terms input:checked + .checkmark::after{
+  content:"✓";
+
+  position:absolute;
+
+  inset:0;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  color:#fff;
+
+  font-size:11px;
+  font-weight:900;
+}
+
+
+.terms a{
+  color:var(--primary);
+
+  text-decoration:none;
+}
+
+
+.terms a:hover{
+  text-decoration:underline;
+}
+
+
+/* =========================================================
+   PLACE ORDER
+========================================================= */
+
+.place-order{
+  width:100%;
+  height:52px;
+
+  margin-top:22px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  padding:0 17px;
+
+  border:0;
+
+  border-radius:10px;
+
+  background:var(--bgbtn);
+
+  color:var(--textbtn);
+
+  font-size:13px;
+  font-weight:800;
+
+  cursor:pointer;
+
+  transition:
+    transform .2s ease,
+    filter .2s ease;
+}
+
+
+.place-order:hover{
+  transform:translateY(-1px);
+
+  filter:brightness(1.08);
+}
+
+
+.checkout-message{
+  display:none;
+
+  margin-top:12px;
+
+  padding:11px 13px;
+
+  border-radius:9px;
+
+  background:
+    color-mix(
+      in srgb,
+      #d93025 8%,
+      transparent
+    );
+
+  color:#d93025;
+
+  font-size:12px;
+}
+
+
+.checkout-message.show{
+  display:block;
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.order-summary{
+  position:sticky;
+
+  top:24px;
+}
+
+
+.summary-card{
+  padding:24px;
+
+  background:var(--surface);
+
+  border:1px solid var(--border);
+
+  border-radius:var(--radius-lg);
+
+  box-shadow:var(--shadow);
+}
+
+
+.summary-title{
+  display:flex;
+
+  align-items:flex-start;
+  justify-content:space-between;
+
+  gap:15px;
+
+  margin-bottom:20px;
+}
+
+
+.summary-title > div > span{
+  color:var(--primary);
+
+  font-size:9px;
+  font-weight:900;
+
+  letter-spacing:1.3px;
+}
+
+
+.summary-title h2{
+  margin:4px 0 0;
+
+  color:var(--text);
+
+  font-size:20px;
+}
+
+
+.summary-title a{
+  color:var(--primary);
+
+  font-size:11px;
+  font-weight:700;
+
+  text-decoration:none;
+}
+
+
+/* =========================================================
+   SUMMARY ITEMS
+========================================================= */
+
+.summary-items{
+  display:grid;
+
+  gap:14px;
+}
+
+
+.summary-item{
+  display:grid;
+
+  grid-template-columns:
+    52px
+    minmax(0,1fr)
+    auto;
+
+  align-items:center;
+
+  gap:10px;
+}
+
+
+.summary-image{
+  width:52px;
+  height:52px;
+
+  position:relative;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  overflow:visible;
+
+  background:var(--surface-hover);
+
+  border-radius:9px;
+}
+
+
+.summary-image img{
+  width:100%;
+  height:100%;
+
+  padding:5px;
+
+  object-fit:contain;
+
+  border-radius:9px;
+}
+
+
+.summary-image span{
+  position:absolute;
+
+  top:-6px;
+  right:-6px;
+
+  min-width:17px;
+  height:17px;
+
+  padding:0 4px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:var(--primary);
+
+  color:#fff;
+
+  border:2px solid var(--surface);
+
+  border-radius:999px;
+
+  font-size:9px;
+  font-weight:800;
+}
+
+
+.summary-product{
+  min-width:0;
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:3px;
+}
+
+
+.summary-product strong{
+  overflow:hidden;
+
+  color:var(--text);
+
+  font-size:12px;
+
+  text-overflow:ellipsis;
+
+  white-space:nowrap;
+}
+
+
+.summary-product small{
+  color:var(--text-secondary);
+
+  font-size:10px;
+}
+
+
+.summary-item-total{
+  color:var(--text);
+
+  font-size:12px;
+
+  white-space:nowrap;
+}
+
+
+/* =========================================================
+   SUMMARY ROWS
+========================================================= */
+
+.summary-divider{
+  height:1px;
+
+  margin:19px 0;
+
+  background:var(--border);
+}
+
+
+.summary-row{
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:15px;
+
+  margin-bottom:12px;
+
+  color:var(--text-secondary);
+
+  font-size:12px;
+}
+
+
+.summary-row strong{
+  color:var(--text);
+
+  font-size:12px;
+}
+
+
+.summary-row .free{
+  color:var(--primary);
+
+  font-weight:800;
+}
+
+
+.summary-total{
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:15px;
+}
+
+
+.summary-total span{
+  color:var(--text);
+
+  font-size:14px;
+  font-weight:800;
+}
+
+
+.summary-total strong{
+  color:var(--text);
+
+  font-size:21px;
+  font-weight:900;
+}
+
+
+/* =========================================================
+   BENEFITS
+========================================================= */
+
+.checkout-benefits{
+  display:grid;
+
+  gap:9px;
+
+  margin-top:14px;
+}
+
+
+.checkout-benefit{
+  display:flex;
+
+  align-items:flex-start;
+
+  gap:10px;
+
+  padding:12px;
+
+  background:var(--surface);
+
+  border:1px solid var(--border);
+
+  border-radius:10px;
+}
+
+
+.checkout-benefit > span{
+  width:21px;
+  height:21px;
+
+  flex:0 0 21px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:50%;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--primary) 10%,
+      transparent
+    );
+
+  color:var(--primary);
+
+  font-size:11px;
+  font-weight:900;
+}
+
+
+.checkout-benefit div{
+  display:flex;
+
+  flex-direction:column;
+
+  gap:3px;
+}
+
+
+.checkout-benefit strong{
+  color:var(--text);
+
+  font-size:11px;
+}
+
+
+.checkout-benefit small{
+  color:var(--text-secondary);
+
+  font-size:10px;
+
+  line-height:1.5;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.checkout-empty{
+  padding:70px 30px;
+
+  text-align:center;
+
+  background:var(--surface);
+
+  border:1px solid var(--border);
+
+  border-radius:var(--radius-lg);
+
+  box-shadow:var(--shadow);
+}
+
+
+.empty-icon{
+  width:64px;
+  height:64px;
+
+  margin:0 auto 18px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:var(--surface-hover);
+
+  color:var(--primary);
+
+  border-radius:50%;
+}
+
+
+.empty-icon svg{
+  width:30px;
+  height:30px;
+}
+
+
+.checkout-empty h2{
+  margin:0;
+
+  color:var(--text);
+
+  font-size:22px;
+}
+
+
+.checkout-empty p{
+  margin:8px 0 22px;
+
+  color:var(--text-secondary);
+
+  font-size:13px;
+}
+
+
+.empty-button{
+  display:inline-flex;
+
+  align-items:center;
+  justify-content:center;
+
+  height:44px;
+
+  padding:0 20px;
+
+  background:var(--bgbtn);
+
+  color:var(--textbtn);
+
+  border-radius:10px;
+
+  text-decoration:none;
+
+  font-size:13px;
+  font-weight:700;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:950px){
+
+  .checkout-layout{
+    grid-template-columns:1fr;
+  }
+
+  .order-summary{
+    position:static;
+
+    order:-1;
+  }
+
+}
+
+
+@media(max-width:650px){
+
+  .checkout-page{
+    padding:
+      25px
+      12px
+      60px;
+  }
+
+
+  .checkout-header{
+    align-items:flex-start;
+
+    flex-direction:column;
+
+    gap:14px;
+  }
+
+
+  .checkout-form-card{
+    padding:20px;
+  }
+
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+
+  .form-group.full{
+    grid-column:auto;
+  }
+
+
+  .summary-card{
+    padding:20px;
+  }
+
+}
+
+
+@media(max-width:420px){
+
+  .checkout-form-card{
+    padding:17px;
+  }
+
+
+  .summary-item{
+    grid-template-columns:
+      45px
+      minmax(0,1fr)
+      auto;
+  }
+
+
+  .summary-image{
+    width:45px;
+    height:45px;
+  }
+
+}
+
+</style>
+
+</MainLayout>
