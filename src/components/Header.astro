@@ -18,10 +18,10 @@ const toolItems = [
 ];
 
 const productItems = [
-  { href: "/products", label: "All Products" },
-  { href: "/products/roboragma", label: "Roboragma APK" },
-  { href: "/products/ai-assistant", label: "AI Assistant" },
-  { href: "/products/gamer-assistant", label: "Gamer Assistant" },
+  { href: "/product", label: "All Products" },
+  { href: "/product/roboragma", label: "Roboragma APK" },
+  { href: "/product/ai-assistant", label: "AI Assistant" },
+  { href: "/product/gamer-assistant", label: "Gamer Assistant" },
 ];
 
 const menus = [
@@ -34,21 +34,25 @@ const menus = [
 <header class="header">
   <div class="header-wrap">
 
+    <!-- MOBILE MENU -->
     <button
       class="menu-toggle"
       id="menuToggle"
       type="button"
       aria-label="Buka menu"
       aria-expanded="false"
+      aria-controls="nav"
     >
       ☰
     </button>
 
-    <a href={linkalt} class="header-logo">
+    <!-- LOGO -->
+    <a href={linkalt} class="header-logo" aria-label="AI Mr Ferdy">
       AI<span> Mr Ferdy</span>
     </a>
 
-    <nav class="nav" id="nav">
+    <!-- NAVIGATION -->
+    <nav class="nav" id="nav" aria-label="Main navigation">
 
       <a href="/">Home</a>
 
@@ -70,12 +74,16 @@ const menus = [
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
               >
                 <path d="m6 9 6 6 6-6" />
               </svg>
             </button>
 
             <div class="drop-menu">
+
               {
                 menu.items.map((item) => (
                   <a href={item.href}>
@@ -83,6 +91,7 @@ const menus = [
                   </a>
                 ))
               }
+
             </div>
 
           </div>
@@ -93,6 +102,7 @@ const menus = [
 
     </nav>
 
+    <!-- HEADER ACTIONS -->
     <div class="header-actions">
 
       <!-- CART -->
@@ -101,6 +111,7 @@ const menus = [
         class="cart-btn"
         aria-label="Shopping cart"
       >
+
         <svg
           viewBox="0 0 24 24"
           fill="none"
@@ -108,21 +119,34 @@ const menus = [
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
+          aria-hidden="true"
         >
           <circle cx="9" cy="20" r="1"/>
           <circle cx="18" cy="20" r="1"/>
           <path d="M3 4h2l2.4 11.5a2 2 0 0 0 2 1.5h7.7a2 2 0 0 0 2-1.5L21 8H6"/>
         </svg>
 
-        <span class="cart-count" id="cartCount">0</span>
+        <span
+          class="cart-count"
+          id="cartCount"
+          aria-live="polite"
+        >
+          0
+        </span>
+
       </a>
 
+
       <!-- LOGIN -->
-      <a href="/login" class="header-btn">
+      <a
+        href="/login"
+        class="header-btn"
+      >
         Login
       </a>
 
-      <!-- THEME -->
+
+      <!-- THEME TOGGLE -->
       <button
         class="theme-toggle"
         id="themeToggle"
@@ -130,6 +154,7 @@ const menus = [
         aria-label="Ganti tema"
       >
 
+        <!-- SUN -->
         <svg
           class="sun"
           viewBox="0 0 24 24"
@@ -138,6 +163,7 @@ const menus = [
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
+          aria-hidden="true"
         >
           <circle cx="12" cy="12" r="4"/>
           <path d="M12 2v2"/>
@@ -150,10 +176,12 @@ const menus = [
           <path d="M17.66 6.34l1.41-1.41"/>
         </svg>
 
+        <!-- MOON -->
         <svg
           class="moon"
           viewBox="0 0 24 24"
           fill="currentColor"
+          aria-hidden="true"
         >
           <path d="M20 14.5A8.5 8.5 0 1 1 12.5 4A7 7 0 0 0 20 14.5z"/>
         </svg>
@@ -165,7 +193,12 @@ const menus = [
   </div>
 </header>
 
+
 <style is:global>
+
+/* =========================================================
+   HEADER ACTIONS
+========================================================= */
 
 .header-actions{
   display:flex;
@@ -173,20 +206,34 @@ const menus = [
   gap:10px;
 }
 
-/* CART */
+
+/* =========================================================
+   CART
+========================================================= */
 
 .cart-btn{
+  position:relative;
+
   width:44px;
   height:44px;
+
   display:flex;
   align-items:center;
   justify-content:center;
-  position:relative;
+
   color:var(--text);
+
   background:var(--surface);
+
   border:1px solid var(--border);
   border-radius:10px;
-  transition:.25s;
+
+  text-decoration:none;
+
+  transition:
+    background .25s ease,
+    border-color .25s ease,
+    transform .25s ease;
 }
 
 .cart-btn svg{
@@ -196,89 +243,523 @@ const menus = [
 
 .cart-btn:hover{
   background:var(--surface-hover);
+  border-color:var(--primary);
+
+  transform:translateY(-1px);
 }
 
-/* CART BADGE */
+
+/* =========================================================
+   CART BADGE
+========================================================= */
 
 .cart-count{
   position:absolute;
-  top:-5px;
-  right:-5px;
+
+  top:-6px;
+  right:-6px;
+
   min-width:18px;
   height:18px;
+
   padding:0 4px;
-  display:flex;
+
+  display:none;
+
   align-items:center;
   justify-content:center;
+
+  border:2px solid var(--surface);
   border-radius:999px;
+
   background:var(--primary);
   color:#fff;
+
   font-size:10px;
-  font-weight:700;
+  font-weight:800;
   line-height:1;
+
+  pointer-events:none;
 }
 
-/* LOGIN */
+
+/* =========================================================
+   LOGIN
+========================================================= */
 
 .header-btn{
   height:44px;
+
   padding:0 18px;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
   color:var(--textbtn);
   background:var(--bgbtn);
+
   border-radius:10px;
+
   font-weight:600;
+  text-decoration:none;
+
   white-space:nowrap;
-  transition:.25s;
+
+  transition:
+    filter .25s ease,
+    transform .25s ease;
 }
 
 .header-btn:hover{
   filter:brightness(1.08);
+  transform:translateY(-1px);
+}
+
+
+/* =========================================================
+   DROPDOWN
+========================================================= */
+
+.dropdown{
+  position:relative;
+}
+
+.drop-btn{
+  display:flex;
+  align-items:center;
+  gap:5px;
+
+  border:0;
+  background:none;
+
+  color:inherit;
+
+  cursor:pointer;
+
+  font:inherit;
+}
+
+.drop-btn svg{
+  width:14px;
+  height:14px;
+
+  transition:
+    transform .25s ease;
+}
+
+.dropdown:hover .drop-btn svg,
+.dropdown:focus-within .drop-btn svg{
+  transform:rotate(180deg);
+}
+
+.drop-menu{
+  position:absolute;
+
+  top:calc(100% + 10px);
+  left:0;
+
+  min-width:210px;
+
+  padding:7px;
+
+  background:var(--surface);
+
+  border:1px solid var(--border);
+  border-radius:12px;
+
+  box-shadow:var(--shadow-lg);
+
+  opacity:0;
+  visibility:hidden;
+
+  transform:translateY(-6px);
+
+  transition:
+    opacity .2s ease,
+    transform .2s ease,
+    visibility .2s ease;
+
+  z-index:1000;
+}
+
+.dropdown:hover .drop-menu,
+.dropdown:focus-within .drop-menu,
+.dropdown.open .drop-menu{
+  opacity:1;
+  visibility:visible;
+
+  transform:translateY(0);
+}
+
+.drop-menu a{
+  display:block;
+
+  padding:10px 12px;
+
+  color:var(--text);
+
+  border-radius:8px;
+
+  text-decoration:none;
+
+  font-size:13px;
+
+  transition:
+    background .2s ease,
+    color .2s ease;
+}
+
+.drop-menu a:hover{
+  background:var(--surface-hover);
+  color:var(--primary);
+}
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+@media(max-width:900px){
+
+  .header-wrap{
+    gap:10px;
+  }
+
+  .menu-toggle{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .nav{
+    position:absolute;
+
+    top:100%;
+    left:0;
+    right:0;
+
+    display:none;
+
+    flex-direction:column;
+
+    padding:12px;
+
+    background:var(--surface);
+
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+
+    box-shadow:var(--shadow-lg);
+
+    z-index:999;
+  }
+
+  .nav.open{
+    display:flex;
+  }
+
+  .nav > a,
+  .dropdown{
+    width:100%;
+  }
+
+  .drop-btn{
+    width:100%;
+
+    min-height:44px;
+
+    justify-content:space-between;
+  }
+
+  .drop-menu{
+    position:static;
+
+    width:100%;
+
+    margin:0;
+
+    padding:0;
+
+    border:0;
+    box-shadow:none;
+
+    opacity:1;
+    visibility:visible;
+
+    transform:none;
+
+    display:none;
+  }
+
+  .dropdown.open .drop-menu{
+    display:block;
+  }
+
+  .drop-menu a{
+    padding:10px 14px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL SCREEN
+========================================================= */
+
+@media(max-width:600px){
+
+  .header-actions{
+    gap:6px;
+  }
+
+  .header-btn{
+    height:40px;
+    padding:0 13px;
+
+    font-size:12px;
+  }
+
+  .cart-btn{
+    width:40px;
+    height:40px;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL SCREEN
+========================================================= */
+
+@media(max-width:420px){
+
+  .header-btn{
+    display:none;
+  }
+
 }
 
 </style>
 
+
 <script>
-  function updateCartCount() {
-    try {
-      const cart = JSON.parse(
-        localStorage.getItem("cart") || "[]"
+
+const CART_KEY = 'ai-mr-ferdy-cart';
+
+
+/* =========================================================
+   CART COUNT
+========================================================= */
+
+function updateCartCount(){
+
+  const badge =
+    document.getElementById('cartCount');
+
+  if(!badge) return;
+
+  try{
+
+    const cart =
+      JSON.parse(
+        localStorage.getItem(CART_KEY) || '[]'
       );
 
-      const count = cart.reduce(
-        (total, item) => total + (item.quantity || 1),
+    const count =
+      cart.reduce(
+        (total, item) =>
+          total + Number(item.quantity || 0),
         0
       );
 
-      const badge = document.getElementById("cartCount");
+    badge.textContent =
+      count > 99 ? '99+' : String(count);
 
-      if (badge) {
-        badge.textContent = count > 99 ? "99+" : count;
-      }
+    badge.style.display =
+      count > 0 ? 'flex' : 'none';
 
-    } catch {
-      const badge = document.getElementById("cartCount");
+  }catch(error){
 
-      if (badge) {
-        badge.textContent = "0";
-      }
-    }
+    console.error(
+      'Cart error:',
+      error
+    );
+
+    badge.textContent = '0';
+    badge.style.display = 'none';
+
   }
 
+}
+
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
+
+function initHeader(){
+
+  updateCartCount();
+
+
+  /* =======================================================
+     MOBILE MENU
+  ======================================================= */
+
+  const menuToggle =
+    document.getElementById('menuToggle');
+
+  const nav =
+    document.getElementById('nav');
+
+  menuToggle?.addEventListener(
+    'click',
+    () => {
+
+      const open =
+        nav?.classList.toggle('open');
+
+      menuToggle.setAttribute(
+        'aria-expanded',
+        String(!!open)
+      );
+
+    }
+  );
+
+
+  /* =======================================================
+     DROPDOWN
+  ======================================================= */
+
+  document
+    .querySelectorAll('.drop-btn')
+    .forEach((button) => {
+
+      button.addEventListener(
+        'click',
+        (event) => {
+
+          event.stopPropagation();
+
+          const dropdown =
+            button.closest('.dropdown');
+
+          if(!dropdown) return;
+
+
+          const isOpen =
+            dropdown.classList.contains('open');
+
+
+          document
+            .querySelectorAll('.dropdown.open')
+            .forEach((item) => {
+
+              if(item !== dropdown){
+                item.classList.remove('open');
+
+                item
+                  .querySelector('.drop-btn')
+                  ?.setAttribute(
+                    'aria-expanded',
+                    'false'
+                  );
+              }
+
+            });
+
+
+          dropdown.classList.toggle(
+            'open',
+            !isOpen
+          );
+
+          button.setAttribute(
+            'aria-expanded',
+            String(!isOpen)
+          );
+
+        }
+      );
+
+    });
+
+
+  /* =======================================================
+     CLOSE DROPDOWN
+  ======================================================= */
+
   document.addEventListener(
-    "DOMContentLoaded",
+    'click',
+    () => {
+
+      document
+        .querySelectorAll('.dropdown.open')
+        .forEach((dropdown) => {
+
+          dropdown.classList.remove('open');
+
+          dropdown
+            .querySelector('.drop-btn')
+            ?.setAttribute(
+              'aria-expanded',
+              'false'
+            );
+
+        });
+
+    }
+  );
+
+
+  /* =======================================================
+     CART EVENT
+  ======================================================= */
+
+  window.addEventListener(
+    'cartUpdated',
     updateCartCount
   );
 
-  window.addEventListener(
-    "storage",
-    updateCartCount
-  );
+
+  /* =======================================================
+     OTHER TAB
+  ======================================================= */
 
   window.addEventListener(
-    "cartUpdated",
-    updateCartCount
+    'storage',
+    (event) => {
+
+      if(event.key === CART_KEY){
+        updateCartCount();
+      }
+
+    }
   );
+
+}
+
+
+/* =========================================================
+   ASTRO / NORMAL LOAD
+========================================================= */
+
+if(
+  document.readyState === 'loading'
+){
+
+  document.addEventListener(
+    'DOMContentLoaded',
+    initHeader,
+    { once:true }
+  );
+
+}else{
+
+  initHeader();
+
+}
+
 </script>
