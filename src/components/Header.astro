@@ -3,61 +3,31 @@ import { SITE } from "../lib/site";
 
 const linkalt = "/";
 
-const aboutItems = [
-  { href: linkalt, label: "About" },
-  { href: linkalt, label: "Technology" },
-  { href: linkalt, label: "Security" },
-  { href: linkalt, label: "Privacy" },
-  { href: linkalt, label: "Disclaimer" },
-  { href: linkalt, label: "Contact" },
+const blogItems = [
+  { href: "/blog", label: "All Articles" },
+  { href: "/blog/ai", label: "AI" },
+  { href: "/blog/gaming", label: "Gaming" },
+  { href: "/blog/technology", label: "Technology" },
+];
+
+const toolItems = [
+  { href: "/tools", label: "All Tools" },
+  { href: "/tools/ai", label: "AI Tools" },
+  { href: "/tools/gaming", label: "Gaming Tools" },
+  { href: "/tools/android", label: "Android Tools" },
 ];
 
 const productItems = [
-  { href: linkalt, label: "Roboragma APK" },
-  { href: linkalt, label: "AI Tools" },
-  { href: linkalt, label: "Gaming Tools" },
-  { href: linkalt, label: "AI Assistant" },
-  { href: linkalt, label: "Gamer Assistant" },
-];
-
-const featureItems = [
-  { href: linkalt, label: "AI Analysis" },
-  { href: linkalt, label: "AI Gaming" },
-  { href: linkalt, label: "Game Analysis" },
-  { href: linkalt, label: "Gaming Assistant" },
-  { href: linkalt, label: "Android Tools" },
-];
-
-const downloadItems = [
-  { href: linkalt, label: "Download APK" },
-  { href: linkalt, label: "Latest Version" },
-  { href: linkalt, label: "Installation" },
-  { href: linkalt, label: "Update" },
-  { href: linkalt, label: "Requirements" },
-];
-
-const guideItems = [
-  { href: linkalt, label: "Getting Started" },
-  { href: linkalt, label: "User Guide" },
-  { href: linkalt, label: "Installation Guide" },
-  { href: linkalt, label: "Update Guide" },
-  { href: linkalt, label: "FAQ" },
-];
-
-const supportItems = [
-  { href: linkalt, label: "Help Center" },
-  { href: linkalt, label: "FAQ" },
-  { href: linkalt, label: "Troubleshooting" },
-  { href: linkalt, label: "Support" },
+  { href: "/products", label: "All Products" },
+  { href: "/products/roboragma", label: "Roboragma APK" },
+  { href: "/products/ai-assistant", label: "AI Assistant" },
+  { href: "/products/gamer-assistant", label: "Gamer Assistant" },
 ];
 
 const menus = [
-  { label: "Tentang", items: aboutItems },
-  { label: "Produk", items: productItems },
-  { label: "Fitur", items: featureItems },
-  { label: "Download", items: downloadItems },
-  { label: "Panduan", items: guideItems },
-  { label: "Support", items: supportItems },
+  { label: "Blog", items: blogItems },
+  { label: "Tools", items: toolItems },
+  { label: "Product", items: productItems },
 ];
 ---
 
@@ -80,7 +50,9 @@ const menus = [
 
     <nav class="nav" id="nav">
 
-      <a href={linkalt}>Home</a>
+      <a href="/">Home</a>
+
+      <a href="/recent">Recent</a>
 
       {
         menus.map((menu) => (
@@ -104,7 +76,6 @@ const menus = [
             </button>
 
             <div class="drop-menu">
-
               {
                 menu.items.map((item) => (
                   <a href={item.href}>
@@ -112,21 +83,46 @@ const menus = [
                   </a>
                 ))
               }
-
             </div>
 
           </div>
         ))
       }
 
+      <a href="/about">About</a>
+
     </nav>
 
     <div class="header-actions">
 
+      <!-- CART -->
+      <a
+        href="/cart"
+        class="cart-btn"
+        aria-label="Shopping cart"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="9" cy="20" r="1"/>
+          <circle cx="18" cy="20" r="1"/>
+          <path d="M3 4h2l2.4 11.5a2 2 0 0 0 2 1.5h7.7a2 2 0 0 0 2-1.5L21 8H6"/>
+        </svg>
+
+        <span class="cart-count" id="cartCount">0</span>
+      </a>
+
+      <!-- LOGIN -->
       <a href="/login" class="header-btn">
         Login
       </a>
 
+      <!-- THEME -->
       <button
         class="theme-toggle"
         id="themeToggle"
@@ -170,7 +166,60 @@ const menus = [
 </header>
 
 <style is:global>
-.header-actions{display:flex;align-items:center;gap:10px}
+
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+/* CART */
+
+.cart-btn{
+  width:44px;
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  color:var(--text);
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  transition:.25s;
+}
+
+.cart-btn svg{
+  width:21px;
+  height:21px;
+}
+
+.cart-btn:hover{
+  background:var(--surface-hover);
+}
+
+/* CART BADGE */
+
+.cart-count{
+  position:absolute;
+  top:-5px;
+  right:-5px;
+  min-width:18px;
+  height:18px;
+  padding:0 4px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  background:var(--primary);
+  color:#fff;
+  font-size:10px;
+  font-weight:700;
+  line-height:1;
+}
+
+/* LOGIN */
+
 .header-btn{
   height:44px;
   padding:0 18px;
@@ -182,7 +231,54 @@ const menus = [
   border-radius:10px;
   font-weight:600;
   white-space:nowrap;
-  transition:.25s
+  transition:.25s;
 }
-.header-btn:hover{filter:brightness(1.08)}
+
+.header-btn:hover{
+  filter:brightness(1.08);
+}
+
 </style>
+
+<script>
+  function updateCartCount() {
+    try {
+      const cart = JSON.parse(
+        localStorage.getItem("cart") || "[]"
+      );
+
+      const count = cart.reduce(
+        (total, item) => total + (item.quantity || 1),
+        0
+      );
+
+      const badge = document.getElementById("cartCount");
+
+      if (badge) {
+        badge.textContent = count > 99 ? "99+" : count;
+      }
+
+    } catch {
+      const badge = document.getElementById("cartCount");
+
+      if (badge) {
+        badge.textContent = "0";
+      }
+    }
+  }
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    updateCartCount
+  );
+
+  window.addEventListener(
+    "storage",
+    updateCartCount
+  );
+
+  window.addEventListener(
+    "cartUpdated",
+    updateCartCount
+  );
+</script>
