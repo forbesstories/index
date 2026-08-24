@@ -6,13 +6,7 @@ const posts = await getCollection("blog");
 const products = await getCollection("product");
 
 
-/* =========================================================
-   TOOLS
-   Baca SEMUA file:
-   src/pages/tools/**/*.astro
 
-   ?raw = membaca source file Astro
-========================================================= */
 
 const toolFiles = import.meta.glob(
   "./tools/**/*.astro",
