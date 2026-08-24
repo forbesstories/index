@@ -2,1380 +2,229 @@
 import MainLayout from "../layouts/MainLayout.astro";
 import { getCollection } from "astro:content";
 
-/* =========================================================
-   CONTENT
-========================================================= */
-
 const posts = await getCollection("blog");
 const products = await getCollection("product");
 
 
+/* =========================================================
+   TOOLS
+   Baca SEMUA file:
+   src/pages/tools/**/*.astro
 
+   ?raw = membaca source file Astro
+========================================================= */
 
-const toolPages = import.meta.glob(
+const toolFiles = import.meta.glob(
   "./tools/**/*.astro",
   {
-    eager: true
+    eager: true,
+    query: "?raw",
+    import: "default"
   }
 );
 
 
 /* =========================================================
-   TOOL METADATA
+   PARSE TOOL
 ========================================================= */
 
-const tools = Object.keys(toolPages)
-  .map((path) => {
+function parseTool(
+  path,
+  source
+) {
 
-    /*
-     * Contoh:
-     *
-     * ./tools/web/cssminify.astro
-     *
-     * menjadi:
-     *
-     * /tools/web/cssminify/
-     */
-
-    const href =
-      path
-        .replace(/^\.\/tools/, "/tools")
-        .replace(/\.astro$/, "/");
+  const cleanSource =
+    String(source || "");
 
 
-    /*
-     * Contoh:
-     *
-     * web/cssminify
-     */
+  /* =======================================================
+     PATH
+  ======================================================= */
 
-    const slug =
-      path
-        .replace(/^\.\/tools\//, "")
-        .replace(/\.astro$/, "");
+  const relativePath =
+    path
+      .replace(/^\.\/tools\//, "")
+      .replace(/\.astro$/, "");
 
 
-    /*
-     * Ambil nama file
-     */
-
-    const filename =
-      slug.split("/").pop() || "";
+  const parts =
+    relativePath.split("/");
 
 
-    /*
-     * Ubah:
-     *
-     * cssminify
-     *
-     * menjadi:
-     *
-     * Cssminify
-     *
-     * dan:
-     *
-     * css-minify
-     *
-     * menjadi:
-     *
-     * Css Minify
-     */
+  const filename =
+    parts[parts.length - 1] || "";
 
-    const title =
+
+  /* =======================================================
+     URL
+  ======================================================= */
+
+  const href =
+    `/tools/${relativePath}/`;
+
+
+  /* =======================================================
+     TITLE
+  ======================================================= */
+
+  let title = "";
+
+
+  /*
+   * Cari:
+   *
+   * title="Audio Converter"
+   *
+   * atau:
+   *
+   * title='Audio Converter'
+   */
+
+  const titleMatch =
+    cleanSource.match(
+      /title\s*=\s*["']([^"']+)["']/
+    );
+
+
+  if (titleMatch) {
+
+    title =
+      titleMatch[1].trim();
+
+  }
+
+
+  /*
+   * Kalau tidak ditemukan,
+   * gunakan nama file.
+   */
+
+  if (!title) {
+
+    title =
       filename
         .replace(/[-_]+/g, " ")
-        .replace(/([a-z])([A-Z])/g, "$1 $2")
-        .replace(/\b\w/g, (char) =>
+        .replace(/\b\w/g, char =>
           char.toUpperCase()
         );
 
+  }
 
-    /*
-     * Category berdasarkan folder pertama
-     *
-     * web/cssminify
-     * ↓
-     * Web
-     */
 
-    const category =
-      slug
-        .split("/")[0]
-        ?.replace(/[-_]+/g, " ")
-        .replace(/\b\w/g, (char) =>
-          char.toUpperCase()
-        ) ||
-      "Tools";
+  /* =======================================================
+     DESCRIPTION
+  ======================================================= */
 
+  let description = "";
 
-    return {
 
-      title,
+  const descriptionMatch =
+    cleanSource.match(
+      /description\s*=\s*["']([^"']+)["']/
+    );
 
-      description:
-        `${title} online untuk membantu kebutuhan ${category.toLowerCase()}.`,
 
-      href,
+  if (descriptionMatch) {
 
-      category,
-
-      keywords:
-        `${title} ${slug.replace(/\//g, " ")}`
-
-    };
-
-  })
-
-  /*
-   * Jangan masukkan halaman index tools
-   */
-
-  .filter(
-    (tool) =>
-      tool.href !== "/tools/index/"
-  )
-
-  /*
-   * Urutkan berdasarkan nama
-   */
-
-  .sort(
-    (a, b) =>
-      a.title.localeCompare(
-        b.title,
-        "id"
-      )
-  );
-
----
-
-<MainLayout
-  title="Search - AI Mr Ferdy"
-  description="Cari artikel, tools, dan produk AI Mr Ferdy."
-  canonical="/search/"
->
-
-  <main class="search-page">
-
-    <!-- =====================================================
-         HEADER
-    ====================================================== -->
-
-    <header class="search-header">
-
-      <span class="search-label">
-        SEARCH
-      </span>
-
-      <h1>
-        Search AI Mr Ferdy
-      </h1>
-
-      <p>
-        Cari artikel, tools, atau produk dengan cepat.
-      </p>
-
-    </header>
-
-
-    <!-- =====================================================
-         SEARCH FORM
-    ====================================================== -->
-
-    <form
-      id="searchForm"
-      class="search-form"
-    >
-
-      <div class="search-input-wrap">
-
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-
-          <circle
-            cx="11"
-            cy="11"
-            r="7"
-          />
-
-          <path
-            d="m20 20-4-4"
-          />
-
-        </svg>
-
-
-        <input
-          id="searchInput"
-          type="search"
-          placeholder="Cari artikel, tools, atau produk..."
-          autocomplete="off"
-        />
-
-      </div>
-
-
-      <select
-        id="typeFilter"
-        aria-label="Filter hasil"
-      >
-
-        <option value="all">
-          Semua
-        </option>
-
-        <option value="blog">
-          Blog
-        </option>
-
-        <option value="tool">
-          Tools
-        </option>
-
-        <option value="product">
-          Product
-        </option>
-
-      </select>
-
-
-      <button
-        type="submit"
-        class="search-btn"
-      >
-
-        Search
-
-      </button>
-
-    </form>
-
-
-    <!-- =====================================================
-         RESULT INFO
-    ====================================================== -->
-
-    <div
-      class="result-info"
-      id="resultInfo"
-    >
-      Menampilkan semua hasil.
-    </div>
-
-
-    <!-- =====================================================
-         EMPTY STATE
-    ====================================================== -->
-
-    <div
-      id="emptyState"
-      class="empty-state"
-    >
-
-      <div class="empty-icon">
-
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-
-          <circle
-            cx="11"
-            cy="11"
-            r="7"
-          />
-
-          <path
-            d="m20 20-4-4"
-          />
-
-        </svg>
-
-      </div>
-
-
-      <h2>
-        Cari sesuatu
-      </h2>
-
-
-      <p>
-        Masukkan kata kunci untuk mencari artikel,
-        tools, atau produk.
-      </p>
-
-    </div>
-
-
-    <!-- =====================================================
-         RESULTS
-    ====================================================== -->
-
-    <div
-      id="results"
-      class="results"
-    >
-
-      <!-- ===================================================
-           BLOG
-      ==================================================== -->
-
-      {
-        posts.map((post) => (
-
-          <a
-            class="item"
-            data-type="blog"
-            data-search={`
-              ${post.data.title}
-              ${post.data.description}
-              blog
-              artikel
-            `}
-            href={`/blog/${post.slug}/`}
-          >
-
-            <span class="badge">
-              Blog
-            </span>
-
-            <h2>
-              {post.data.title}
-            </h2>
-
-            <p>
-              {post.data.description}
-            </p>
-
-          </a>
-
-        ))
-      }
-
-
-      <!-- ===================================================
-           TOOLS
-      ==================================================== -->
-
-      {
-        tools.map((tool) => (
-
-          <a
-            class="item"
-            data-type="tool"
-            data-search={`
-              ${tool.title}
-              ${tool.description}
-              ${tool.keywords}
-              ${tool.category}
-              tool
-              tools
-            `}
-            href={tool.href}
-          >
-
-            <span class="badge">
-              {tool.category}
-            </span>
-
-            <h2>
-              {tool.title}
-            </h2>
-
-            <p>
-              {tool.description}
-            </p>
-
-          </a>
-
-        ))
-      }
-
-
-      <!-- ===================================================
-           PRODUCTS
-      ==================================================== -->
-
-      {
-        products.map((product) => (
-
-          <a
-            class="item"
-            data-type="product"
-            data-search={`
-              ${product.data.title}
-              ${product.data.description}
-              product
-              produk
-            `}
-            href={`/product/${product.slug}/`}
-          >
-
-            <span class="badge">
-              Product
-            </span>
-
-            <h2>
-              {product.data.title}
-            </h2>
-
-            <p>
-              {product.data.description}
-            </p>
-
-          </a>
-
-        ))
-      }
-
-    </div>
-
-  </main>
-
-</MainLayout>
-
-
-<script is:inline>
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
-
-const form =
-  document.getElementById(
-    "searchForm"
-  );
-
-const input =
-  document.getElementById(
-    "searchInput"
-  );
-
-const filter =
-  document.getElementById(
-    "typeFilter"
-  );
-
-const items =
-  document.querySelectorAll(
-    ".item"
-  );
-
-const emptyState =
-  document.getElementById(
-    "emptyState"
-  );
-
-const results =
-  document.getElementById(
-    "results"
-  );
-
-const resultInfo =
-  document.getElementById(
-    "resultInfo"
-  );
-
-
-/* =========================================================
-   INITIAL
-========================================================= */
-
-items.forEach(
-  (item) => {
-
-    item.style.display =
-      "none";
+    description =
+      descriptionMatch[1].trim();
 
   }
-);
 
 
-/* =========================================================
-   URL QUERY
-========================================================= */
+  /*
+   * Fallback description
+   */
 
-const params =
-  new URLSearchParams(
-    window.location.search
-  );
+  if (!description) {
 
+    description =
+      `Online tool ${title} untuk membantu kebutuhan Anda.`;
 
-const initialQuery =
-  params.get("q") || "";
+  }
 
 
-const initialType =
-  params.get("type") || "all";
+  /* =======================================================
+     CATEGORY
+  ======================================================= */
+
+  const category =
+    parts.length > 1
+      ? parts[0]
+      : "Tools";
 
 
-input.value =
-  initialQuery;
+  const categoryTitle =
+    category
+      .replace(/[-_]+/g, " ")
+      .replace(/\b\w/g, char =>
+        char.toUpperCase()
+      );
 
 
-if (
-  [
-    "all",
-    "blog",
-    "tool",
-    "product"
-  ].includes(initialType)
-) {
+  /* =======================================================
+     SEARCH TEXT
+     
+     SELURUH SOURCE ASTRO ikut dimasukkan.
+     
+     Jadi kata "Audio" tetap ditemukan walaupun:
+     - title tidak mengandung Audio
+     - description tidak mengandung Audio
+     - Audio hanya ada di isi halaman
+  ======================================================= */
 
-  filter.value =
-    initialType;
-
-}
-
-
-/* =========================================================
-   SEARCH
-========================================================= */
-
-function runSearch() {
-
-  const keyword =
-    input.value
-      .trim()
+  const searchText =
+    [
+      title,
+      description,
+      categoryTitle,
+      relativePath,
+      cleanSource
+    ]
+      .join(" ")
       .toLowerCase();
 
 
-  const selectedType =
-    filter.value;
+  return {
+
+    title,
+
+    description,
+
+    href,
+
+    category:
+      categoryTitle,
+
+    searchText
+
+  };
+
+}
 
 
-  let found =
-    0;
+/* =========================================================
+   BUILD TOOL INDEX
+========================================================= */
 
+const tools =
+  Object.entries(toolFiles)
 
-  /* ============================================
-     EMPTY KEYWORD
-  ============================================ */
+    .map(
+      ([path, source]) =>
+        parseTool(path, source)
+    )
 
-  if (!keyword) {
+    .filter(
+      (tool) =>
+        tool.href !== "/tools/index/"
+    )
 
-    items.forEach(
-      (item) => {
-
-        item.style.display =
-          "none";
-
-      }
-    );
-
-
-    emptyState.style.display =
-      "block";
-
-
-    resultInfo.textContent =
-      "Menampilkan semua hasil.";
-
-
-    return;
-
-  }
-
-
-  /* ============================================
-     SEARCH ITEMS
-  ============================================ */
-
-  items.forEach(
-    (item) => {
-
-      const searchText =
-        (
-          item.dataset.search ||
-          item.innerText ||
-          ""
+    .sort(
+      (a, b) =>
+        a.title.localeCompare(
+          b.title,
+          "id"
         )
-          .toLowerCase();
-
-
-      const itemType =
-        item.dataset.type;
-
-
-      const keywordMatch =
-        searchText.includes(
-          keyword
-        );
-
-
-      const typeMatch =
-        selectedType === "all" ||
-        itemType === selectedType;
-
-
-      const show =
-        keywordMatch &&
-        typeMatch;
-
-
-      item.style.display =
-        show
-          ? "block"
-          : "none";
-
-
-      if (show) {
-
-        found++;
-
-      }
-
-    }
-  );
-
-
-  /* ============================================
-     RESULT INFO
-  ============================================ */
-
-  resultInfo.textContent =
-    found === 0
-      ? "Tidak ada hasil ditemukan."
-      : `${found} hasil ditemukan.`;
-
-
-  /* ============================================
-     EMPTY STATE
-  ============================================ */
-
-  emptyState.style.display =
-    found === 0
-      ? "block"
-      : "none";
-
-
-  if (found === 0) {
-
-    emptyState.innerHTML = `
-
-      <div class="empty-icon">
-
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-
-          <circle
-            cx="11"
-            cy="11"
-            r="7"
-          />
-
-          <path
-            d="m20 20-4-4"
-          />
-
-        </svg>
-
-      </div>
-
-      <h2>
-        Tidak ada hasil
-      </h2>
-
-      <p>
-        Coba gunakan kata kunci lain
-        atau ubah kategori pencarian.
-      </p>
-
-    `;
-
-  }
-
-}
-
-
-/* =========================================================
-   SUBMIT
-========================================================= */
-
-form.addEventListener(
-  "submit",
-  (event) => {
-
-    event.preventDefault();
-
-
-    const keyword =
-      input.value.trim();
-
-
-    const selectedType =
-      filter.value;
-
-
-    const params =
-      new URLSearchParams();
-
-
-    if (keyword) {
-
-      params.set(
-        "q",
-        keyword
-      );
-
-    }
-
-
-    if (
-      selectedType &&
-      selectedType !== "all"
-    ) {
-
-      params.set(
-        "type",
-        selectedType
-      );
-
-    }
-
-
-    const queryString =
-      params.toString();
-
-
-    const newUrl =
-      queryString
-        ? `${window.location.pathname}?${queryString}`
-        : window.location.pathname;
-
-
-    history.replaceState(
-      {},
-      "",
-      newUrl
     );
-
-
-    runSearch();
-
-  }
-);
-
-
-/* =========================================================
-   FILTER CHANGE
-========================================================= */
-
-filter.addEventListener(
-  "change",
-  () => {
-
-    runSearch();
-
-  }
-);
-
-
-/* =========================================================
-   INITIAL SEARCH
-========================================================= */
-
-if (
-  initialQuery.trim()
-) {
-
-  runSearch();
-
-}
-
-</script>
-
-
-<style is:global>
-
-/* =========================================================
-   PAGE
-========================================================= */
-
-.search-page{
-
-  width:
-    min(
-      100% - 40px,
-      1000px
-    );
-
-  margin:
-    0 auto;
-
-  padding:
-    65px 0 90px;
-
-  color:
-    var(--text);
-
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.search-header{
-
-  margin-bottom:
-    30px;
-
-}
-
-
-.search-label{
-
-  display:
-    inline-block;
-
-  margin-bottom:
-    8px;
-
-  color:
-    var(--primary);
-
-  font-size:
-    10px;
-
-  font-weight:
-    800;
-
-  letter-spacing:
-    1.6px;
-
-}
-
-
-.search-header h1{
-
-  margin:
-    0;
-
-  font-size:
-    clamp(
-      30px,
-      5vw,
-      42px
-    );
-
-  line-height:
-    1.15;
-
-  letter-spacing:
-    -1px;
-
-}
-
-
-.search-header p{
-
-  margin:
-    10px 0 0;
-
-  color:
-    var(--text-secondary);
-
-  font-size:
-    14px;
-
-}
-
-
-/* =========================================================
-   FORM
-========================================================= */
-
-.search-form{
-
-  display:
-    grid;
-
-  grid-template-columns:
-    minmax(0, 1fr)
-    150px
-    110px;
-
-  gap:
-    10px;
-
-  margin-bottom:
-    18px;
-
-}
-
-
-.search-input-wrap{
-
-  position:
-    relative;
-
-}
-
-
-.search-input-wrap svg{
-
-  position:
-    absolute;
-
-  top:
-    50%;
-
-  left:
-    14px;
-
-  width:
-    18px;
-
-  height:
-    18px;
-
-  transform:
-    translateY(-50%);
-
-  color:
-    var(--text-secondary);
-
-  pointer-events:
-    none;
-
-}
-
-
-#searchInput,
-#typeFilter{
-
-  width:
-    100%;
-
-  height:
-    48px;
-
-  box-sizing:
-    border-box;
-
-  border:
-    1px solid var(--border);
-
-  border-radius:
-    10px;
-
-  outline:
-    none;
-
-  background:
-    var(--surface);
-
-  color:
-    var(--text);
-
-  font-family:
-    inherit;
-
-  font-size:
-    13px;
-
-}
-
-
-#searchInput{
-
-  padding:
-    0 14px 0 43px;
-
-}
-
-
-#typeFilter{
-
-  padding:
-    0 12px;
-
-}
-
-
-#searchInput:focus,
-#typeFilter:focus{
-
-  border-color:
-    var(--primary);
-
-  box-shadow:
-    0 0 0 3px
-    color-mix(
-      in srgb,
-      var(--primary) 10%,
-      transparent
-    );
-
-}
-
-
-.search-btn{
-
-  height:
-    48px;
-
-  border:
-    0;
-
-  border-radius:
-    10px;
-
-  background:
-    var(--bgbtn);
-
-  color:
-    var(--textbtn);
-
-  font-family:
-    inherit;
-
-  font-size:
-    12px;
-
-  font-weight:
-    800;
-
-  cursor:
-    pointer;
-
-  transition:
-    transform .2s,
-    filter .2s;
-
-}
-
-
-.search-btn:hover{
-
-  transform:
-    translateY(-1px);
-
-  filter:
-    brightness(1.08);
-
-}
-
-
-/* =========================================================
-   RESULT INFO
-========================================================= */
-
-.result-info{
-
-  margin-bottom:
-    18px;
-
-  color:
-    var(--text-secondary);
-
-  font-size:
-    12px;
-
-}
-
-
-/* =========================================================
-   RESULTS
-========================================================= */
-
-.results{
-
-  display:
-    grid;
-
-  gap:
-    12px;
-
-}
-
-
-.item{
-
-  display:
-    block;
-
-  padding:
-    18px;
-
-  border:
-    1px solid var(--border);
-
-  border-radius:
-    12px;
-
-  background:
-    var(--surface);
-
-  color:
-    var(--text);
-
-  text-decoration:
-    none;
-
-  box-shadow:
-    var(--shadow);
-
-  transition:
-    transform .2s,
-    border-color .2s;
-
-}
-
-
-.item:hover{
-
-  transform:
-    translateY(-2px);
-
-  border-color:
-    color-mix(
-      in srgb,
-      var(--primary) 45%,
-      var(--border)
-    );
-
-}
-
-
-.item h2{
-
-  margin:
-    0 0 7px;
-
-  font-size:
-    16px;
-
-  line-height:
-    1.4;
-
-}
-
-
-.item p{
-
-  margin:
-    0;
-
-  color:
-    var(--text-secondary);
-
-  font-size:
-    12px;
-
-  line-height:
-    1.65;
-
-}
-
-
-/* =========================================================
-   BADGE
-========================================================= */
-
-.badge{
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  min-height:
-    22px;
-
-  margin-bottom:
-    9px;
-
-  padding:
-    0 9px;
-
-  border:
-    1px solid
-    color-mix(
-      in srgb,
-      var(--primary) 20%,
-      var(--border)
-    );
-
-  border-radius:
-    999px;
-
-  background:
-    color-mix(
-      in srgb,
-      var(--primary) 7%,
-      transparent
-    );
-
-  color:
-    var(--primary);
-
-  font-size:
-    9px;
-
-  font-weight:
-    800;
-
-  letter-spacing:
-    .5px;
-
-  text-transform:
-    uppercase;
-
-}
-
-
-/* =========================================================
-   EMPTY
-========================================================= */
-
-.empty-state{
-
-  padding:
-    55px 20px;
-
-  text-align:
-    center;
-
-  border:
-    1px dashed var(--border);
-
-  border-radius:
-    14px;
-
-  background:
-    var(--surface);
-
-}
-
-
-.empty-icon{
-
-  width:
-    52px;
-
-  height:
-    52px;
-
-  margin:
-    0 auto 15px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  border-radius:
-    50%;
-
-  background:
-    var(--surface-hover);
-
-  color:
-    var(--text-secondary);
-
-}
-
-
-.empty-icon svg{
-
-  width:
-    24px;
-
-  height:
-    24px;
-
-}
-
-
-.empty-state h2{
-
-  margin:
-    0;
-
-  font-size:
-    17px;
-
-}
-
-
-.empty-state p{
-
-  max-width:
-    430px;
-
-  margin:
-    8px auto 0;
-
-  color:
-    var(--text-secondary);
-
-  font-size:
-    12px;
-
-  line-height:
-    1.7;
-
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media(max-width:700px){
-
-  .search-page{
-
-    width:
-      calc(100% - 24px);
-
-    padding:
-      35px 0 60px;
-
-  }
-
-
-  .search-form{
-
-    grid-template-columns:
-      1fr;
-
-  }
-
-
-  .search-btn{
-
-    width:
-      100%;
-
-  }
-
-}
-
-</style>
+---
