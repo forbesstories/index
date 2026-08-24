@@ -17,6 +17,7 @@ import MainLayout from "../layouts/MainLayout.astro";
     <div class="cart-header">
 
       <div>
+
         <span class="cart-label">
           SHOPPING CART
         </span>
@@ -28,7 +29,9 @@ import MainLayout from "../layouts/MainLayout.astro";
         <p>
           Review produk Anda sebelum melanjutkan ke checkout.
         </p>
+
       </div>
+
 
       <a
         href="/product/"
@@ -53,6 +56,7 @@ import MainLayout from "../layouts/MainLayout.astro";
 
         <div id="cartItems"></div>
 
+
         <!-- EMPTY -->
 
         <div
@@ -69,20 +73,37 @@ import MainLayout from "../layouts/MainLayout.astro";
               stroke="currentColor"
               stroke-width="1.7"
             >
-              <circle cx="9" cy="20" r="1"/>
-              <circle cx="18" cy="20" r="1"/>
-              <path d="M3 4h2l2.4 11.5a2 2 0 0 0 2 1.5h7.7a2 2 0 0 0 2-1.5L21 8H6"/>
+
+              <circle
+                cx="9"
+                cy="20"
+                r="1"
+              />
+
+              <circle
+                cx="18"
+                cy="20"
+                r="1"
+              />
+
+              <path
+                d="M3 4h2l2.4 11.5a2 2 0 0 0 2 1.5h7.7a2 2 0 0 0 2-1.5L21 8H6"
+              />
+
             </svg>
 
           </div>
+
 
           <h2>
             Your cart is empty
           </h2>
 
+
           <p>
             Belum ada produk yang ditambahkan ke keranjang.
           </p>
+
 
           <a
             href="/product/"
@@ -191,478 +212,815 @@ import MainLayout from "../layouts/MainLayout.astro";
 
 <script>
 
-const CART_KEY = 'ai-mr-ferdy-cart';
+  /*
+   * =====================================================
+   * CART STORAGE
+   * =====================================================
+   *
+   * Standar utama:
+   *
+   * localStorage["cart"]
+   *
+   * Legacy:
+   *
+   * localStorage["ai-mr-ferdy-cart"]
+   *
+   */
+
+  const CART_KEY = "cart";
+
+  const LEGACY_CART_KEY =
+    "ai-mr-ferdy-cart";
 
 
-const cartItems =
-  document.getElementById('cartItems');
+  /*
+   * =====================================================
+   * ELEMENTS
+   * =====================================================
+   */
 
-const cartEmpty =
-  document.getElementById('cartEmpty');
+  const cartItems =
+    document.getElementById("cartItems");
 
-const cartSummary =
-  document.getElementById('cartSummary');
+  const cartEmpty =
+    document.getElementById("cartEmpty");
 
-const summaryItems =
-  document.getElementById('summaryItems');
+  const cartSummary =
+    document.getElementById("cartSummary");
 
-const subtotalElement =
-  document.getElementById('subtotal');
+  const summaryItems =
+    document.getElementById("summaryItems");
 
-const totalElement =
-  document.getElementById('total');
+  const subtotalElement =
+    document.getElementById("subtotal");
 
-const checkoutButton =
-  document.getElementById('checkoutButton');
+  const totalElement =
+    document.getElementById("total");
+
+  const checkoutButton =
+    document.getElementById("checkoutButton");
 
 
-/* =========================================================
-   LOAD CART
-========================================================= */
+  /*
+   * =====================================================
+   * PARSE CART
+   * =====================================================
+   */
 
-function getCart(){
+  function parseCart(value) {
 
-  try{
+    try {
 
-    return JSON.parse(
-      localStorage.getItem(CART_KEY) || '[]'
-    );
+      const parsed =
+        JSON.parse(value || "[]");
 
-  }catch{
+      return Array.isArray(parsed)
+        ? parsed
+        : [];
+
+    } catch {
+
+      return [];
+
+    }
+
+  }
+
+
+  /*
+   * =====================================================
+   * LOAD CART
+   * =====================================================
+   */
+
+  function getCart() {
+
+    /*
+     * Prioritaskan cart baru.
+     */
+
+    const current =
+      parseCart(
+        localStorage.getItem(CART_KEY)
+      );
+
+
+    if (current.length) {
+
+      return current;
+
+    }
+
+
+    /*
+     * Kalau cart baru kosong,
+     * cek format lama.
+     */
+
+    const legacy =
+      parseCart(
+        localStorage.getItem(
+          LEGACY_CART_KEY
+        )
+      );
+
+
+    /*
+     * Migrasikan cart lama
+     * ke cart baru.
+     */
+
+    if (legacy.length) {
+
+      localStorage.setItem(
+        CART_KEY,
+        JSON.stringify(legacy)
+      );
+
+      return legacy;
+
+    }
+
 
     return [];
 
   }
 
-}
 
+  /*
+   * =====================================================
+   * SAVE CART
+   * =====================================================
+   */
 
-/* =========================================================
-   SAVE CART
-========================================================= */
+  function saveCart(cart) {
 
-function saveCart(cart){
-
-  localStorage.setItem(
-    CART_KEY,
-    JSON.stringify(cart)
-  );
-
-  window.dispatchEvent(
-    new Event('cartUpdated')
-  );
-
-}
-
-
-/* =========================================================
-   FORMAT PRICE
-========================================================= */
-
-function formatPrice(value){
-
-  if(typeof value === 'number'){
-
-    return new Intl.NumberFormat(
-      'id-ID',
-      {
-        style:'currency',
-        currency:'IDR',
-        maximumFractionDigits:0
-      }
-    ).format(value);
-
-  }
-
-
-  if(typeof value !== 'string'){
-    return 'Rp 0';
-  }
-
-
-  const number =
-    Number(
-      value
-        .replace(/[^\d]/g,'')
+    localStorage.setItem(
+      CART_KEY,
+      JSON.stringify(cart)
     );
 
 
-  if(!number){
-    return value || 'Rp 0';
+    /*
+     * Hapus storage lama supaya
+     * tidak terjadi konflik.
+     */
+
+    localStorage.removeItem(
+      LEGACY_CART_KEY
+    );
+
+
+    /*
+     * Beritahu Header.
+     */
+
+    window.dispatchEvent(
+      new Event("cartUpdated")
+    );
+
   }
 
 
-  return new Intl.NumberFormat(
-    'id-ID',
-    {
-      style:'currency',
-      currency:'IDR',
-      maximumFractionDigits:0
+  /*
+   * =====================================================
+   * PRICE TO NUMBER
+   * =====================================================
+   */
+
+  function getPrice(value) {
+
+    if (
+      typeof value === "number" &&
+      Number.isFinite(value)
+    ) {
+
+      return value;
+
     }
-  ).format(number);
-
-}
 
 
-/* =========================================================
-   GET NUMBER PRICE
-========================================================= */
+    if (
+      typeof value === "string"
+    ) {
 
-function getPrice(value){
+      /*
+       * Contoh:
+       *
+       * Rp 150.000
+       * 150.000
+       * Rp150000
+       */
 
-  if(typeof value === 'number'){
-    return value;
-  }
+      const cleaned =
+        value
+          .replace(/[^\d]/g, "");
 
-  if(typeof value !== 'string'){
+
+      return Number(cleaned) || 0;
+
+    }
+
+
     return 0;
-  }
-
-  return Number(
-    value.replace(/[^\d]/g,'')
-  ) || 0;
-
-}
-
-
-/* =========================================================
-   RENDER CART
-========================================================= */
-
-function renderCart(){
-
-  const cart = getCart();
-
-
-  cartItems.innerHTML = '';
-
-
-  /* EMPTY */
-
-  if(!cart.length){
-
-    cartEmpty.hidden = false;
-    cartSummary.hidden = true;
-
-    summaryItems.textContent = '0';
-    subtotalElement.textContent = 'Rp 0';
-    totalElement.textContent = 'Rp 0';
-
-    return;
 
   }
 
 
-  cartEmpty.hidden = true;
-  cartSummary.hidden = false;
+  /*
+   * =====================================================
+   * FORMAT PRICE
+   * =====================================================
+   */
+
+  function formatPrice(value) {
+
+    const number =
+      getPrice(value);
 
 
-  let totalQuantity = 0;
-  let subtotal = 0;
+    return new Intl.NumberFormat(
+      "id-ID",
+      {
+        style: "currency",
+        currency: "IDR",
+        maximumFractionDigits: 0
+      }
+    ).format(number);
+
+  }
 
 
-  cart.forEach(
-    (item,index) => {
+  /*
+   * =====================================================
+   * ESCAPE HTML
+   * =====================================================
+   */
 
-      const quantity =
-        Math.max(
-          1,
-          Number(item.quantity || 1)
-        );
+  function escapeHtml(value) {
 
+    return String(value ?? "")
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+      .replace(
+        /</g,
+        "&lt;"
+      )
+      .replace(
+        />/g,
+        "&gt;"
+      )
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+      .replace(
+        /'/g,
+        "&#039;"
+      );
 
-      const price =
-        getPrice(item.price);
-
-
-      const itemTotal =
-        price * quantity;
-
-
-      totalQuantity += quantity;
-      subtotal += itemTotal;
-
-
-      const article =
-        document.createElement('article');
-
-      article.className =
-        'cart-item';
-
-
-      article.innerHTML = `
-
-        <div class="cart-product-image">
-
-          <img
-            src="${escapeHtml(item.image || '/api/og/default.svg')}"
-            alt="${escapeHtml(item.title || 'Product')}"
-            loading="lazy"
-          >
-
-        </div>
+  }
 
 
-        <div class="cart-product-info">
+  /*
+   * =====================================================
+   * NORMALIZE CART
+   * =====================================================
+   */
 
-          <div class="cart-product-category">
+  function normalizeCart(cart) {
 
-            ${escapeHtml(item.category || 'Product')}
+    return cart
+      .map(item => {
 
-          </div>
+        const quantity =
+          Math.max(
+            1,
+            Number(
+              item.quantity || 1
+            )
+          );
 
 
-          <h2>
+        return {
 
-            <a
-              href="/product/${encodeURIComponent(item.slug)}/"
+          id:
+            item.id ||
+            item.slug ||
+            item.title ||
+            "",
+
+          slug:
+            item.slug ||
+            "",
+
+          title:
+            item.title ||
+            "Product",
+
+          category:
+            item.category ||
+            "Product",
+
+          price:
+            getPrice(item.price),
+
+          quantity,
+
+          image:
+            item.image ||
+            item.img ||
+            `/api/og/default.svg`
+
+        };
+
+      })
+      .filter(
+        item => item.id
+      );
+
+  }
+
+
+  /*
+   * =====================================================
+   * RENDER CART
+   * =====================================================
+   */
+
+  function renderCart() {
+
+    if (!cartItems) {
+      return;
+    }
+
+
+    let cart =
+      normalizeCart(
+        getCart()
+      );
+
+
+    /*
+     * Simpan kembali hasil
+     * normalisasi.
+     */
+
+    saveCart(cart);
+
+
+    cartItems.innerHTML = "";
+
+
+    /*
+     * =================================================
+     * EMPTY
+     * =================================================
+     */
+
+    if (!cart.length) {
+
+      cartEmpty.hidden = false;
+
+      cartSummary.hidden = true;
+
+
+      summaryItems.textContent =
+        "0";
+
+      subtotalElement.textContent =
+        "Rp 0";
+
+      totalElement.textContent =
+        "Rp 0";
+
+
+      return;
+
+    }
+
+
+    cartEmpty.hidden = true;
+
+    cartSummary.hidden = false;
+
+
+    let totalQuantity = 0;
+
+    let subtotal = 0;
+
+
+    /*
+     * =================================================
+     * ITEMS
+     * =================================================
+     */
+
+    cart.forEach(
+      (item, index) => {
+
+        const quantity =
+          Math.max(
+            1,
+            Number(
+              item.quantity || 1
+            )
+          );
+
+
+        const price =
+          getPrice(
+            item.price
+          );
+
+
+        const itemTotal =
+          price * quantity;
+
+
+        totalQuantity +=
+          quantity;
+
+
+        subtotal +=
+          itemTotal;
+
+
+        const article =
+          document.createElement(
+            "article"
+          );
+
+
+        article.className =
+          "cart-item";
+
+
+        article.innerHTML = `
+
+          <div class="cart-product-image">
+
+            <img
+              src="${escapeHtml(
+                item.image
+              )}"
+              alt="${escapeHtml(
+                item.title
+              )}"
+              loading="lazy"
             >
-              ${escapeHtml(item.title || 'Product')}
-
-            </a>
-
-          </h2>
-
-
-          <div class="cart-product-price">
-
-            ${formatPrice(item.price)}
 
           </div>
 
 
-          <div class="cart-item-bottom">
+          <div class="cart-product-info">
 
+            <div class="cart-product-category">
 
-            <div class="cart-quantity">
-
-              <button
-                type="button"
-                class="quantity-minus"
-                data-index="${index}"
-                aria-label="Decrease quantity"
-              >
-                −
-              </button>
-
-
-              <span>
-                ${quantity}
-              </span>
-
-
-              <button
-                type="button"
-                class="quantity-plus"
-                data-index="${index}"
-                aria-label="Increase quantity"
-              >
-                +
-              </button>
+              ${escapeHtml(
+                item.category
+              )}
 
             </div>
 
 
-            <button
-              type="button"
-              class="remove-item"
-              data-index="${index}"
-            >
-              Remove
-            </button>
+            <h2>
 
+              <a
+                href="/product/${encodeURIComponent(
+                  item.slug
+                )}/"
+              >
+
+                ${escapeHtml(
+                  item.title
+                )}
+
+              </a>
+
+            </h2>
+
+
+            <div class="cart-product-price">
+
+              ${formatPrice(
+                item.price
+              )}
+
+            </div>
+
+
+            <div class="cart-item-bottom">
+
+
+              <div class="cart-quantity">
+
+                <button
+                  type="button"
+                  class="quantity-minus"
+                  data-index="${index}"
+                  aria-label="Decrease quantity"
+                >
+                  −
+                </button>
+
+
+                <span>
+                  ${quantity}
+                </span>
+
+
+                <button
+                  type="button"
+                  class="quantity-plus"
+                  data-index="${index}"
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="remove-item"
+                data-index="${index}"
+              >
+                Remove
+              </button>
+
+
+            </div>
 
           </div>
 
-        </div>
+
+          <div class="cart-item-total">
+
+            ${formatPrice(
+              itemTotal
+            )}
+
+          </div>
+
+        `;
 
 
-        <div class="cart-item-total">
+        cartItems.appendChild(
+          article
+        );
 
-          ${formatPrice(itemTotal)}
-
-        </div>
-
-      `;
+      }
+    );
 
 
-      cartItems.appendChild(article);
+    /*
+     * =================================================
+     * SUMMARY
+     * =================================================
+     */
+
+    summaryItems.textContent =
+      totalQuantity;
+
+
+    subtotalElement.textContent =
+      formatPrice(
+        subtotal
+      );
+
+
+    totalElement.textContent =
+      formatPrice(
+        subtotal
+      );
+
+  }
+
+
+  /*
+   * =====================================================
+   * CART ACTION
+   * =====================================================
+   */
+
+  cartItems?.addEventListener(
+    "click",
+    event => {
+
+      const target =
+        event.target.closest(
+          "button"
+        );
+
+
+      if (!target) {
+        return;
+      }
+
+
+      const index =
+        Number(
+          target.dataset.index
+        );
+
+
+      if (
+        !Number.isInteger(index)
+      ) {
+
+        return;
+
+      }
+
+
+      const cart =
+        normalizeCart(
+          getCart()
+        );
+
+
+      if (!cart[index]) {
+        return;
+      }
+
+
+      /*
+       * =================================================
+       * MINUS
+       * =================================================
+       */
+
+      if (
+        target.classList.contains(
+          "quantity-minus"
+        )
+      ) {
+
+        cart[index].quantity =
+          Math.max(
+            1,
+            Number(
+              cart[index].quantity || 1
+            ) - 1
+          );
+
+
+        saveCart(cart);
+
+        renderCart();
+
+        return;
+
+      }
+
+
+      /*
+       * =================================================
+       * PLUS
+       * =================================================
+       */
+
+      if (
+        target.classList.contains(
+          "quantity-plus"
+        )
+      ) {
+
+        cart[index].quantity =
+          Number(
+            cart[index].quantity || 1
+          ) + 1;
+
+
+        saveCart(cart);
+
+        renderCart();
+
+        return;
+
+      }
+
+
+      /*
+       * =================================================
+       * REMOVE
+       * =================================================
+       */
+
+      if (
+        target.classList.contains(
+          "remove-item"
+        )
+      ) {
+
+        cart.splice(
+          index,
+          1
+        );
+
+
+        saveCart(cart);
+
+        renderCart();
+
+      }
 
     }
   );
 
 
-  summaryItems.textContent =
-    totalQuantity;
+  /*
+   * =====================================================
+   * CHECKOUT
+   * =====================================================
+   */
 
+  checkoutButton?.addEventListener(
+    "click",
+    () => {
 
-  subtotalElement.textContent =
-    formatPrice(subtotal);
-
-
-  totalElement.textContent =
-    formatPrice(subtotal);
-
-}
-
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHtml(value){
-
-  return String(value)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;')
-    .replace(/'/g,'&#039;');
-
-}
-
-
-/* =========================================================
-   CART ACTION
-========================================================= */
-
-cartItems.addEventListener(
-  'click',
-  (event) => {
-
-    const target =
-      event.target.closest('button');
-
-    if(!target) return;
-
-
-    const index =
-      Number(target.dataset.index);
-
-
-    const cart =
-      getCart();
-
-
-    if(!cart[index]) return;
-
-
-    /* MINUS */
-
-    if(
-      target.classList.contains(
-        'quantity-minus'
-      )
-    ){
-
-      cart[index].quantity =
-        Math.max(
-          1,
-          Number(cart[index].quantity || 1) - 1
+      const cart =
+        normalizeCart(
+          getCart()
         );
 
-      saveCart(cart);
-      renderCart();
 
-      return;
+      if (!cart.length) {
 
-    }
+        return;
+
+      }
 
 
-    /* PLUS */
-
-    if(
-      target.classList.contains(
-        'quantity-plus'
-      )
-    ){
-
-      cart[index].quantity =
-        Number(cart[index].quantity || 1) + 1;
+      /*
+       * Pastikan data terbaru
+       * sudah tersimpan.
+       */
 
       saveCart(cart);
+
+
+      /*
+       * Pergi ke checkout.
+       */
+
+      window.location.href =
+        "/checkout/";
+
+    }
+  );
+
+
+  /*
+   * =====================================================
+   * INITIAL
+   * =====================================================
+   */
+
+  renderCart();
+
+
+  /*
+   * =====================================================
+   * INTERNAL UPDATE
+   * =====================================================
+   */
+
+  window.addEventListener(
+    "cartUpdated",
+    () => {
+
       renderCart();
 
-      return;
+    }
+  );
+
+
+  /*
+   * =====================================================
+   * OTHER TAB
+   * =====================================================
+   */
+
+  window.addEventListener(
+    "storage",
+    event => {
+
+      if (
+        event.key === CART_KEY ||
+        event.key === LEGACY_CART_KEY
+      ) {
+
+        renderCart();
+
+      }
 
     }
-
-
-    /* REMOVE */
-
-    if(
-      target.classList.contains(
-        'remove-item'
-      )
-    ){
-
-      cart.splice(index,1);
-
-      saveCart(cart);
-      renderCart();
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   CHECKOUT
-========================================================= */
-
-checkoutButton?.addEventListener(
-  'click',
-  () => {
-
-    const cart =
-      getCart();
-
-
-    if(!cart.length){
-      return;
-    }
-
-
-    /*
-     * Untuk sekarang diarahkan
-     * ke halaman checkout.
-     */
-
-    window.location.href =
-      '/checkout/';
-
-  }
-);
-
-
-/* =========================================================
-   INIT
-========================================================= */
-
-renderCart();
-
-
-/* =========================================================
-   UPDATE FROM OTHER COMPONENT
-========================================================= */
-
-window.addEventListener(
-  'cartUpdated',
-  renderCart
-);
-
-
-window.addEventListener(
-  'storage',
-  (event) => {
-
-    if(event.key === CART_KEY){
-      renderCart();
-    }
-
-  }
-);
+  );
 
 </script>
 
@@ -784,14 +1142,14 @@ window.addEventListener(
 }
 
 
-/* =========================================================
-   ITEMS
-========================================================= */
-
 .cart-items{
   min-width:0;
 }
 
+
+/* =========================================================
+   CART ITEM
+========================================================= */
 
 .cart-item{
   position:relative;
@@ -839,6 +1197,7 @@ window.addEventListener(
   overflow:hidden;
 
   display:flex;
+
   align-items:center;
   justify-content:center;
 
@@ -989,6 +1348,10 @@ window.addEventListener(
   font-weight:700;
 }
 
+
+/* =========================================================
+   REMOVE
+========================================================= */
 
 .remove-item{
   border:0;
@@ -1197,7 +1560,7 @@ window.addEventListener(
 
 
 /* =========================================================
-   EMPTY CART
+   EMPTY
 ========================================================= */
 
 .cart-empty{
@@ -1222,6 +1585,7 @@ window.addEventListener(
   margin:0 auto 18px;
 
   display:flex;
+
   align-items:center;
   justify-content:center;
 
@@ -1289,6 +1653,7 @@ window.addEventListener(
   .cart-layout{
     grid-template-columns:1fr;
   }
+
 
   .cart-summary{
     position:static;
@@ -1359,7 +1724,9 @@ window.addEventListener(
 @media(max-width:420px){
 
   .cart-item{
-    grid-template-columns:75px 1fr;
+    grid-template-columns:
+      75px
+      1fr;
   }
 
 
