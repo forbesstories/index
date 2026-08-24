@@ -14,59 +14,11 @@ const {
   canonical,
   html = "",
   articleSchema,
-  breadcrumbs,
+  breadcrumbs = null,
   amp,
   slug,
   isHome = false
 } = Astro.props;
-
-const pathname = Astro.url.pathname;
-
-
-/* =====================================
-   AUTO BREADCRUMBS
-===================================== */
-
-const autoBreadcrumbs =
-  breadcrumbs ??
-  (pathname.startsWith("/tools")
-    ? (() => {
-
-        const parts = pathname
-          .split("/")
-          .filter(Boolean);
-
-        const items = [
-          {
-            name: "Home",
-            url: "/"
-          }
-        ];
-
-        let path = "";
-
-        for (const part of parts) {
-
-          path += `/${part}`;
-
-          items.push({
-            name: part
-              .replace(/-/g, " ")
-              .replace(/\b\w/g, (c) => c.toUpperCase()),
-            url: path
-          });
-
-        }
-
-        return items;
-
-      })()
-    : breadcrumbs);
-
-
-/* =====================================
-   FAQ SCHEMA
-===================================== */
 
 const faqSchema = generateFaqSchema(html);
 ---
@@ -82,13 +34,12 @@ const faqSchema = generateFaqSchema(html);
     description={description}
     canonical={canonical}
     articleSchema={articleSchema}
-    breadcrumbs={autoBreadcrumbs}
+    breadcrumbs={breadcrumbs}
     faqSchema={faqSchema}
     amp={amp}
     slug={slug}
     isHome={isHome}
   />
-
 
   {
     isHome && (
@@ -99,10 +50,7 @@ const faqSchema = generateFaqSchema(html);
     )
   }
 
-
-  <!-- =================================
-       THEME INITIALIZATION
-  ================================== -->
+  <!-- THEME INITIALIZATION -->
 
   <script is:inline>
     (() => {
@@ -125,73 +73,122 @@ const faqSchema = generateFaqSchema(html);
 
 </head>
 
-
 <body>
 
   <Header />
 
-
   <main>
-
-    {
-      pathname.startsWith("/tools") &&
-      autoBreadcrumbs &&
-      autoBreadcrumbs.length > 1 && (
-
-        <nav
-          class="breadcrumb"
-          aria-label="Breadcrumb"
-        >
-
-          {
-            autoBreadcrumbs.map((item, index) => (
-              <>
-
-                {index > 0 && (
-                  <span class="separator">
-                    /
-                  </span>
-                )}
-
-                {
-                  index === autoBreadcrumbs.length - 1 ? (
-
-                    <span>
-                      {item.name}
-                    </span>
-
-                  ) : (
-
-                    <a href={item.url}>
-                      {item.name}
-                    </a>
-
-                  )
-                }
-
-              </>
-            ))
-          }
-
-        </nav>
-
-      )
-    }
-
-
     <slot />
-
   </main>
-
 
   <Footer />
 
-<script is:inline>
-const html=document.documentElement;const themeToggle=document.getElementById("themeToggle");const mediaQuery=window.matchMedia("(prefers-color-scheme: dark)");themeToggle.onclick=()=>{const nextTheme=html.dataset.theme==="dark"?"light":"dark";html.dataset.theme=nextTheme;localStorage.setItem("theme",nextTheme)};mediaQuery.addEventListener("change",event=>{const savedTheme=localStorage.getItem("theme");if(!savedTheme){html.dataset.theme=event.matches?"dark":"light"}});
+  <script is:inline>
+    const html = document.documentElement;
 
-const menu=document.getElementById("menuToggle");const nav=document.getElementById("nav");menu.onclick=()=>{nav.classList.toggle("active");menu.textContent=nav.classList.contains("active")?"✕":"☰"};document.querySelectorAll(".nav a").forEach(link=>{link.onclick=()=>{nav.classList.remove("active");menu.textContent="☰"}})
-document.querySelectorAll(".drop-btn").forEach(btn=>{btn.onclick=e=>{if(window.innerWidth>768)return;e.preventDefault();btn.parentElement.classList.toggle("open")}})
-</script>
+    const themeToggle =
+      document.getElementById("themeToggle");
+
+    const mediaQuery =
+      window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      );
+
+    if (themeToggle) {
+      themeToggle.onclick = () => {
+
+        const nextTheme =
+          html.dataset.theme === "dark"
+            ? "light"
+            : "dark";
+
+        html.dataset.theme = nextTheme;
+
+        localStorage.setItem(
+          "theme",
+          nextTheme
+        );
+
+      };
+    }
+
+    mediaQuery.addEventListener(
+      "change",
+      event => {
+
+        const savedTheme =
+          localStorage.getItem("theme");
+
+        if (!savedTheme) {
+
+          html.dataset.theme =
+            event.matches
+              ? "dark"
+              : "light";
+
+        }
+
+      }
+    );
+
+
+    const menu =
+      document.getElementById("menuToggle");
+
+    const nav =
+      document.getElementById("nav");
+
+    if (menu && nav) {
+
+      menu.onclick = () => {
+
+        nav.classList.toggle("active");
+
+        menu.textContent =
+          nav.classList.contains("active")
+            ? "✕"
+            : "☰";
+
+      };
+
+      document
+        .querySelectorAll(".nav a")
+        .forEach(link => {
+
+          link.onclick = () => {
+
+            nav.classList.remove("active");
+
+            menu.textContent = "☰";
+
+          };
+
+        });
+
+    }
+
+
+    document
+      .querySelectorAll(".drop-btn")
+      .forEach(btn => {
+
+        btn.onclick = e => {
+
+          if (window.innerWidth > 768) {
+            return;
+          }
+
+          e.preventDefault();
+
+          btn.parentElement.classList.toggle(
+            "open"
+          );
+
+        };
+
+      });
+  </script>
+
 </body>
 
 </html>
