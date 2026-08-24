@@ -2,369 +2,1384 @@
 import MainLayout from "../layouts/MainLayout.astro";
 import { getCollection } from "astro:content";
 
+/* =========================================================
+   CONTENT
+========================================================= */
+
 const posts = await getCollection("blog");
-const tools = await getCollection("tools");
 const products = await getCollection("product");
+
+
+/* =========================================================
+   TOOLS
+   Ambil semua file .astro dari:
+   src/pages/tools/**/*.astro
+========================================================= */
+
+const toolPages = import.meta.glob(
+  "./tools/**/*.astro",
+  {
+    eager: true
+  }
+);
+
+
+/* =========================================================
+   TOOL METADATA
+========================================================= */
+
+const tools = Object.keys(toolPages)
+  .map((path) => {
+
+    /*
+     * Contoh:
+     *
+     * ./tools/web/cssminify.astro
+     *
+     * menjadi:
+     *
+     * /tools/web/cssminify/
+     */
+
+    const href =
+      path
+        .replace(/^\.\/tools/, "/tools")
+        .replace(/\.astro$/, "/");
+
+
+    /*
+     * Contoh:
+     *
+     * web/cssminify
+     */
+
+    const slug =
+      path
+        .replace(/^\.\/tools\//, "")
+        .replace(/\.astro$/, "");
+
+
+    /*
+     * Ambil nama file
+     */
+
+    const filename =
+      slug.split("/").pop() || "";
+
+
+    /*
+     * Ubah:
+     *
+     * cssminify
+     *
+     * menjadi:
+     *
+     * Cssminify
+     *
+     * dan:
+     *
+     * css-minify
+     *
+     * menjadi:
+     *
+     * Css Minify
+     */
+
+    const title =
+      filename
+        .replace(/[-_]+/g, " ")
+        .replace(/([a-z])([A-Z])/g, "$1 $2")
+        .replace(/\b\w/g, (char) =>
+          char.toUpperCase()
+        );
+
+
+    /*
+     * Category berdasarkan folder pertama
+     *
+     * web/cssminify
+     * ↓
+     * Web
+     */
+
+    const category =
+      slug
+        .split("/")[0]
+        ?.replace(/[-_]+/g, " ")
+        .replace(/\b\w/g, (char) =>
+          char.toUpperCase()
+        ) ||
+      "Tools";
+
+
+    return {
+
+      title,
+
+      description:
+        `${title} online untuk membantu kebutuhan ${category.toLowerCase()}.`,
+
+      href,
+
+      category,
+
+      keywords:
+        `${title} ${slug.replace(/\//g, " ")}`
+
+    };
+
+  })
+
+  /*
+   * Jangan masukkan halaman index tools
+   */
+
+  .filter(
+    (tool) =>
+      tool.href !== "/tools/index/"
+  )
+
+  /*
+   * Urutkan berdasarkan nama
+   */
+
+  .sort(
+    (a, b) =>
+      a.title.localeCompare(
+        b.title,
+        "id"
+      )
+  );
+
 ---
 
-<MainLayout title="Search - AI Mr Ferdy">
-
-<div class="search-page">
-
-<h1>Search AI Mr Ferdy</h1>
-
-<form id="searchForm">
-
-<input
-  id="searchInput"
-  placeholder="Cari artikel, tools, atau produk..."
-/>
-
-<select id="typeFilter">
-
-  <option value="all">
-    Semua
-  </option>
-
-  <option value="blog">
-    Blog
-  </option>
-
-  <option value="tool">
-    Tools
-  </option>
-
-  <option value="product">
-    Product
-  </option>
-
-</select>
-
-<button
-  type="submit"
-  class="search-btn"
+<MainLayout
+  title="Search - AI Mr Ferdy"
+  description="Cari artikel, tools, dan produk AI Mr Ferdy."
+  canonical="/search/"
 >
-  Search
-</button>
 
-</form>
+  <main class="search-page">
 
-<p id="emptyState">
-  Ketik kata kunci lalu klik Search.
-</p>
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
 
-<div id="results">
+    <header class="search-header">
 
-  {posts.map((post) => (
-
-    <a
-      class="item"
-      data-type="blog"
-      href={`/blog/${post.slug}/`}
-    >
-
-      <span class="badge">
-        Blog
+      <span class="search-label">
+        SEARCH
       </span>
 
-      <h3>
-        {post.data.title}
-      </h3>
+      <h1>
+        Search AI Mr Ferdy
+      </h1>
 
       <p>
-        {post.data.description}
+        Cari artikel, tools, atau produk dengan cepat.
       </p>
 
-    </a>
+    </header>
 
-  ))}
 
-  {tools.map((tool) => (
+    <!-- =====================================================
+         SEARCH FORM
+    ====================================================== -->
 
-    <a
-      class="item"
-      data-type="tool"
-      href={`/tools/${tool.slug}/`}
+    <form
+      id="searchForm"
+      class="search-form"
     >
 
-      <span class="badge">
-        Tool
-      </span>
+      <div class="search-input-wrap">
 
-      <h3>
-        {tool.data.title}
-      </h3>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
 
-      <p>
-        {tool.data.description}
-      </p>
+          <circle
+            cx="11"
+            cy="11"
+            r="7"
+          />
 
-    </a>
+          <path
+            d="m20 20-4-4"
+          />
 
-  ))}
+        </svg>
 
-  {products.map((product) => (
 
-    <a
-      class="item"
-      data-type="product"
-      href={`/product/${product.slug}/`}
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Cari artikel, tools, atau produk..."
+          autocomplete="off"
+        />
+
+      </div>
+
+
+      <select
+        id="typeFilter"
+        aria-label="Filter hasil"
+      >
+
+        <option value="all">
+          Semua
+        </option>
+
+        <option value="blog">
+          Blog
+        </option>
+
+        <option value="tool">
+          Tools
+        </option>
+
+        <option value="product">
+          Product
+        </option>
+
+      </select>
+
+
+      <button
+        type="submit"
+        class="search-btn"
+      >
+
+        Search
+
+      </button>
+
+    </form>
+
+
+    <!-- =====================================================
+         RESULT INFO
+    ====================================================== -->
+
+    <div
+      class="result-info"
+      id="resultInfo"
+    >
+      Menampilkan semua hasil.
+    </div>
+
+
+    <!-- =====================================================
+         EMPTY STATE
+    ====================================================== -->
+
+    <div
+      id="emptyState"
+      class="empty-state"
     >
 
-      <span class="badge">
-        Product
-      </span>
+      <div class="empty-icon">
 
-      <h3>
-        {product.data.title}
-      </h3>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+
+          <circle
+            cx="11"
+            cy="11"
+            r="7"
+          />
+
+          <path
+            d="m20 20-4-4"
+          />
+
+        </svg>
+
+      </div>
+
+
+      <h2>
+        Cari sesuatu
+      </h2>
+
 
       <p>
-        {product.data.description}
+        Masukkan kata kunci untuk mencari artikel,
+        tools, atau produk.
       </p>
 
-    </a>
+    </div>
 
-  ))}
 
-</div>
+    <!-- =====================================================
+         RESULTS
+    ====================================================== -->
 
-</div>
+    <div
+      id="results"
+      class="results"
+    >
+
+      <!-- ===================================================
+           BLOG
+      ==================================================== -->
+
+      {
+        posts.map((post) => (
+
+          <a
+            class="item"
+            data-type="blog"
+            data-search={`
+              ${post.data.title}
+              ${post.data.description}
+              blog
+              artikel
+            `}
+            href={`/blog/${post.slug}/`}
+          >
+
+            <span class="badge">
+              Blog
+            </span>
+
+            <h2>
+              {post.data.title}
+            </h2>
+
+            <p>
+              {post.data.description}
+            </p>
+
+          </a>
+
+        ))
+      }
+
+
+      <!-- ===================================================
+           TOOLS
+      ==================================================== -->
+
+      {
+        tools.map((tool) => (
+
+          <a
+            class="item"
+            data-type="tool"
+            data-search={`
+              ${tool.title}
+              ${tool.description}
+              ${tool.keywords}
+              ${tool.category}
+              tool
+              tools
+            `}
+            href={tool.href}
+          >
+
+            <span class="badge">
+              {tool.category}
+            </span>
+
+            <h2>
+              {tool.title}
+            </h2>
+
+            <p>
+              {tool.description}
+            </p>
+
+          </a>
+
+        ))
+      }
+
+
+      <!-- ===================================================
+           PRODUCTS
+      ==================================================== -->
+
+      {
+        products.map((product) => (
+
+          <a
+            class="item"
+            data-type="product"
+            data-search={`
+              ${product.data.title}
+              ${product.data.description}
+              product
+              produk
+            `}
+            href={`/product/${product.slug}/`}
+          >
+
+            <span class="badge">
+              Product
+            </span>
+
+            <h2>
+              {product.data.title}
+            </h2>
+
+            <p>
+              {product.data.description}
+            </p>
+
+          </a>
+
+        ))
+      }
+
+    </div>
+
+  </main>
 
 </MainLayout>
 
+
 <script is:inline>
 
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
 const form =
-  document.getElementById("searchForm");
+  document.getElementById(
+    "searchForm"
+  );
 
 const input =
-  document.getElementById("searchInput");
+  document.getElementById(
+    "searchInput"
+  );
 
 const filter =
-  document.getElementById("typeFilter");
+  document.getElementById(
+    "typeFilter"
+  );
 
 const items =
-  document.querySelectorAll(".item");
+  document.querySelectorAll(
+    ".item"
+  );
 
 const emptyState =
-  document.getElementById("emptyState");
+  document.getElementById(
+    "emptyState"
+  );
 
-/* hide all initially */
+const results =
+  document.getElementById(
+    "results"
+  );
 
-items.forEach(item => {
-  item.style.display = "none";
-});
+const resultInfo =
+  document.getElementById(
+    "resultInfo"
+  );
 
-/* load query from URL */
+
+/* =========================================================
+   INITIAL
+========================================================= */
+
+items.forEach(
+  (item) => {
+
+    item.style.display =
+      "none";
+
+  }
+);
+
+
+/* =========================================================
+   URL QUERY
+========================================================= */
 
 const params =
   new URLSearchParams(
     window.location.search
   );
 
-input.value =
+
+const initialQuery =
   params.get("q") || "";
 
-filter.value =
+
+const initialType =
   params.get("type") || "all";
 
-if (input.value.trim()) {
-  runSearch();
+
+input.value =
+  initialQuery;
+
+
+if (
+  [
+    "all",
+    "blog",
+    "tool",
+    "product"
+  ].includes(initialType)
+) {
+
+  filter.value =
+    initialType;
+
 }
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
 
 function runSearch() {
 
   const keyword =
-    input.value.trim().toLowerCase();
+    input.value
+      .trim()
+      .toLowerCase();
+
 
   const selectedType =
     filter.value;
 
-  let found = false;
 
-  items.forEach(item => {
+  let found =
+    0;
 
-    const text =
-      item.innerText.toLowerCase();
 
-    const itemType =
-      item.dataset.type;
+  /* ============================================
+     EMPTY KEYWORD
+  ============================================ */
 
-    const matchKeyword =
-      keyword !== "" &&
-      text.includes(keyword);
+  if (!keyword) {
 
-    const matchType =
-      selectedType === "all" ||
-      itemType === selectedType;
+    items.forEach(
+      (item) => {
 
-    const show =
-      matchKeyword &&
-      matchType;
+        item.style.display =
+          "none";
 
-    item.style.display =
-      show ? "block" : "none";
+      }
+    );
 
-    if (show) {
-      found = true;
-    }
-
-  });
-
-  if (keyword === "") {
-
-    emptyState.textContent =
-      "Ketik kata kunci lalu klik Search.";
 
     emptyState.style.display =
       "block";
 
-    items.forEach(item => {
-      item.style.display = "none";
-    });
+
+    resultInfo.textContent =
+      "Menampilkan semua hasil.";
+
 
     return;
 
   }
 
+
+  /* ============================================
+     SEARCH ITEMS
+  ============================================ */
+
+  items.forEach(
+    (item) => {
+
+      const searchText =
+        (
+          item.dataset.search ||
+          item.innerText ||
+          ""
+        )
+          .toLowerCase();
+
+
+      const itemType =
+        item.dataset.type;
+
+
+      const keywordMatch =
+        searchText.includes(
+          keyword
+        );
+
+
+      const typeMatch =
+        selectedType === "all" ||
+        itemType === selectedType;
+
+
+      const show =
+        keywordMatch &&
+        typeMatch;
+
+
+      item.style.display =
+        show
+          ? "block"
+          : "none";
+
+
+      if (show) {
+
+        found++;
+
+      }
+
+    }
+  );
+
+
+  /* ============================================
+     RESULT INFO
+  ============================================ */
+
+  resultInfo.textContent =
+    found === 0
+      ? "Tidak ada hasil ditemukan."
+      : `${found} hasil ditemukan.`;
+
+
+  /* ============================================
+     EMPTY STATE
+  ============================================ */
+
   emptyState.style.display =
-    found ? "none" : "block";
+    found === 0
+      ? "block"
+      : "none";
 
-  if (!found) {
 
-    emptyState.textContent =
-      "Tidak ada hasil ditemukan.";
+  if (found === 0) {
+
+    emptyState.innerHTML = `
+
+      <div class="empty-icon">
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+
+          <circle
+            cx="11"
+            cy="11"
+            r="7"
+          />
+
+          <path
+            d="m20 20-4-4"
+          />
+
+        </svg>
+
+      </div>
+
+      <h2>
+        Tidak ada hasil
+      </h2>
+
+      <p>
+        Coba gunakan kata kunci lain
+        atau ubah kategori pencarian.
+      </p>
+
+    `;
 
   }
 
 }
 
+
+/* =========================================================
+   SUBMIT
+========================================================= */
+
 form.addEventListener(
   "submit",
-  (e) => {
+  (event) => {
 
-    e.preventDefault();
+    event.preventDefault();
+
 
     const keyword =
       input.value.trim();
 
+
     const selectedType =
       filter.value;
+
 
     const params =
       new URLSearchParams();
 
+
     if (keyword) {
-      params.set("q", keyword);
+
+      params.set(
+        "q",
+        keyword
+      );
+
     }
+
 
     if (
       selectedType &&
       selectedType !== "all"
     ) {
+
       params.set(
         "type",
         selectedType
       );
+
     }
+
+
+    const queryString =
+      params.toString();
+
+
+    const newUrl =
+      queryString
+        ? `${window.location.pathname}?${queryString}`
+        : window.location.pathname;
+
 
     history.replaceState(
       {},
       "",
-      `${window.location.pathname}?${params.toString()}`
+      newUrl
     );
+
 
     runSearch();
 
   }
 );
 
+
+/* =========================================================
+   FILTER CHANGE
+========================================================= */
+
+filter.addEventListener(
+  "change",
+  () => {
+
+    runSearch();
+
+  }
+);
+
+
+/* =========================================================
+   INITIAL SEARCH
+========================================================= */
+
+if (
+  initialQuery.trim()
+) {
+
+  runSearch();
+
+}
+
 </script>
 
-<style>
+
+<style is:global>
+
+/* =========================================================
+   PAGE
+========================================================= */
 
 .search-page{
-max-width:800px;
-margin:80px auto;
-padding:0 20px;
+
+  width:
+    min(
+      100% - 40px,
+      1000px
+    );
+
+  margin:
+    0 auto;
+
+  padding:
+    65px 0 90px;
+
+  color:
+    var(--text);
+
 }
 
-.search-page h1{
-font-size:36px;
-margin-bottom:20px;
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.search-header{
+
+  margin-bottom:
+    30px;
+
 }
 
-#searchForm{
-display:flex;
-flex-direction:column;
-gap:16px;
-margin-bottom:20px;
+
+.search-label{
+
+  display:
+    inline-block;
+
+  margin-bottom:
+    8px;
+
+  color:
+    var(--primary);
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    1.6px;
+
 }
+
+
+.search-header h1{
+
+  margin:
+    0;
+
+  font-size:
+    clamp(
+      30px,
+      5vw,
+      42px
+    );
+
+  line-height:
+    1.15;
+
+  letter-spacing:
+    -1px;
+
+}
+
+
+.search-header p{
+
+  margin:
+    10px 0 0;
+
+  color:
+    var(--text-secondary);
+
+  font-size:
+    14px;
+
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.search-form{
+
+  display:
+    grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    150px
+    110px;
+
+  gap:
+    10px;
+
+  margin-bottom:
+    18px;
+
+}
+
+
+.search-input-wrap{
+
+  position:
+    relative;
+
+}
+
+
+.search-input-wrap svg{
+
+  position:
+    absolute;
+
+  top:
+    50%;
+
+  left:
+    14px;
+
+  width:
+    18px;
+
+  height:
+    18px;
+
+  transform:
+    translateY(-50%);
+
+  color:
+    var(--text-secondary);
+
+  pointer-events:
+    none;
+
+}
+
 
 #searchInput,
 #typeFilter{
-width:100%;
-padding:14px;
-border:1px solid var(--border,#ddd);
-border-radius:12px;
-font-size:16px;
-outline:none;
+
+  width:
+    100%;
+
+  height:
+    48px;
+
+  box-sizing:
+    border-box;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    10px;
+
+  outline:
+    none;
+
+  background:
+    var(--surface);
+
+  color:
+    var(--text);
+
+  font-family:
+    inherit;
+
+  font-size:
+    13px;
+
 }
+
+
+#searchInput{
+
+  padding:
+    0 14px 0 43px;
+
+}
+
+
+#typeFilter{
+
+  padding:
+    0 12px;
+
+}
+
+
+#searchInput:focus,
+#typeFilter:focus{
+
+  border-color:
+    var(--primary);
+
+  box-shadow:
+    0 0 0 3px
+    color-mix(
+      in srgb,
+      var(--primary) 10%,
+      transparent
+    );
+
+}
+
 
 .search-btn{
-padding:14px;
-border:none;
-border-radius:12px;
-cursor:pointer;
-font-size:16px;
-font-weight:700;
+
+  height:
+    48px;
+
+  border:
+    0;
+
+  border-radius:
+    10px;
+
+  background:
+    var(--bgbtn);
+
+  color:
+    var(--textbtn);
+
+  font-family:
+    inherit;
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
+
+  transition:
+    transform .2s,
+    filter .2s;
+
 }
 
-#emptyState{
-opacity:.6;
-margin-bottom:20px;
+
+.search-btn:hover{
+
+  transform:
+    translateY(-1px);
+
+  filter:
+    brightness(1.08);
+
 }
 
-#results{
-display:flex;
-flex-direction:column;
-gap:14px;
+
+/* =========================================================
+   RESULT INFO
+========================================================= */
+
+.result-info{
+
+  margin-bottom:
+    18px;
+
+  color:
+    var(--text-secondary);
+
+  font-size:
+    12px;
+
 }
+
+
+/* =========================================================
+   RESULTS
+========================================================= */
+
+.results{
+
+  display:
+    grid;
+
+  gap:
+    12px;
+
+}
+
 
 .item{
-display:block;
-padding:16px;
-border:1px solid var(--border,#eee);
-border-radius:14px;
-text-decoration:none;
-color:inherit;
-transition:.2s;
+
+  display:
+    block;
+
+  padding:
+    18px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    12px;
+
+  background:
+    var(--surface);
+
+  color:
+    var(--text);
+
+  text-decoration:
+    none;
+
+  box-shadow:
+    var(--shadow);
+
+  transition:
+    transform .2s,
+    border-color .2s;
+
 }
+
 
 .item:hover{
-transform:translateY(-2px);
+
+  transform:
+    translateY(-2px);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--primary) 45%,
+      var(--border)
+    );
+
 }
 
-.item h3{
-margin:0 0 8px;
-font-size:18px;
+
+.item h2{
+
+  margin:
+    0 0 7px;
+
+  font-size:
+    16px;
+
+  line-height:
+    1.4;
+
 }
+
 
 .item p{
-margin:0;
-opacity:.7;
-font-size:14px;
+
+  margin:
+    0;
+
+  color:
+    var(--text-secondary);
+
+  font-size:
+    12px;
+
+  line-height:
+    1.65;
+
 }
 
+
+/* =========================================================
+   BADGE
+========================================================= */
+
 .badge{
-display:inline-block;
-margin-bottom:10px;
-padding:4px 10px;
-border-radius:999px;
-font-size:12px;
-font-weight:600;
-background:#f3f4f6;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  min-height:
+    22px;
+
+  margin-bottom:
+    9px;
+
+  padding:
+    0 9px;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--primary) 20%,
+      var(--border)
+    );
+
+  border-radius:
+    999px;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--primary) 7%,
+      transparent
+    );
+
+  color:
+    var(--primary);
+
+  font-size:
+    9px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .5px;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty-state{
+
+  padding:
+    55px 20px;
+
+  text-align:
+    center;
+
+  border:
+    1px dashed var(--border);
+
+  border-radius:
+    14px;
+
+  background:
+    var(--surface);
+
+}
+
+
+.empty-icon{
+
+  width:
+    52px;
+
+  height:
+    52px;
+
+  margin:
+    0 auto 15px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--surface-hover);
+
+  color:
+    var(--text-secondary);
+
+}
+
+
+.empty-icon svg{
+
+  width:
+    24px;
+
+  height:
+    24px;
+
+}
+
+
+.empty-state h2{
+
+  margin:
+    0;
+
+  font-size:
+    17px;
+
+}
+
+
+.empty-state p{
+
+  max-width:
+    430px;
+
+  margin:
+    8px auto 0;
+
+  color:
+    var(--text-secondary);
+
+  font-size:
+    12px;
+
+  line-height:
+    1.7;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:700px){
+
+  .search-page{
+
+    width:
+      calc(100% - 24px);
+
+    padding:
+      35px 0 60px;
+
+  }
+
+
+  .search-form{
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .search-btn{
+
+    width:
+      100%;
+
+  }
+
 }
 
 </style>
