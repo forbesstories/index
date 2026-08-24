@@ -1,10 +1,14 @@
 ---
 import "../styles/global.css";
+import toolsCSS from "../styles/tools.css?url";
+
 import SeoHead from "../components/SeoHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+
 import { generateFaqSchema } from "../lib/faq-schema";
 import { homeSchema } from "../lib/home-schema";
+
 
 const {
   title,
@@ -16,119 +20,251 @@ const {
   amp,
   slug,
   isHome = false,
-pageCSS = []
+  pageCSS = []
 } = Astro.props;
 
-const autoPageCSS = [...pageCSS];
+
+/* =====================================
+   PATHNAME
+===================================== */
 
 const pathname = Astro.url.pathname;
 
-if (pathname.startsWith("/tools") && !autoPageCSS.includes("tools")) {
+
+/* =====================================
+   PAGE CSS
+===================================== */
+
+const cssMap = {
+  tools: toolsCSS
+};
+
+const autoPageCSS = [...pageCSS];
+
+
+/*
+ * Semua halaman /tools otomatis
+ * menggunakan tools.css
+ */
+
+if (
+  pathname.startsWith("/tools") &&
+  !autoPageCSS.includes("tools")
+) {
   autoPageCSS.push("tools");
 }
 
 
+/* =====================================
+   AUTO BREADCRUMBS
+===================================== */
 
 const autoBreadcrumbs =
   breadcrumbs ??
-  (Astro.url.pathname.startsWith("/tools")
-    ? (() => {
-        const parts = Astro.url.pathname
-          .split("/")
-          .filter(Boolean);
+  (
+    pathname.startsWith("/tools")
+      ? (() => {
 
-        const items = [
-          {
-            name: "Home",
-            url: "/",
-          },
-        ];
+          const parts = pathname
+            .split("/")
+            .filter(Boolean);
 
-        let path = "";
+          const items = [
+            {
+              name: "Home",
+              url: "/"
+            }
+          ];
 
-        for (const part of parts) {
-          path += `/${part}`;
+          let path = "";
 
-          items.push({
-            name: part
-              .replace(/-/g, " ")
-              .replace(/\b\w/g, c => c.toUpperCase()),
-            url: path,
-          });
-        }
+          for (const part of parts) {
 
-        return items;
-      })()
-    : breadcrumbs);
+            path += `/${part}`;
+
+            items.push({
+              name: part
+                .replace(/-/g, " ")
+                .replace(/\b\w/g, (c) =>
+                  c.toUpperCase()
+                ),
+              url: path
+            });
+
+          }
+
+          return items;
+
+        })()
+      : breadcrumbs
+  );
 
 
-const faqSchema = generateFaqSchema(html);
+/* =====================================
+   FAQ SCHEMA
+===================================== */
+
+const faqSchema =
+  generateFaqSchema(html);
+
 ---
 
 <!doctype html>
+
 <html lang="id">
+
 <head>
+
   <SeoHead
-  title={title}
-  description={description}
-  canonical={canonical}
-  articleSchema={articleSchema}
-  breadcrumbs={autoBreadcrumbs}
-  faqSchema={faqSchema}
-  amp={amp}
-  slug={slug}
-  isHome={isHome}
-/>
-
-{autoPageCSS.map(css => (
-  <link rel="stylesheet" href={`/styles/${css}.css`}>
-))}
-
-{isHome && (
-  <script
-    type="application/ld+json"
-    set:html={JSON.stringify(homeSchema)}
+    title={title}
+    description={description}
+    canonical={canonical}
+    articleSchema={articleSchema}
+    breadcrumbs={autoBreadcrumbs}
+    faqSchema={faqSchema}
+    amp={amp}
+    slug={slug}
+    isHome={isHome}
   />
-)}
 
 
+  <!-- =================================
+       PAGE CSS
+  ================================== -->
 
-<script is:inline>
-  if (localStorage.getItem("theme") === "light") {
-    document.documentElement.classList.add("light-mode");
+  {
+    autoPageCSS.map((css) => (
+      cssMap[css] && (
+        <link
+          rel="stylesheet"
+          href={cssMap[css]}
+        />
+      )
+    ))
   }
-</script>
+
+
+  <!-- =================================
+       HOME SCHEMA
+  ================================== -->
+
+  {
+    isHome && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify(homeSchema)}
+      />
+    )
+  }
+
+
+  <!-- =================================
+       THEME INITIALIZATION
+  ================================== -->
+
+  <script is:inline>
+
+    (() => {
+
+      const savedTheme =
+        localStorage.getItem("theme");
+
+      const systemTheme =
+        window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        ).matches
+          ? "dark"
+          : "light";
+
+      document.documentElement.dataset.theme =
+        savedTheme || systemTheme;
+
+    })();
+
+  </script>
+
 </head>
+
 
 <body>
 
   <Header />
 
+
   <main>
 
-{Astro.url.pathname.startsWith("/tools") &&
-  autoBreadcrumbs &&
-  autoBreadcrumbs.length > 1 && (
-  <nav class="breadcrumb" aria-label="Breadcrumb">
-    {autoBreadcrumbs.map((item, index) => (
-      <>
-        {index > 0 && <span class="separator">/</span>}
-        {index === autoBreadcrumbs.length - 1 ? (
-          <span>{item.name}</span>
-        ) : (
-          <a href={item.url}>{item.name}</a>
-        )}
-      </>
-    ))}
-  </nav>
-)}
+
+    <!-- =================================
+         TOOLS BREADCRUMB
+    ================================== -->
+
+    {
+      pathname.startsWith("/tools") &&
+      autoBreadcrumbs &&
+      autoBreadcrumbs.length > 1 && (
+
+        <nav
+          class="breadcrumb"
+          aria-label="Breadcrumb"
+        >
+
+          {
+            autoBreadcrumbs.map(
+              (item, index) => (
+
+                <Fragment>
+
+                  {
+                    index > 0 && (
+                      <span class="separator">
+                        /
+                      </span>
+                    )
+                  }
+
+
+                  {
+                    index ===
+                    autoBreadcrumbs.length - 1
+                      ? (
+
+                          <span>
+                            {item.name}
+                          </span>
+
+                        )
+                      : (
+
+                          <a href={item.url}>
+                            {item.name}
+                          </a>
+
+                        )
+                  }
+
+                </Fragment>
+
+              )
+            )
+          }
+
+        </nav>
+
+      )
+    }
 
 
     <slot />
+
   </main>
+
 
   <Footer />
 
+
+  <!-- =================================
+       GLOBAL UI SCRIPT
+  ================================== -->
 
   <script is:inline>
 
@@ -234,7 +370,8 @@ const faqSchema = generateFaqSchema(html);
               "active"
             );
 
-            menu.textContent = "☰";
+            menu.textContent =
+              "☰";
 
           };
 
@@ -270,5 +407,7 @@ const faqSchema = generateFaqSchema(html);
       });
 
   </script>
+
 </body>
+
 </html>
