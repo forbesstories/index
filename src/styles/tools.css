@@ -1,6 +1,8 @@
 /* =========================================================
-   TOOLS
-   ========================================================= */
+   TOOLS PAGE
+   Semua selector di-scope ke .tools-page
+   agar tidak merusak Header / Footer / Global CSS
+========================================================= */
 
 .tools-page {
   width: min(1200px, calc(100% - 32px));
@@ -11,32 +13,32 @@
 
 /* =========================================================
    PAGE HEADER
-   ========================================================= */
+========================================================= */
 
-.page-header {
+.tools-page .page-header {
   max-width: 760px;
   margin: 0 auto 36px;
   text-align: center;
 }
 
-.tools-label {
+.tools-page .tools-label {
   display: inline-block;
   margin-bottom: 10px;
   color: var(--primary);
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: .1em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-.page-header h1 {
+.tools-page .page-header h1 {
   margin: 0 0 14px;
   color: var(--text);
   font-size: clamp(32px, 5vw, 48px);
   line-height: 1.1;
 }
 
-.page-header p {
+.tools-page .page-header p {
   max-width: 650px;
   margin: 0 auto;
   color: var(--text-secondary);
@@ -46,8 +48,8 @@
 
 
 /* =========================================================
-   TOOLS CONTAINER
-   ========================================================= */
+   CONTAINER
+========================================================= */
 
 .tools-page .container {
   width: 100%;
@@ -58,7 +60,7 @@
 
 /* =========================================================
    BREADCRUMB
-   ========================================================= */
+========================================================= */
 
 .tools-page .breadcrumb {
   display: flex;
@@ -87,9 +89,9 @@
 
 /* =========================================================
    STATS
-   ========================================================= */
+========================================================= */
 
-.tools-stats {
+.tools-page .tools-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   max-width: 700px;
@@ -101,23 +103,23 @@
   box-shadow: var(--shadow);
 }
 
-.stat-item {
+.tools-page .stat-item {
   padding: 18px 12px;
   text-align: center;
 }
 
-.stat-item + .stat-item {
+.tools-page .stat-item + .stat-item {
   border-left: 1px solid var(--border);
 }
 
-.stat-item strong {
+.tools-page .stat-item strong {
   display: block;
   color: var(--text);
   font-size: 22px;
   line-height: 1.2;
 }
 
-.stat-item span {
+.tools-page .stat-item span {
   display: block;
   margin-top: 5px;
   color: var(--text-secondary);
@@ -127,14 +129,14 @@
 
 /* =========================================================
    SEARCH
-   ========================================================= */
+========================================================= */
 
-.tools-search {
+.tools-page .tools-search {
   max-width: 650px;
   margin: 0 auto 42px;
 }
 
-.search-label {
+.tools-page .search-label {
   display: block;
   margin-bottom: 8px;
   color: var(--text);
@@ -142,7 +144,7 @@
   font-weight: 600;
 }
 
-.tools-search input {
+.tools-page .tools-search input {
   width: 100%;
   box-sizing: border-box;
   padding: 14px 18px;
@@ -153,15 +155,15 @@
   color: var(--text);
   font: inherit;
   transition:
-    border-color .2s ease,
-    box-shadow .2s ease;
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.tools-search input::placeholder {
+.tools-page .tools-search input::placeholder {
   color: var(--text-secondary);
 }
 
-.tools-search input:focus {
+.tools-page .tools-search input:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px var(--primary-soft);
 }
@@ -169,13 +171,13 @@
 
 /* =========================================================
    TOOLS SECTION
-   ========================================================= */
+========================================================= */
 
-.tools-section {
+.tools-page .tools-section {
   margin-bottom: 44px;
 }
 
-.tools-section .section-heading {
+.tools-page .section-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -183,24 +185,24 @@
   margin-bottom: 20px;
 }
 
-.tools-section .section-heading h2 {
+.tools-page .section-heading h2 {
   margin: 0;
   color: var(--text);
   font-size: 24px;
   line-height: 1.3;
 }
 
-.tool-count {
+.tools-page .tool-count {
   color: var(--text-secondary);
   font-size: 13px;
 }
 
 
 /* =========================================================
-   TOOLS GRID
-   ========================================================= */
+   GRID
+========================================================= */
 
-.tools-grid {
+.tools-page .tools-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
@@ -209,9 +211,9 @@
 
 /* =========================================================
    TOOL CARD
-   ========================================================= */
+========================================================= */
 
-.tool-card {
+.tools-page .tool-card {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -222,34 +224,34 @@
   background: var(--surface);
   box-shadow: var(--shadow);
   transition:
-    transform .2s ease,
-    border-color .2s ease,
-    box-shadow .2s ease;
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.tool-card:hover {
+.tools-page .tool-card:hover {
   transform: translateY(-4px);
   border-color: var(--primary);
   box-shadow: var(--shadow-lg);
 }
 
-.tool-card h3 {
+.tools-page .tool-card h3 {
   margin: 0 0 8px;
   color: var(--text);
   font-size: 18px;
   line-height: 1.35;
 }
 
-.tool-card h3 a {
+.tools-page .tool-card h3 a {
   color: inherit;
   text-decoration: none;
 }
 
-.tool-card h3 a:hover {
+.tools-page .tool-card h3 a:hover {
   color: var(--primary);
 }
 
-.tool-card p {
+.tools-page .tool-card p {
   margin: 0;
   color: var(--text-secondary);
   font-size: 14px;
@@ -258,24 +260,24 @@
 
 
 /* =========================================================
-   TOOL CATEGORY
-   ========================================================= */
+   CATEGORY
+========================================================= */
 
-.tool-category {
+.tools-page .tool-category {
   margin-bottom: 7px;
   color: var(--primary);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: .07em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
 
 /* =========================================================
-   TOOL ICON
-   ========================================================= */
+   ICON
+========================================================= */
 
-.tool-icon {
+.tools-page .tool-icon {
   width: 48px;
   height: 48px;
   display: grid;
@@ -290,10 +292,10 @@
 
 
 /* =========================================================
-   TOOL BUTTON
-   ========================================================= */
+   BUTTON
+========================================================= */
 
-.tool-button {
+.tools-page .tool-button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -305,17 +307,17 @@
   text-decoration: none;
 }
 
-.tool-button:hover {
+.tools-page .tool-button:hover {
   color: var(--accent);
   text-decoration: underline;
 }
 
 
 /* =========================================================
-   HOT BADGE
-   ========================================================= */
+   BADGE
+========================================================= */
 
-.tool-badge {
+.tools-page .tool-badge {
   position: absolute;
   top: 15px;
   right: 15px;
@@ -325,28 +327,28 @@
   color: var(--surface);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: .04em;
+  letter-spacing: 0.04em;
 }
 
 
 /* =========================================================
    TOOL DETAIL
-   ========================================================= */
+========================================================= */
 
-.tool-content {
+.tools-page .tool-content {
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
 
-.tool-content h1 {
+.tools-page .tool-content h1 {
   margin: 0 0 1rem;
   color: var(--text);
   font-size: clamp(30px, 5vw, 44px);
   line-height: 1.15;
 }
 
-.tool-description {
+.tools-page .tool-description {
   margin: 0 0 2rem;
   color: var(--text-secondary);
   font-size: 16px;
@@ -355,8 +357,8 @@
 
 
 /* =========================================================
-   TOC
-   ========================================================= */
+   TABLE OF CONTENTS
+========================================================= */
 
 .tools-page .toc {
   margin-bottom: 2rem;
@@ -380,7 +382,7 @@
 }
 
 .tools-page .toc li {
-  margin: .4rem 0;
+  margin: 0.4rem 0;
 }
 
 .tools-page .toc a {
@@ -395,9 +397,9 @@
 
 /* =========================================================
    EMPTY STATE
-   ========================================================= */
+========================================================= */
 
-.tools-empty {
+.tools-page .tools-empty {
   padding: 35px 20px;
   margin-bottom: 40px;
   text-align: center;
@@ -407,28 +409,28 @@
   color: var(--text-secondary);
 }
 
-.tools-empty[hidden] {
+.tools-page .tools-empty[hidden] {
   display: none;
 }
 
-.tools-empty strong {
+.tools-page .tools-empty strong {
   display: block;
   margin-bottom: 5px;
   color: var(--text);
 }
 
-.tools-empty p {
+.tools-page .tools-empty p {
   margin: 0;
 }
 
 
 /* =========================================================
    RESPONSIVE
-   ========================================================= */
+========================================================= */
 
 @media (max-width: 900px) {
 
-  .tools-grid {
+  .tools-page .tools-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -442,36 +444,36 @@
     padding: 50px 0 35px;
   }
 
-  .page-header h1 {
+  .tools-page .page-header h1 {
     font-size: 32px;
   }
 
-  .tools-stats {
+  .tools-page .tools-stats {
     margin-bottom: 24px;
   }
 
-  .stat-item {
+  .tools-page .stat-item {
     padding: 14px 8px;
   }
 
-  .stat-item strong {
+  .tools-page .stat-item strong {
     font-size: 18px;
   }
 
-  .tools-grid {
+  .tools-page .tools-grid {
     grid-template-columns: 1fr;
     gap: 14px;
   }
 
-  .tools-section .section-heading {
+  .tools-page .section-heading {
     align-items: flex-start;
   }
 
-  .tools-section .section-heading h2 {
+  .tools-page .section-heading h2 {
     font-size: 21px;
   }
 
-  .tool-content {
+  .tools-page .tool-content {
     padding: 1rem 0;
   }
 
