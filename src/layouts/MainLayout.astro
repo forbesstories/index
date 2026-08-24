@@ -1,10 +1,8 @@
 ---
 import "../styles/global.css";
-
 import SeoHead from "../components/SeoHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-
 import { generateFaqSchema } from "../lib/faq-schema";
 import { homeSchema } from "../lib/home-schema";
 
@@ -17,179 +15,120 @@ const {
   breadcrumbs,
   amp,
   slug,
-  isHome = false
+  isHome = false,
+pageCSS = []
 } = Astro.props;
+
+const autoPageCSS = [...pageCSS];
 
 const pathname = Astro.url.pathname;
 
+if (pathname.startsWith("/tools") && !autoPageCSS.includes("tools")) {
+  autoPageCSS.push("tools");
+}
 
-/* =====================================
-   AUTO BREADCRUMBS
-===================================== */
+
 
 const autoBreadcrumbs =
   breadcrumbs ??
-  (pathname.startsWith("/tools")
+  (Astro.url.pathname.startsWith("/tools")
     ? (() => {
-
-        const parts = pathname
+        const parts = Astro.url.pathname
           .split("/")
           .filter(Boolean);
 
         const items = [
           {
             name: "Home",
-            url: "/"
-          }
+            url: "/",
+          },
         ];
 
         let path = "";
 
         for (const part of parts) {
-
           path += `/${part}`;
 
           items.push({
             name: part
               .replace(/-/g, " ")
-              .replace(/\b\w/g, (c) => c.toUpperCase()),
-            url: path
+              .replace(/\b\w/g, c => c.toUpperCase()),
+            url: path,
           });
-
         }
 
         return items;
-
       })()
     : breadcrumbs);
 
-
-/* =====================================
-   FAQ SCHEMA
-===================================== */
 
 const faqSchema = generateFaqSchema(html);
 ---
 
 <!doctype html>
-
 <html lang="id">
-
 <head>
-
   <SeoHead
-    title={title}
-    description={description}
-    canonical={canonical}
-    articleSchema={articleSchema}
-    breadcrumbs={autoBreadcrumbs}
-    faqSchema={faqSchema}
-    amp={amp}
-    slug={slug}
-    isHome={isHome}
+  title={title}
+  description={description}
+  canonical={canonical}
+  articleSchema={articleSchema}
+  breadcrumbs={autoBreadcrumbs}
+  faqSchema={faqSchema}
+  amp={amp}
+  slug={slug}
+  isHome={isHome}
+/>
+
+{autoPageCSS.map(css => (
+  <link rel="stylesheet" href={`/styles/${css}.css`}>
+))}
+
+{isHome && (
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(homeSchema)}
   />
+)}
 
 
-  {
-    isHome && (
-      <script
-        type="application/ld+json"
-        set:html={JSON.stringify(homeSchema)}
-      />
-    )
+
+<script is:inline>
+  if (localStorage.getItem("theme") === "light") {
+    document.documentElement.classList.add("light-mode");
   }
-
-
-  <!-- =================================
-       THEME INITIALIZATION
-  ================================== -->
-
-  <script is:inline>
-    (() => {
-
-      const savedTheme =
-        localStorage.getItem("theme");
-
-      const systemTheme =
-        window.matchMedia(
-          "(prefers-color-scheme: dark)"
-        ).matches
-          ? "dark"
-          : "light";
-
-      document.documentElement.dataset.theme =
-        savedTheme || systemTheme;
-
-    })();
-  </script>
-
+</script>
 </head>
-
 
 <body>
 
   <Header />
 
-
   <main>
 
-    {
-      pathname.startsWith("/tools") &&
-      autoBreadcrumbs &&
-      autoBreadcrumbs.length > 1 && (
-
-        <nav
-          class="breadcrumb"
-          aria-label="Breadcrumb"
-        >
-
-          {
-            autoBreadcrumbs.map((item, index) => (
-              <>
-
-                {index > 0 && (
-                  <span class="separator">
-                    /
-                  </span>
-                )}
-
-                {
-                  index === autoBreadcrumbs.length - 1 ? (
-
-                    <span>
-                      {item.name}
-                    </span>
-
-                  ) : (
-
-                    <a href={item.url}>
-                      {item.name}
-                    </a>
-
-                  )
-                }
-
-              </>
-            ))
-          }
-
-        </nav>
-
-      )
-    }
+{Astro.url.pathname.startsWith("/tools") &&
+  autoBreadcrumbs &&
+  autoBreadcrumbs.length > 1 && (
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    {autoBreadcrumbs.map((item, index) => (
+      <>
+        {index > 0 && <span class="separator">/</span>}
+        {index === autoBreadcrumbs.length - 1 ? (
+          <span>{item.name}</span>
+        ) : (
+          <a href={item.url}>{item.name}</a>
+        )}
+      </>
+    ))}
+  </nav>
+)}
 
 
     <slot />
-
   </main>
-
 
   <Footer />
 
-
-  <!-- =================================
-       GLOBAL UI SCRIPT
-  ================================== -->
 
   <script is:inline>
 
@@ -331,7 +270,5 @@ const faqSchema = generateFaqSchema(html);
       });
 
   </script>
-
 </body>
-
 </html>
