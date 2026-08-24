@@ -7,7 +7,7 @@ export default defineConfig({
 
   site:
     process.env.SITE_URL ||
-    'https://aimrferdy.com',
+    'https://forbesstories.in',
 
 integrations: [
     sitemap({
