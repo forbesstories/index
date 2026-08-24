@@ -90,26 +90,20 @@ const jsonLd = {
   url: pageUrl,
 
   mainEntity: {
-
     "@type": "ItemList",
 
     numberOfItems: totalTools,
 
-    itemListElement:
-      tools.map((tool, index) => ({
+    itemListElement: tools.map((tool, index) => ({
+      "@type": "ListItem",
 
-        "@type": "ListItem",
+      position: index + 1,
 
-        position: index + 1,
+      name: tool.title,
 
-        name: tool.title,
-
-        url: SITE.url(tool.url)
-
-      }))
-
+      url: SITE.url(tool.url)
+    }))
   }
-
 };
 ---
 
@@ -120,9 +114,9 @@ const jsonLd = {
 
   <section class="tools-page">
 
-    <!-- =================================================
-         TOOLS HEADER
-    ================================================== -->
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
 
     <header class="tools-page-header">
 
@@ -142,9 +136,9 @@ const jsonLd = {
     </header>
 
 
-    <!-- =================================================
+    <!-- =====================================================
          STATS
-    ================================================== -->
+    ====================================================== -->
 
     <section
       class="tools-stats"
@@ -192,9 +186,9 @@ const jsonLd = {
     </section>
 
 
-    <!-- =================================================
+    <!-- =====================================================
          SEARCH
-    ================================================== -->
+    ====================================================== -->
 
     <div class="tools-search">
 
@@ -207,6 +201,7 @@ const jsonLd = {
 
       <input
         id="toolSearch"
+        class="tools-search-input"
         type="search"
         placeholder="Cari tools..."
         autocomplete="off"
@@ -216,9 +211,9 @@ const jsonLd = {
     </div>
 
 
-    <!-- =================================================
+    <!-- =====================================================
          TOOL LIST
-    ================================================== -->
+    ====================================================== -->
 
     {
       tools.length > 0 ? (
@@ -296,7 +291,7 @@ const jsonLd = {
                   </div>
 
 
-                  <h3>
+                  <h3 class="tools-card-title">
 
                     <a href={tool.url}>
                       {tool.title}
@@ -308,7 +303,7 @@ const jsonLd = {
                   {
                     tool.description && (
 
-                      <p>
+                      <p class="tools-card-description">
                         {tool.description}
                       </p>
 
@@ -321,7 +316,6 @@ const jsonLd = {
                     class="tools-button"
                     aria-label={`Buka ${tool.title}`}
                   >
-
                     Buka Tool
 
                     <span aria-hidden="true">
@@ -380,9 +374,9 @@ const jsonLd = {
   </section>
 
 
-  <!-- =================================================
+  <!-- =======================================================
        SEARCH SCRIPT
-  ================================================== -->
+  ======================================================== -->
 
   <script>
 
@@ -405,7 +399,6 @@ const jsonLd = {
             .toLowerCase()
             .trim();
 
-
         let visible = 0;
 
 
@@ -416,15 +409,12 @@ const jsonLd = {
             card.textContent ||
             "";
 
-
           const match =
             text
               .toLowerCase()
               .includes(query);
 
-
           card.hidden = !match;
-
 
           if (match) {
             visible++;
@@ -446,9 +436,9 @@ const jsonLd = {
   </script>
 
 
-  <!-- =================================================
+  <!-- =======================================================
        JSON-LD
-  ================================================== -->
+  ======================================================== -->
 
   <script
     type="application/ld+json"
