@@ -10,7 +10,9 @@ import MainLayout from "../../layouts/MainLayout.astro";
 
   <main class="checkout-page">
 
-    <!-- HEADER -->
+    <!-- =====================================================
+         CHECKOUT HEADER
+    ====================================================== -->
 
     <div class="checkout-header">
 
@@ -29,20 +31,30 @@ import MainLayout from "../../layouts/MainLayout.astro";
     </div>
 
 
-    <!-- MAIN -->
+    <!-- =====================================================
+         CHECKOUT LAYOUT
+    ====================================================== -->
 
     <div class="checkout-layout">
 
 
-      <!-- LEFT -->
+      <!-- ===================================================
+           LEFT CONTENT
+      ==================================================== -->
 
       <section class="checkout-content">
+
+
+        <!-- =================================================
+             ORDER
+        ================================================== -->
 
         <div class="section-card">
 
           <div class="section-heading">
 
             <div>
+
               <span class="section-label">
                 PESANAN
               </span>
@@ -50,9 +62,13 @@ import MainLayout from "../../layouts/MainLayout.astro";
               <h2>
                 Detail Produk
               </h2>
+
             </div>
 
-            <a href="/cart" class="edit-cart">
+            <a
+              href="/cart"
+              class="edit-cart"
+            >
               Edit Cart
             </a>
 
@@ -73,13 +89,16 @@ import MainLayout from "../../layouts/MainLayout.astro";
         </div>
 
 
-        <!-- CUSTOMER -->
+        <!-- =================================================
+             CUSTOMER
+        ================================================== -->
 
         <div class="section-card">
 
           <div class="section-heading">
 
             <div>
+
               <span class="section-label">
                 INFORMASI
               </span>
@@ -87,6 +106,7 @@ import MainLayout from "../../layouts/MainLayout.astro";
               <h2>
                 Informasi Pelanggan
               </h2>
+
             </div>
 
           </div>
@@ -98,6 +118,9 @@ import MainLayout from "../../layouts/MainLayout.astro";
           >
 
             <div class="form-grid">
+
+
+              <!-- NAME -->
 
               <div class="form-group">
 
@@ -116,6 +139,8 @@ import MainLayout from "../../layouts/MainLayout.astro";
 
               </div>
 
+
+              <!-- EMAIL -->
 
               <div class="form-group">
 
@@ -137,6 +162,8 @@ import MainLayout from "../../layouts/MainLayout.astro";
             </div>
 
 
+            <!-- PHONE -->
+
             <div class="form-group">
 
               <label for="customerPhone">
@@ -155,13 +182,18 @@ import MainLayout from "../../layouts/MainLayout.astro";
             </div>
 
 
+            <!-- NOTE -->
+
             <div class="form-group">
 
               <label for="customerNote">
+
                 Catatan Pesanan
+
                 <span>
                   Opsional
                 </span>
+
               </label>
 
               <textarea
@@ -178,7 +210,9 @@ import MainLayout from "../../layouts/MainLayout.astro";
         </div>
 
 
-        <!-- PAYMENT -->
+        <!-- =================================================
+             PAYMENT
+        ================================================== -->
 
         <div class="section-card">
 
@@ -205,6 +239,7 @@ import MainLayout from "../../layouts/MainLayout.astro";
               <span></span>
             </div>
 
+
             <div class="payment-info">
 
               <strong>
@@ -217,6 +252,7 @@ import MainLayout from "../../layouts/MainLayout.astro";
 
             </div>
 
+
             <div class="payment-secure">
               Secure
             </div>
@@ -228,9 +264,16 @@ import MainLayout from "../../layouts/MainLayout.astro";
       </section>
 
 
-      <!-- RIGHT -->
+      <!-- ===================================================
+           RIGHT SIDEBAR
+      ==================================================== -->
 
       <aside class="checkout-sidebar">
+
+
+        <!-- =================================================
+             SUMMARY
+        ================================================== -->
 
         <div class="summary-card">
 
@@ -290,6 +333,8 @@ import MainLayout from "../../layouts/MainLayout.astro";
           </div>
 
 
+          <!-- CHECKOUT BUTTON -->
+
           <button
             type="button"
             id="checkoutButton"
@@ -307,13 +352,19 @@ import MainLayout from "../../layouts/MainLayout.astro";
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
+              aria-hidden="true"
             >
+
               <path d="M5 12h14" />
+
               <path d="m13 6 6 6-6 6" />
+
             </svg>
 
           </button>
 
+
+          <!-- SECURE -->
 
           <div class="secure-note">
 
@@ -324,7 +375,9 @@ import MainLayout from "../../layouts/MainLayout.astro";
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
+              aria-hidden="true"
             >
+
               <rect
                 width="18"
                 height="11"
@@ -346,6 +399,8 @@ import MainLayout from "../../layouts/MainLayout.astro";
         </div>
 
 
+        <!-- BACK CART -->
+
         <div class="back-cart">
 
           <a href="/cart">
@@ -360,111 +415,199 @@ import MainLayout from "../../layouts/MainLayout.astro";
 
   </main>
 
-
 </MainLayout>
 
 
 <script>
 
-  /*
-   * =====================================================
-   * CART
-   * =====================================================
-   */
+/* =========================================================
+   CART CONFIGURATION
+========================================================= */
 
-  let cart = [];
+/*
+ * SATU-SATUNYA CART KEY
+ */
+
+const CART_KEY = "cart";
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const itemsContainer =
+  document.querySelector("#checkoutItems");
+
+const subtotalElement =
+  document.querySelector("#subtotal");
+
+const totalElement =
+  document.querySelector("#total");
+
+const checkoutButton =
+  document.querySelector("#checkoutButton");
+
+const checkoutForm =
+  document.querySelector("#checkoutForm");
+
+
+/* =========================================================
+   GET CART
+========================================================= */
+
+function getCart() {
 
   try {
 
-    cart = JSON.parse(
-      localStorage.getItem("cart") || "[]"
+    const stored =
+      localStorage.getItem(CART_KEY);
+
+    const parsed =
+      JSON.parse(stored || "[]");
+
+    return Array.isArray(parsed)
+      ? parsed
+      : [];
+
+  } catch (error) {
+
+    console.error(
+      "Cart parse error:",
+      error
     );
 
-    if (!Array.isArray(cart)) {
-      cart = [];
-    }
-
-  } catch {
-
-    cart = [];
+    return [];
 
   }
 
-
-  /*
-   * =====================================================
-   * ELEMENTS
-   * =====================================================
-   */
-
-  const itemsContainer =
-    document.querySelector("#checkoutItems");
-
-  const subtotalElement =
-    document.querySelector("#subtotal");
-
-  const totalElement =
-    document.querySelector("#total");
-
-  const checkoutButton =
-    document.querySelector("#checkoutButton");
-
-  const checkoutForm =
-    document.querySelector("#checkoutForm");
+}
 
 
-  /*
-   * =====================================================
-   * FORMAT PRICE
-   * =====================================================
-   */
+/* =========================================================
+   SAVE CART
+========================================================= */
 
-  function formatPrice(value) {
+function saveCart(cart) {
 
-    return (
-      "Rp " +
-      Number(value || 0)
-        .toLocaleString("id-ID")
+  try {
+
+    localStorage.setItem(
+      CART_KEY,
+      JSON.stringify(cart)
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Cart save error:",
+      error
     );
 
   }
 
+}
+
+
+/* =========================================================
+   CLEAR CART
+========================================================= */
+
+function clearCart() {
 
   /*
-   * =====================================================
-   * ESCAPE HTML
-   * =====================================================
+   * Hapus cart utama
    */
 
-  function escapeHtml(value) {
-
-    return String(value ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-
-  }
+  localStorage.removeItem(
+    CART_KEY
+  );
 
 
   /*
-   * =====================================================
-   * NORMALIZE CART
-   * =====================================================
+   * Beritahu Header
    */
 
-  cart = cart
+  window.dispatchEvent(
+    new Event("cartUpdated")
+  );
+
+}
+
+
+/* =========================================================
+   FORMAT PRICE
+========================================================= */
+
+function formatPrice(value) {
+
+  const number =
+    Number(value || 0);
+
+  return (
+    "Rp " +
+    number.toLocaleString(
+      "id-ID"
+    )
+  );
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* =========================================================
+   NORMALIZE CART
+========================================================= */
+
+function normalizeCart(cart) {
+
+  return cart
+
     .map(item => {
 
       const quantity =
         Math.max(
           1,
-          Number(item.quantity || 1)
+          Number(
+            item.quantity || 1
+          )
         );
 
+
       const price =
-        Number(item.price || 0);
+        Number(
+          item.price || 0
+        );
+
 
       return {
 
@@ -472,7 +615,8 @@ import MainLayout from "../../layouts/MainLayout.astro";
           item.id ||
           item.slug ||
           item.url ||
-          item.title,
+          item.title ||
+          "",
 
         slug:
           item.slug ||
@@ -481,6 +625,10 @@ import MainLayout from "../../layouts/MainLayout.astro";
         title:
           item.title ||
           "Produk",
+
+        category:
+          item.category ||
+          "Product",
 
         price,
 
@@ -494,113 +642,160 @@ import MainLayout from "../../layouts/MainLayout.astro";
       };
 
     })
-    .filter(item => item.quantity > 0);
+
+    .filter(
+      item =>
+        item.id &&
+        item.quantity > 0
+    );
+
+}
+
+
+/* =========================================================
+   CART DATA
+========================================================= */
+
+let cart =
+  normalizeCart(
+    getCart()
+  );
+
+
+/*
+ * Simpan hasil normalisasi
+ */
+
+saveCart(cart);
+
+
+/* =========================================================
+   CALCULATE TOTAL
+========================================================= */
+
+function calculateTotal() {
+
+  return cart.reduce(
+    (total, item) => {
+
+      return total +
+        (
+          Number(
+            item.price || 0
+          ) *
+          Number(
+            item.quantity || 1
+          )
+        );
+
+    },
+    0
+  );
+
+}
+
+
+/* =========================================================
+   RENDER ITEMS
+========================================================= */
+
+function renderItems() {
+
+  if (!itemsContainer) {
+    return;
+  }
 
 
   /*
-   * =====================================================
-   * CALCULATE TOTAL
-   * =====================================================
+   * CART EMPTY
    */
 
-  function calculateTotal() {
+  if (!cart.length) {
 
-    return cart.reduce(
-      (total, item) => {
+    itemsContainer.innerHTML = `
 
-        return total +
-          (
-            Number(item.price || 0) *
-            Number(item.quantity || 1)
-          );
+      <div class="empty-checkout">
 
-      },
-      0
-    );
+        <div class="empty-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            aria-hidden="true"
+          >
+
+            <circle
+              cx="9"
+              cy="20"
+              r="1"
+            />
+
+            <circle
+              cx="18"
+              cy="20"
+              r="1"
+            />
+
+            <path
+              d="M3 4h2l2.4 11.5a2 2 0 0 0 2 1.5h7.7a2 2 0 0 0 2-1.5L21 8H6"
+            />
+
+          </svg>
+
+        </div>
+
+
+        <h3>
+          Cart masih kosong
+        </h3>
+
+
+        <p>
+          Tambahkan produk terlebih dahulu
+          sebelum melakukan checkout.
+        </p>
+
+
+        <a
+          href="/product/"
+          class="empty-button"
+        >
+          Lihat Produk
+        </a>
+
+      </div>
+
+    `;
+
+    return;
 
   }
 
 
   /*
-   * =====================================================
-   * RENDER ITEMS
-   * =====================================================
+   * RENDER PRODUCTS
    */
 
-  function renderItems() {
-
-    if (!itemsContainer) {
-      return;
-    }
-
-
-    if (!cart.length) {
-
-      itemsContainer.innerHTML = `
-
-        <div class="empty-checkout">
-
-          <div class="empty-icon">
-
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.7"
-            >
-
-              <circle
-                cx="9"
-                cy="20"
-                r="1"
-              />
-
-              <circle
-                cx="18"
-                cy="20"
-                r="1"
-              />
-
-              <path
-                d="M3 4h2l2.4 11.5a2 2 0 0 0 2 1.5h7.7a2 2 0 0 0 2-1.5L21 8H6"
-              />
-
-            </svg>
-
-          </div>
-
-          <h3>
-            Cart masih kosong
-          </h3>
-
-          <p>
-            Tambahkan produk terlebih dahulu sebelum melakukan checkout.
-          </p>
-
-          <a href="/product/" class="empty-button">
-            Lihat Produk
-          </a>
-
-        </div>
-
-      `;
-
-      return;
-
-    }
-
-
-    itemsContainer.innerHTML =
-      cart.map(item => {
+  itemsContainer.innerHTML =
+    cart
+      .map(item => {
 
         const subtotal =
-          Number(item.price || 0) *
-          Number(item.quantity || 1);
+          Number(
+            item.price || 0
+          ) *
+          Number(
+            item.quantity || 1
+          );
 
 
         const image =
           item.image ||
-          `/api/og/${item.slug}.svg`;
+          `/api/og/${encodeURIComponent(
+            item.slug
+          )}.svg`;
 
 
         return `
@@ -626,6 +821,7 @@ import MainLayout from "../../layouts/MainLayout.astro";
                 ${escapeHtml(item.title)}
               </h3>
 
+
               <div class="item-meta">
 
                 <span>
@@ -646,310 +842,458 @@ import MainLayout from "../../layouts/MainLayout.astro";
 
 
             <strong class="item-total">
+
               ${formatPrice(subtotal)}
+
             </strong>
 
           </div>
 
         `;
 
-      }).join("");
+      })
+      .join("");
+
+}
+
+
+/* =========================================================
+   UPDATE SUMMARY
+========================================================= */
+
+function updateSummary() {
+
+  const total =
+    calculateTotal();
+
+
+  if (subtotalElement) {
+
+    subtotalElement.textContent =
+      formatPrice(total);
 
   }
 
 
-  /*
-   * =====================================================
-   * UPDATE SUMMARY
-   * =====================================================
-   */
+  if (totalElement) {
 
-  function updateSummary() {
-
-    const total =
-      calculateTotal();
-
-
-    if (subtotalElement) {
-
-      subtotalElement.textContent =
-        formatPrice(total);
-
-    }
-
-
-    if (totalElement) {
-
-      totalElement.textContent =
-        formatPrice(total);
-
-    }
-
-
-    if (checkoutButton) {
-
-      checkoutButton.disabled =
-        cart.length === 0;
-
-    }
+    totalElement.textContent =
+      formatPrice(total);
 
   }
 
 
-  /*
-   * =====================================================
-   * INITIAL RENDER
-   * =====================================================
-   */
+  if (checkoutButton) {
+
+    checkoutButton.disabled =
+      cart.length === 0;
+
+  }
+
+}
+
+
+/* =========================================================
+   REFRESH
+========================================================= */
+
+function refreshCheckout() {
+
+  cart =
+    normalizeCart(
+      getCart()
+    );
 
   renderItems();
 
   updateSummary();
 
-
-  /*
-   * =====================================================
-   * CHECKOUT
-   * =====================================================
-   */
-
-  checkoutButton?.addEventListener(
-    "click",
-    () => {
-
-      if (!cart.length) {
-
-        alert(
-          "Cart masih kosong."
-        );
-
-        return;
-
-      }
+}
 
 
-      if (
-        checkoutForm &&
-        !checkoutForm.reportValidity()
-      ) {
+/* =========================================================
+   INITIAL RENDER
+========================================================= */
 
-        return;
-
-      }
+refreshCheckout();
 
 
-      const formData =
-        checkoutForm
-          ? new FormData(
-              checkoutForm
-            )
-          : null;
+/* =========================================================
+   CHECKOUT
+========================================================= */
 
+checkoutButton?.addEventListener(
+  "click",
+  () => {
 
-      const customer = {
+    /*
+     * Refresh data sebelum checkout
+     */
 
-        name:
-          formData?.get("name") ||
-          "",
-
-        email:
-          formData?.get("email") ||
-          "",
-
-        phone:
-          formData?.get("phone") ||
-          "",
-
-        note:
-          formData?.get("note") ||
-          ""
-
-      };
-
-
-      /*
-       * =================================================
-       * ORDER ID
-       * =================================================
-       */
-
-      const orderId =
-        "ORD-" +
-        Date.now();
-
-
-      /*
-       * =================================================
-       * TOTAL
-       * =================================================
-       */
-
-      const totalValue =
-        calculateTotal();
-
-
-      /*
-       * =================================================
-       * ORDER OBJECT
-       * =================================================
-       */
-
-      const order = {
-
-        orderId,
-
-        items:
-          cart.map(item => ({
-
-            id:
-              item.id,
-
-            slug:
-              item.slug,
-
-            title:
-              item.title,
-
-            price:
-              Number(item.price || 0),
-
-            quantity:
-              Number(item.quantity || 1),
-
-            image:
-              item.image || ""
-
-          })),
-
-        totalValue,
-
-        customer,
-
-        createdAt:
-          new Date().toISOString(),
-
-        paymentStatus:
-          "pending"
-
-      };
-
-
-      /*
-       * =================================================
-       * SAVE ORDER
-       * =================================================
-       */
-
-      try {
-
-        sessionStorage.setItem(
-          "checkoutOrder",
-          JSON.stringify(order)
-        );
-
-      } catch (error) {
-
-        console.error(
-          "Failed to save checkout order:",
-          error
-        );
-
-        alert(
-          "Data checkout gagal disimpan. Silakan coba lagi."
-        );
-
-        return;
-
-      }
-
-
-      /*
-       * =================================================
-       * TEMPORARY PAYMENT FLOW
-       *
-       * NANTI BAGIAN INI DIGANTI PAYMENT API
-       * =================================================
-       */
-
-      checkoutButton.disabled =
-        true;
-
-
-      checkoutButton.innerHTML = `
-
-        <span>
-          Memproses...
-        </span>
-
-      `;
-
-
-      /*
-       * =================================================
-       * SIMULATED SUCCESS
-       *
-       * Untuk sementara langsung ke success.
-       * Ketika payment gateway sudah aktif,
-       * redirect dilakukan setelah server
-       * mengonfirmasi pembayaran.
-       * =================================================
-       */
-
-      setTimeout(
-        () => {
-
-          window.location.href =
-            "/checkout/success/";
-
-        },
-        500
+    cart =
+      normalizeCart(
+        getCart()
       );
 
+
+    /*
+     * Cart kosong
+     */
+
+    if (!cart.length) {
+
+      alert(
+        "Cart masih kosong."
+      );
+
+      return;
+
     }
-  );
+
+
+    /*
+     * Validasi form
+     */
+
+    if (
+      checkoutForm &&
+      !checkoutForm.reportValidity()
+    ) {
+
+      return;
+
+    }
+
+
+    /*
+     * Ambil data customer
+     */
+
+    const formData =
+      checkoutForm
+        ? new FormData(
+            checkoutForm
+          )
+        : null;
+
+
+    const customer = {
+
+      name:
+        String(
+          formData?.get("name") || ""
+        ).trim(),
+
+      email:
+        String(
+          formData?.get("email") || ""
+        ).trim(),
+
+      phone:
+        String(
+          formData?.get("phone") || ""
+        ).trim(),
+
+      note:
+        String(
+          formData?.get("note") || ""
+        ).trim()
+
+    };
+
+
+    /*
+     * ORDER ID
+     */
+
+    const orderId =
+      "ORD-" +
+      Date.now();
+
+
+    /*
+     * TOTAL
+     */
+
+    const totalValue =
+      calculateTotal();
+
+
+    /*
+     * ORDER OBJECT
+     */
+
+    const order = {
+
+      orderId,
+
+      items:
+        cart.map(item => ({
+
+          id:
+            item.id,
+
+          slug:
+            item.slug,
+
+          title:
+            item.title,
+
+          category:
+            item.category,
+
+          price:
+            Number(
+              item.price || 0
+            ),
+
+          quantity:
+            Number(
+              item.quantity || 1
+            ),
+
+          image:
+            item.image || ""
+
+        })),
+
+      totalValue,
+
+      customer,
+
+      createdAt:
+        new Date().toISOString(),
+
+      paymentStatus:
+        "pending"
+
+    };
+
+
+    /*
+     * SAVE CHECKOUT ORDER
+     */
+
+    try {
+
+      sessionStorage.setItem(
+        "checkoutOrder",
+        JSON.stringify(order)
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Failed to save checkout order:",
+        error
+      );
+
+      alert(
+        "Data checkout gagal disimpan. Silakan coba lagi."
+      );
+
+      return;
+
+    }
+
+
+    /*
+     * DISABLE BUTTON
+     */
+
+    checkoutButton.disabled =
+      true;
+
+
+    checkoutButton.innerHTML = `
+
+      <span>
+        Memproses...
+      </span>
+
+    `;
+
+
+    /*
+     * =====================================================
+     * SIMULATED PAYMENT SUCCESS
+     *
+     * NANTI BAGIAN INI DIGANTI PAYMENT GATEWAY.
+     *
+     * PENTING:
+     * CART BARU DIHAPUS SETELAH PEMBAYARAN SUKSES.
+     * =====================================================
+     */
+
+    setTimeout(
+      () => {
+
+        /*
+         * ================================================
+         * PAYMENT SUCCESS
+         * ================================================
+         */
+
+        clearCart();
+
+
+        /*
+         * Update status order
+         */
+
+        try {
+
+          const currentOrder =
+            JSON.parse(
+              sessionStorage.getItem(
+                "checkoutOrder"
+              ) || "{}"
+            );
+
+
+          currentOrder.paymentStatus =
+            "success";
+
+
+          currentOrder.paidAt =
+            new Date().toISOString();
+
+
+          sessionStorage.setItem(
+            "checkoutOrder",
+            JSON.stringify(
+              currentOrder
+            )
+          );
+
+        } catch (error) {
+
+          console.error(
+            "Failed to update order status:",
+            error
+          );
+
+        }
+
+
+        /*
+         * Redirect SUCCESS
+         */
+
+        window.location.href =
+          "/checkout/success/";
+
+      },
+      500
+    );
+
+  }
+);
+
+
+/* =========================================================
+   CART UPDATED
+========================================================= */
+
+window.addEventListener(
+  "cartUpdated",
+  () => {
+
+    refreshCheckout();
+
+  }
+);
+
+
+/* =========================================================
+   OTHER TAB
+========================================================= */
+
+window.addEventListener(
+  "storage",
+  event => {
+
+    if (
+      event.key === CART_KEY
+    ) {
+
+      refreshCheckout();
+
+    }
+
+  }
+);
 
 </script>
 
 
 <style is:global>
 
+/* =========================================================
+   CHECKOUT PAGE
+========================================================= */
+
 .checkout-page{
-  width:min(1200px, calc(100% - 40px));
 
-  margin:0 auto;
+  width:
+    min(
+      1200px,
+      calc(100% - 40px)
+    );
 
-  padding:55px 0 80px;
+  margin:
+    0 auto;
 
-  color:var(--text);
+  padding:
+    55px
+    0
+    80px;
+
+  color:
+    var(--text);
+
 }
 
 
-/* =====================================================
+/* =========================================================
    HEADER
-===================================================== */
+========================================================= */
 
 .checkout-header{
-  margin-bottom:35px;
+
+  margin-bottom:
+    35px;
+
 }
 
 
 .checkout-label{
-  display:inline-block;
 
-  margin-bottom:8px;
+  display:
+    inline-block;
 
-  color:var(--primary);
+  margin-bottom:
+    8px;
 
-  font-size:11px;
+  color:
+    var(--primary);
 
-  font-weight:800;
+  font-size:
+    11px;
 
-  letter-spacing:1.6px;
+  font-weight:
+    800;
+
+  letter-spacing:
+    1.6px;
+
 }
 
 
 .checkout-header h1{
-  margin:0;
+
+  margin:
+    0;
 
   font-size:
     clamp(
@@ -958,177 +1302,271 @@ import MainLayout from "../../layouts/MainLayout.astro";
       42px
     );
 
-  line-height:1.15;
+  line-height:
+    1.15;
 
-  letter-spacing:-1px;
+  letter-spacing:
+    -1px;
+
 }
 
 
 .checkout-header p{
-  max-width:650px;
 
-  margin:10px 0 0;
+  max-width:
+    650px;
 
-  color:var(--text-secondary);
+  margin:
+    10px 0 0;
 
-  font-size:14px;
+  color:
+    var(--text-secondary);
 
-  line-height:1.7;
+  font-size:
+    14px;
+
+  line-height:
+    1.7;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    LAYOUT
-===================================================== */
+========================================================= */
 
 .checkout-layout{
-  display:grid;
+
+  display:
+    grid;
 
   grid-template-columns:
     minmax(0, 1fr)
     390px;
 
-  gap:24px;
+  gap:
+    24px;
 
-  align-items:start;
+  align-items:
+    start;
+
 }
 
 
 .checkout-content{
-  min-width:0;
 
-  display:grid;
+  min-width:
+    0;
 
-  gap:20px;
+  display:
+    grid;
+
+  gap:
+    20px;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    CARD
-===================================================== */
+========================================================= */
 
 .section-card,
 .summary-card{
-  background:var(--surface);
 
-  border:1px solid var(--border);
+  background:
+    var(--surface);
 
-  border-radius:var(--radius-lg);
+  border:
+    1px solid var(--border);
 
-  box-shadow:var(--shadow);
+  border-radius:
+    var(--radius-lg);
+
+  box-shadow:
+    var(--shadow);
+
 }
 
 
 .section-card{
-  padding:26px;
+
+  padding:
+    26px;
+
 }
 
 
+/* =========================================================
+   SECTION HEADING
+========================================================= */
+
 .section-heading{
-  display:flex;
 
-  align-items:flex-start;
+  display:
+    flex;
 
-  justify-content:space-between;
+  align-items:
+    flex-start;
 
-  gap:20px;
+  justify-content:
+    space-between;
 
-  margin-bottom:22px;
+  gap:
+    20px;
+
+  margin-bottom:
+    22px;
+
 }
 
 
 .section-label{
-  display:block;
 
-  margin-bottom:5px;
+  display:
+    block;
 
-  color:var(--primary);
+  margin-bottom:
+    5px;
 
-  font-size:10px;
+  color:
+    var(--primary);
 
-  font-weight:800;
+  font-size:
+    10px;
 
-  letter-spacing:1.3px;
+  font-weight:
+    800;
+
+  letter-spacing:
+    1.3px;
+
 }
 
 
 .section-heading h2{
-  margin:0;
 
-  font-size:20px;
+  margin:
+    0;
 
-  line-height:1.3;
+  font-size:
+    20px;
+
+  line-height:
+    1.3;
+
 }
 
 
 .edit-cart{
-  color:var(--primary);
 
-  font-size:12px;
+  color:
+    var(--primary);
 
-  font-weight:700;
+  font-size:
+    12px;
 
-  text-decoration:none;
+  font-weight:
+    700;
+
+  text-decoration:
+    none;
+
 }
 
 
 .edit-cart:hover{
-  text-decoration:underline;
+
+  text-decoration:
+    underline;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    ITEMS
-===================================================== */
+========================================================= */
 
 .checkout-items{
-  display:grid;
 
-  gap:0;
+  display:
+    grid;
+
+  gap:
+    0;
+
 }
 
 
 .checkout-item{
-  display:grid;
 
-  grid-template-columns:82px minmax(0,1fr) auto;
+  display:
+    grid;
 
-  align-items:center;
+  grid-template-columns:
+    82px
+    minmax(0, 1fr)
+    auto;
 
-  gap:15px;
+  align-items:
+    center;
 
-  padding:15px 0;
+  gap:
+    15px;
 
-  border-bottom:1px solid var(--border);
+  padding:
+    15px 0;
+
+  border-bottom:
+    1px solid var(--border);
+
 }
 
 
 .checkout-item:first-child{
-  padding-top:0;
+
+  padding-top:
+    0;
+
 }
 
 
 .checkout-item:last-child{
-  padding-bottom:0;
 
-  border-bottom:0;
+  padding-bottom:
+    0;
+
+  border-bottom:
+    0;
+
 }
 
 
 .item-image{
-  width:82px;
-  height:82px;
 
-  overflow:hidden;
+  width:
+    82px;
 
-  display:flex;
+  height:
+    82px;
 
-  align-items:center;
-  justify-content:center;
+  overflow:
+    hidden;
 
-  border:1px solid var(--border);
+  display:
+    flex;
 
-  border-radius:12px;
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    12px;
 
   background:
     linear-gradient(
@@ -1136,234 +1574,360 @@ import MainLayout from "../../layouts/MainLayout.astro";
       var(--surface-hover),
       var(--surface)
     );
+
 }
 
 
 .item-image img{
-  width:100%;
-  height:100%;
 
-  object-fit:contain;
+  width:
+    100%;
 
-  padding:8px;
+  height:
+    100%;
+
+  object-fit:
+    contain;
+
+  padding:
+    8px;
+
 }
 
 
 .item-content{
-  min-width:0;
+
+  min-width:
+    0;
+
 }
 
 
 .item-content h3{
-  margin:0 0 7px;
 
-  color:var(--text);
+  margin:
+    0 0 7px;
 
-  font-size:14px;
+  color:
+    var(--text);
 
-  line-height:1.4;
+  font-size:
+    14px;
+
+  line-height:
+    1.4;
+
 }
 
 
 .item-meta{
-  display:flex;
 
-  align-items:center;
+  display:
+    flex;
 
-  flex-wrap:wrap;
+  align-items:
+    center;
 
-  gap:6px;
+  flex-wrap:
+    wrap;
 
-  color:var(--text-secondary);
+  gap:
+    6px;
 
-  font-size:12px;
+  color:
+    var(--text-secondary);
+
+  font-size:
+    12px;
+
 }
 
 
 .item-total{
-  color:var(--text);
 
-  font-size:14px;
+  color:
+    var(--text);
 
-  white-space:nowrap;
+  font-size:
+    14px;
+
+  white-space:
+    nowrap;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    EMPTY
-===================================================== */
+========================================================= */
 
 .empty-checkout{
-  padding:40px 20px;
 
-  text-align:center;
+  padding:
+    40px 20px;
 
-  border:1px dashed var(--border);
+  text-align:
+    center;
 
-  border-radius:var(--radius);
+  border:
+    1px dashed var(--border);
+
+  border-radius:
+    var(--radius);
+
 }
 
 
 .empty-icon{
-  width:55px;
-  height:55px;
 
-  margin:0 auto 15px;
+  width:
+    55px;
 
-  display:flex;
+  height:
+    55px;
 
-  align-items:center;
-  justify-content:center;
+  margin:
+    0 auto 15px;
 
-  border-radius:50%;
+  display:
+    flex;
 
-  background:var(--surface-hover);
+  align-items:
+    center;
 
-  color:var(--text-secondary);
+  justify-content:
+    center;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--surface-hover);
+
+  color:
+    var(--text-secondary);
+
 }
 
 
 .empty-icon svg{
-  width:27px;
-  height:27px;
+
+  width:
+    27px;
+
+  height:
+    27px;
+
 }
 
 
 .empty-checkout h3{
-  margin:0;
 
-  font-size:17px;
+  margin:
+    0;
+
+  font-size:
+    17px;
+
 }
 
 
 .empty-checkout p{
-  max-width:420px;
 
-  margin:8px auto 18px;
+  max-width:
+    420px;
 
-  color:var(--text-secondary);
+  margin:
+    8px auto 18px;
 
-  font-size:12px;
+  color:
+    var(--text-secondary);
 
-  line-height:1.7;
+  font-size:
+    12px;
+
+  line-height:
+    1.7;
+
 }
 
 
 .empty-button{
-  display:inline-flex;
 
-  min-height:42px;
+  display:
+    inline-flex;
 
-  padding:0 18px;
+  min-height:
+    42px;
 
-  align-items:center;
-  justify-content:center;
+  padding:
+    0 18px;
 
-  border-radius:9px;
+  align-items:
+    center;
 
-  background:var(--bgbtn);
+  justify-content:
+    center;
 
-  color:var(--textbtn);
+  border-radius:
+    9px;
 
-  font-size:12px;
+  background:
+    var(--bgbtn);
 
-  font-weight:700;
+  color:
+    var(--textbtn);
 
-  text-decoration:none;
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+
+  text-decoration:
+    none;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    FORM
-===================================================== */
+========================================================= */
 
 .customer-form{
-  display:grid;
 
-  gap:17px;
+  display:
+    grid;
+
+  gap:
+    17px;
+
 }
 
 
 .form-grid{
-  display:grid;
+
+  display:
+    grid;
 
   grid-template-columns:
-    repeat(2, minmax(0,1fr));
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
 
-  gap:15px;
+  gap:
+    15px;
+
 }
 
 
 .form-group{
-  display:grid;
 
-  gap:7px;
+  display:
+    grid;
+
+  gap:
+    7px;
+
 }
 
 
 .form-group label{
-  color:var(--text);
 
-  font-size:12px;
+  color:
+    var(--text);
 
-  font-weight:700;
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+
 }
 
 
 .form-group label span{
-  color:var(--text-secondary);
 
-  font-size:10px;
+  color:
+    var(--text-secondary);
 
-  font-weight:400;
+  font-size:
+    10px;
+
+  font-weight:
+    400;
+
 }
 
 
 .form-group input,
 .form-group textarea{
-  width:100%;
 
-  box-sizing:border-box;
+  width:
+    100%;
 
-  border:1px solid var(--border);
+  box-sizing:
+    border-box;
 
-  border-radius:10px;
+  border:
+    1px solid var(--border);
 
-  outline:none;
+  border-radius:
+    10px;
 
-  background:var(--surface);
+  outline:
+    none;
 
-  color:var(--text);
+  background:
+    var(--surface);
 
-  font-family:inherit;
+  color:
+    var(--text);
 
-  font-size:13px;
+  font-family:
+    inherit;
+
+  font-size:
+    13px;
 
   transition:
     border-color .2s,
     box-shadow .2s;
+
 }
 
 
 .form-group input{
-  height:46px;
 
-  padding:0 13px;
+  height:
+    46px;
+
+  padding:
+    0 13px;
+
 }
 
 
 .form-group textarea{
-  padding:12px 13px;
 
-  resize:vertical;
+  padding:
+    12px 13px;
 
-  min-height:100px;
+  resize:
+    vertical;
+
+  min-height:
+    100px;
+
 }
 
 
 .form-group input:focus,
 .form-group textarea:focus{
-  border-color:var(--primary);
+
+  border-color:
+    var(--primary);
 
   box-shadow:
     0 0 0 3px
@@ -1372,33 +1936,45 @@ import MainLayout from "../../layouts/MainLayout.astro";
       var(--primary) 10%,
       transparent
     );
+
 }
 
 
 .form-group input::placeholder,
 .form-group textarea::placeholder{
-  color:var(--text-secondary);
 
-  opacity:.65;
+  color:
+    var(--text-secondary);
+
+  opacity:
+    .65;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    PAYMENT
-===================================================== */
+========================================================= */
 
 .payment-option{
-  display:flex;
 
-  align-items:center;
+  display:
+    flex;
 
-  gap:13px;
+  align-items:
+    center;
 
-  padding:15px;
+  gap:
+    13px;
 
-  border:1px solid var(--primary);
+  padding:
+    15px;
 
-  border-radius:12px;
+  border:
+    1px solid var(--primary);
+
+  border-radius:
+    12px;
 
   background:
     color-mix(
@@ -1406,67 +1982,105 @@ import MainLayout from "../../layouts/MainLayout.astro";
       var(--primary) 5%,
       transparent
     );
+
 }
 
 
 .payment-radio{
-  width:20px;
-  height:20px;
 
-  flex:0 0 20px;
+  width:
+    20px;
 
-  display:flex;
+  height:
+    20px;
 
-  align-items:center;
-  justify-content:center;
+  flex:
+    0 0 20px;
 
-  border:2px solid var(--primary);
+  display:
+    flex;
 
-  border-radius:50%;
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border:
+    2px solid var(--primary);
+
+  border-radius:
+    50%;
+
 }
 
 
 .payment-radio span{
-  width:8px;
-  height:8px;
 
-  border-radius:50%;
+  width:
+    8px;
 
-  background:var(--primary);
+  height:
+    8px;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--primary);
+
 }
 
 
 .payment-info{
-  min-width:0;
 
-  display:grid;
+  min-width:
+    0;
 
-  gap:4px;
+  display:
+    grid;
+
+  gap:
+    4px;
+
 }
 
 
 .payment-info strong{
-  color:var(--text);
 
-  font-size:13px;
+  color:
+    var(--text);
+
+  font-size:
+    13px;
+
 }
 
 
 .payment-info small{
-  color:var(--text-secondary);
 
-  font-size:11px;
+  color:
+    var(--text-secondary);
 
-  line-height:1.5;
+  font-size:
+    11px;
+
+  line-height:
+    1.5;
+
 }
 
 
 .payment-secure{
-  margin-left:auto;
 
-  padding:5px 8px;
+  margin-left:
+    auto;
 
-  border-radius:999px;
+  padding:
+    5px 8px;
+
+  border-radius:
+    999px;
 
   background:
     color-mix(
@@ -1475,229 +2089,348 @@ import MainLayout from "../../layouts/MainLayout.astro";
       transparent
     );
 
-  color:var(--primary);
+  color:
+    var(--primary);
 
-  font-size:9px;
+  font-size:
+    9px;
 
-  font-weight:800;
+  font-weight:
+    800;
 
-  text-transform:uppercase;
+  text-transform:
+    uppercase;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    SIDEBAR
-===================================================== */
+========================================================= */
 
 .checkout-sidebar{
-  position:sticky;
 
-  top:24px;
+  position:
+    sticky;
+
+  top:
+    24px;
+
 }
 
 
 .summary-card{
-  padding:25px;
+
+  padding:
+    25px;
+
 }
 
 
 .summary-header{
-  margin-bottom:22px;
+
+  margin-bottom:
+    22px;
+
 }
 
 
 .summary-header h2{
-  margin:0;
 
-  font-size:20px;
+  margin:
+    0;
+
+  font-size:
+    20px;
+
 }
 
 
+/* =========================================================
+   SUMMARY
+========================================================= */
+
 .summary-lines{
-  padding:5px 0;
 
-  border-top:1px solid var(--border);
+  padding:
+    5px 0;
 
-  border-bottom:1px solid var(--border);
+  border-top:
+    1px solid var(--border);
+
+  border-bottom:
+    1px solid var(--border);
+
 }
 
 
 .summary-row{
-  display:flex;
 
-  align-items:center;
+  display:
+    flex;
 
-  justify-content:space-between;
+  align-items:
+    center;
 
-  gap:20px;
+  justify-content:
+    space-between;
 
-  min-height:47px;
+  gap:
+    20px;
 
-  color:var(--text-secondary);
+  min-height:
+    47px;
 
-  font-size:13px;
+  color:
+    var(--text-secondary);
+
+  font-size:
+    13px;
+
 }
 
 
 .summary-row strong{
-  color:var(--text);
 
-  font-size:13px;
+  color:
+    var(--text);
+
+  font-size:
+    13px;
+
 }
 
 
 .summary-total{
-  display:flex;
 
-  align-items:center;
+  display:
+    flex;
 
-  justify-content:space-between;
+  align-items:
+    center;
 
-  gap:20px;
+  justify-content:
+    space-between;
 
-  padding:20px 0;
+  gap:
+    20px;
+
+  padding:
+    20px 0;
 
 }
 
 
 .summary-total span{
-  color:var(--text);
 
-  font-size:14px;
+  color:
+    var(--text);
 
-  font-weight:700;
+  font-size:
+    14px;
+
+  font-weight:
+    700;
+
 }
 
 
 .summary-total strong{
-  color:var(--text);
 
-  font-size:22px;
+  color:
+    var(--text);
 
-  font-weight:900;
+  font-size:
+    22px;
+
+  font-weight:
+    900;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    BUTTON
-===================================================== */
+========================================================= */
 
 .checkout-button{
-  width:100%;
 
-  height:52px;
+  width:
+    100%;
 
-  border:0;
+  height:
+    52px;
 
-  border-radius:10px;
+  border:
+    0;
 
-  display:flex;
+  border-radius:
+    10px;
 
-  align-items:center;
+  display:
+    flex;
 
-  justify-content:center;
+  align-items:
+    center;
 
-  gap:9px;
+  justify-content:
+    center;
 
-  background:var(--bgbtn);
+  gap:
+    9px;
 
-  color:var(--textbtn);
+  background:
+    var(--bgbtn);
 
-  font-family:inherit;
+  color:
+    var(--textbtn);
 
-  font-size:13px;
+  font-family:
+    inherit;
 
-  font-weight:800;
+  font-size:
+    13px;
 
-  cursor:pointer;
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
 
   transition:
     transform .2s,
     filter .2s,
     opacity .2s;
+
 }
 
 
 .checkout-button svg{
-  width:17px;
-  height:17px;
+
+  width:
+    17px;
+
+  height:
+    17px;
+
 }
 
 
 .checkout-button:hover:not(:disabled){
-  transform:translateY(-1px);
 
-  filter:brightness(1.08);
+  transform:
+    translateY(-1px);
+
+  filter:
+    brightness(1.08);
+
 }
 
 
 .checkout-button:disabled{
-  opacity:.45;
 
-  cursor:not-allowed;
+  opacity:
+    .45;
+
+  cursor:
+    not-allowed;
+
 }
 
 
+/* =========================================================
+   SECURE NOTE
+========================================================= */
+
 .secure-note{
-  margin-top:14px;
 
-  display:flex;
+  margin-top:
+    14px;
 
-  align-items:center;
+  display:
+    flex;
 
-  justify-content:center;
+  align-items:
+    center;
 
-  gap:7px;
+  justify-content:
+    center;
 
-  color:var(--text-secondary);
+  gap:
+    7px;
 
-  font-size:10px;
+  color:
+    var(--text-secondary);
+
+  font-size:
+    10px;
+
 }
 
 
 .secure-note svg{
-  width:14px;
-  height:14px;
 
-  color:var(--primary);
+  width:
+    14px;
+
+  height:
+    14px;
+
+  color:
+    var(--primary);
+
 }
 
 
-/* =====================================================
-   BACK
-===================================================== */
+/* =========================================================
+   BACK CART
+========================================================= */
 
 .back-cart{
-  margin-top:15px;
 
-  text-align:center;
+  margin-top:
+    15px;
+
+  text-align:
+    center;
+
 }
 
 
 .back-cart a{
-  color:var(--text-secondary);
 
-  font-size:12px;
+  color:
+    var(--text-secondary);
 
-  text-decoration:none;
+  font-size:
+    12px;
+
+  text-decoration:
+    none;
+
 }
 
 
 .back-cart a:hover{
-  color:var(--primary);
+
+  color:
+    var(--primary);
+
 }
 
 
-/* =====================================================
+/* =========================================================
    RESPONSIVE
-===================================================== */
+========================================================= */
 
 @media(max-width:950px){
 
   .checkout-layout{
+
     grid-template-columns:
-      minmax(0,1fr)
+      minmax(0, 1fr)
       330px;
+
   }
 
 }
@@ -1706,19 +2439,29 @@ import MainLayout from "../../layouts/MainLayout.astro";
 @media(max-width:800px){
 
   .checkout-page{
-    width:calc(100% - 24px);
 
-    padding-top:35px;
+    width:
+      calc(100% - 24px);
+
+    padding-top:
+      35px;
+
   }
 
 
   .checkout-layout{
-    grid-template-columns:1fr;
+
+    grid-template-columns:
+      1fr;
+
   }
 
 
   .checkout-sidebar{
-    position:static;
+
+    position:
+      static;
+
   }
 
 }
@@ -1727,58 +2470,92 @@ import MainLayout from "../../layouts/MainLayout.astro";
 @media(max-width:600px){
 
   .checkout-page{
-    width:calc(100% - 20px);
 
-    padding:25px 0 50px;
+    width:
+      calc(100% - 20px);
+
+    padding:
+      25px 0 50px;
+
   }
 
 
   .section-card,
   .summary-card{
-    padding:20px;
+
+    padding:
+      20px;
+
   }
 
 
   .section-heading{
-    align-items:flex-start;
+
+    align-items:
+      flex-start;
+
   }
 
 
   .section-heading h2,
   .summary-header h2{
-    font-size:18px;
+
+    font-size:
+      18px;
+
   }
 
 
   .checkout-item{
-    grid-template-columns:65px minmax(0,1fr);
 
-    gap:12px;
+    grid-template-columns:
+      65px
+      minmax(0, 1fr);
+
+    gap:
+      12px;
+
   }
 
 
   .item-image{
-    width:65px;
-    height:65px;
+
+    width:
+      65px;
+
+    height:
+      65px;
+
   }
 
 
   .item-total{
-    grid-column:2;
 
-    margin-top:-5px;
+    grid-column:
+      2;
 
-    font-size:13px;
+    margin-top:
+      -5px;
+
+    font-size:
+      13px;
+
   }
 
 
   .form-grid{
-    grid-template-columns:1fr;
+
+    grid-template-columns:
+      1fr;
+
   }
 
 
   .payment-secure{
-    display:none;
+
+    display:
+      none;
+
   }
 
 }
