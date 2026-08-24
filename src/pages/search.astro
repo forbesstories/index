@@ -16,13 +16,22 @@ interface Blog {
   url: string;
 }
 
+interface Product {
+  title: string;
+  description: string;
+  url: string;
+}
+
 
 /* =========================================================
-   BLOG
+   CONTENT COLLECTION
 ========================================================= */
 
 const posts =
   await getCollection("blog");
+
+const products =
+  await getCollection("product");
 
 
 /* =========================================================
@@ -34,7 +43,7 @@ const toolsDir =
 
 
 /* =========================================================
-   RECURSIVE SCAN ASTRO
+   SCAN SEMUA FILE ASTRO
 ========================================================= */
 
 function getAstroFiles(
@@ -71,9 +80,7 @@ function getAstroFiles(
         )
       );
 
-    }
-
-    else if (
+    } else if (
       entry.name.endsWith(".astro")
     ) {
 
@@ -145,7 +152,7 @@ function extractValue(
 
 
 /* =========================================================
-   TOOL URL
+   CREATE TOOL URL
 ========================================================= */
 
 function createToolUrl(
@@ -171,9 +178,9 @@ function createToolUrl(
 
 
   /*
-   * /tools/category/index
+   * /tools/category/index.astro
    *
-   * menjadi
+   * menjadi:
    *
    * /tools/category
    */
@@ -197,7 +204,7 @@ function createToolUrl(
 
 
 /* =========================================================
-   READ TOOLS
+   READ ALL TOOLS
 ========================================================= */
 
 const files =
@@ -289,12 +296,39 @@ const blogs: Blog[] =
         post.title
     );
 
----
 
+/* =========================================================
+   PRODUCT DATA
+========================================================= */
+
+const productItems: Product[] =
+  products
+
+    .map(
+      (product) => ({
+
+        title:
+          product.data.title,
+
+        description:
+          product.data.description || "",
+
+        url:
+          `/product/${product.slug}/`
+
+      })
+    )
+
+    .filter(
+      (product) =>
+        product.title
+    );
+
+---
 
 <MainLayout
   title="Pencarian | AI Mr Ferdy"
-  description="Cari artikel dan tools AI Mr Ferdy berdasarkan judul dan deskripsi."
+  description="Cari tools, artikel, dan produk AI Mr Ferdy berdasarkan judul dan deskripsi."
 >
 
 
@@ -307,29 +341,68 @@ const blogs: Blog[] =
            HEADER
       ================================================== -->
 
-      <h1>
-        Pencarian AI Mr Ferdy
-      </h1>
+      <header class="search-header">
 
+        <span class="search-label">
+          SEARCH
+        </span>
 
-      <p class="search-description">
-        Cari artikel atau tools berdasarkan nama dan deskripsi.
-      </p>
+        <h1>
+          Pencarian AI Mr Ferdy
+        </h1>
+
+        <p class="search-description">
+          Cari tools, artikel, atau produk berdasarkan
+          nama dan deskripsi.
+        </p>
+
+      </header>
 
 
       <!-- =================================================
-           SEARCH
+           SEARCH FORM
       ================================================== -->
 
-      <div class="search-form">
+      <form
+        id="searchForm"
+        class="search-form"
+      >
 
-        <input
-          type="search"
-          id="searchInput"
-          placeholder="Cari artikel atau tools..."
-          autocomplete="off"
-          spellcheck="false"
-        />
+        <div class="search-input-wrap">
+
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+
+            <circle
+              cx="11"
+              cy="11"
+              r="7"
+            />
+
+            <path
+              d="m20 20-4-4"
+            />
+
+          </svg>
+
+
+          <input
+            type="search"
+            id="searchInput"
+            placeholder="Cari tools, artikel, atau produk..."
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Cari"
+          />
+
+        </div>
 
 
         <select
@@ -349,21 +422,28 @@ const blogs: Blog[] =
             Blog
           </option>
 
+          <option value="product">
+            Product
+          </option>
+
         </select>
 
 
         <button
-          type="button"
+          type="submit"
           id="searchButton"
+          class="search-button"
         >
+
           Search
+
         </button>
 
-      </div>
+      </form>
 
 
       <!-- =================================================
-           INFO
+           RESULT INFO
       ================================================== -->
 
       <div
@@ -391,7 +471,40 @@ const blogs: Blog[] =
         class="empty-search"
       >
 
-        Ketik kata kunci untuk mencari.
+        <div class="empty-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+
+            <circle
+              cx="11"
+              cy="11"
+              r="7"
+            />
+
+            <path
+              d="m20 20-4-4"
+            />
+
+          </svg>
+
+        </div>
+
+        <h2>
+          Cari sesuatu
+        </h2>
+
+        <p>
+          Masukkan kata kunci untuk mencari
+          tools, artikel, atau produk.
+        </p>
 
       </div>
 
@@ -405,7 +518,40 @@ const blogs: Blog[] =
         class="no-results"
       >
 
-        Tidak ada hasil ditemukan.
+        <div class="empty-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+
+            <circle
+              cx="11"
+              cy="11"
+              r="7"
+            />
+
+            <path
+              d="m20 20-4-4"
+            />
+
+          </svg>
+
+        </div>
+
+        <h2>
+          Tidak ada hasil
+        </h2>
+
+        <p>
+          Coba gunakan kata kunci lain atau
+          ubah kategori pencarian.
+        </p>
 
       </div>
 
@@ -419,9 +565,19 @@ const blogs: Blog[] =
 <script
   define:vars={{
     tools,
-    blogs
+    blogs,
+    productItems
   }}
 >
+
+  /* =======================================================
+     ELEMENTS
+  ======================================================== */
+
+  const form =
+    document.querySelector(
+      "#searchForm"
+    );
 
   const input =
     document.querySelector(
@@ -431,11 +587,6 @@ const blogs: Blog[] =
   const type =
     document.querySelector(
       "#searchType"
-    );
-
-  const button =
-    document.querySelector(
-      "#searchButton"
     );
 
   const results =
@@ -459,9 +610,9 @@ const blogs: Blog[] =
     );
 
 
-  /* =====================================================
+  /* =======================================================
      ESCAPE HTML
-  ====================================================== */
+  ======================================================== */
 
   function escapeHTML(
     value
@@ -492,11 +643,141 @@ const blogs: Blog[] =
   }
 
 
-  /* =====================================================
-     SEARCH
-  ====================================================== */
+  /* =======================================================
+     GET SEARCH DATA
+  ======================================================== */
 
-  function search() {
+  function getSearchData() {
+
+    const selectedType =
+      type.value;
+
+
+    /* =====================================================
+       TOOLS
+    ====================================================== */
+
+    const toolData =
+      tools.map(
+        tool => ({
+
+          title:
+            tool.title,
+
+          description:
+            tool.description,
+
+          url:
+            tool.url,
+
+          type:
+            "tool"
+
+        })
+      );
+
+
+    /* =====================================================
+       BLOG
+    ====================================================== */
+
+    const blogData =
+      blogs.map(
+        blog => ({
+
+          title:
+            blog.title,
+
+          description:
+            blog.description,
+
+          url:
+            blog.url,
+
+          type:
+            "blog"
+
+        })
+      );
+
+
+    /* =====================================================
+       PRODUCTS
+    ====================================================== */
+
+    const productData =
+      productItems.map(
+        product => ({
+
+          title:
+            product.title,
+
+          description:
+            product.description,
+
+          url:
+            product.url,
+
+          type:
+            "product"
+
+        })
+      );
+
+
+    /* =====================================================
+       FILTER
+    ====================================================== */
+
+    if (
+      selectedType === "tool"
+    ) {
+
+      return toolData;
+
+    }
+
+
+    if (
+      selectedType === "blog"
+    ) {
+
+      return blogData;
+
+    }
+
+
+    if (
+      selectedType === "product"
+    ) {
+
+      return productData;
+
+    }
+
+
+    /* =====================================================
+       ALL
+    ====================================================== */
+
+    return [
+
+      ...toolData,
+
+      ...blogData,
+
+      ...productData
+
+    ];
+
+  }
+
+
+  /* =======================================================
+     SEARCH
+  ======================================================== */
+
+  function searchItems() {
 
     const keyword =
       input.value
@@ -504,19 +785,17 @@ const blogs: Blog[] =
         .toLowerCase();
 
 
-    const selectedType =
-      type.value;
-
-
-    /*
-     * BELUM ADA KEYWORD
-     */
+    /* =====================================================
+       BELUM ADA KEYWORD
+    ====================================================== */
 
     if (!keyword) {
 
-      results.innerHTML = "";
+      results.innerHTML =
+        "";
 
-      info.textContent = "";
+      info.textContent =
+        "";
 
       empty.style.display =
         "block";
@@ -529,76 +808,17 @@ const blogs: Blog[] =
     }
 
 
-    /*
-     * PILIH DATA
-     *
-     * type=tool
-     * -> hanya tools
-     *
-     * type=blog
-     * -> hanya blog
-     *
-     * type=all
-     * -> tools + blog
-     */
+    /* =====================================================
+       DATA
+    ====================================================== */
 
-    let data = [];
+    const data =
+      getSearchData();
 
 
-    if (
-      selectedType === "tool"
-    ) {
-
-      data =
-        tools.map(
-          tool => ({
-            ...tool,
-            type: "tool"
-          })
-        );
-
-    }
-
-    else if (
-      selectedType === "blog"
-    ) {
-
-      data =
-        blogs.map(
-          blog => ({
-            ...blog,
-            type: "blog"
-          })
-        );
-
-    }
-
-    else {
-
-      data = [
-
-        ...tools.map(
-          tool => ({
-            ...tool,
-            type: "tool"
-          })
-        ),
-
-        ...blogs.map(
-          blog => ({
-            ...blog,
-            type: "blog"
-          })
-        )
-
-      ];
-
-    }
-
-
-    /*
-     * FILTER
-     */
+    /* =====================================================
+       SEARCH TITLE + DESCRIPTION
+    ====================================================== */
 
     const found =
       data.filter(
@@ -619,39 +839,76 @@ const blogs: Blog[] =
 
 
           return (
-            title.includes(keyword) ||
-            description.includes(keyword)
+            title.includes(
+              keyword
+            ) ||
+            description.includes(
+              keyword
+            )
           );
 
         }
       );
 
 
-    /*
-     * HIDE EMPTY
-     */
+    /* =====================================================
+       HIDE EMPTY
+    ====================================================== */
 
     empty.style.display =
       "none";
 
 
-    /*
-     * INFO
-     */
+    /* =====================================================
+       RESULT LABEL
+    ====================================================== */
+
+    let label =
+      "hasil";
+
+
+    if (
+      type.value === "tool"
+    ) {
+
+      label =
+        "tools";
+
+    }
+
+    else if (
+      type.value === "blog"
+    ) {
+
+      label =
+        "artikel";
+
+    }
+
+    else if (
+      type.value === "product"
+    ) {
+
+      label =
+        "product";
+
+    }
+
 
     info.textContent =
-      `${found.length} hasil ditemukan`;
+      `${found.length} ${label} ditemukan`;
 
 
-    /*
-     * NO RESULT
-     */
+    /* =====================================================
+       NO RESULT
+    ====================================================== */
 
     if (
       found.length === 0
     ) {
 
-      results.innerHTML = "";
+      results.innerHTML =
+        "";
 
       noResults.style.display =
         "block";
@@ -665,103 +922,91 @@ const blogs: Blog[] =
       "none";
 
 
-    /*
-     * HASIL
-     */
+    /* =====================================================
+       RENDER RESULT
+    ====================================================== */
 
     results.innerHTML =
-      found.map(
-        item => {
+      found
+        .map(
+          item => {
 
-          const badge =
-            item.type === "tool"
-              ? "Tool"
-              : "Blog";
+            let badge =
+              "Blog";
 
 
-          return `
+            if (
+              item.type === "tool"
+            ) {
 
-            <a
-              class="search-card"
-              href="${escapeHTML(item.url)}"
-            >
+              badge =
+                "Tool";
 
-              <span class="search-badge">
-                ${badge}
-              </span>
+            }
 
-              <h2>
-                ${escapeHTML(
-                  item.title
-                )}
-              </h2>
+            else if (
+              item.type === "product"
+            ) {
 
-              ${
-                item.description
-                  ? `
-                    <p>
-                      ${escapeHTML(
-                        item.description
-                      )}
-                    </p>
-                  `
-                  : ""
-              }
+              badge =
+                "Product";
 
-            </a>
+            }
 
-          `;
 
-        }
-      ).join("");
+            return `
+
+              <a
+                class="search-card"
+                href="${escapeHTML(
+                  item.url
+                )}"
+              >
+
+                <span
+                  class="search-badge"
+                >
+                  ${badge}
+                </span>
+
+                <h2>
+                  ${escapeHTML(
+                    item.title
+                  )}
+                </h2>
+
+                ${
+                  item.description
+                    ? `
+                      <p>
+                        ${escapeHTML(
+                          item.description
+                        )}
+                      </p>
+                    `
+                    : ""
+                }
+
+              </a>
+
+            `;
+
+          }
+        )
+        .join("");
 
   }
 
 
-  /* =====================================================
-     INPUT
-  ====================================================== */
-
-  input.addEventListener(
-    "input",
-    search
-  );
-
-
-  /* =====================================================
-     BUTTON
-  ====================================================== */
-
-  button.addEventListener(
-    "click",
-    search
-  );
-
-
-  /* =====================================================
-     TYPE
-  ====================================================== */
-
-  type.addEventListener(
-    "change",
-    () => {
-
-      search();
-
-      updateURL();
-
-    }
-  );
-
-
-  /* =====================================================
-     URL
-  ====================================================== */
+  /* =======================================================
+     UPDATE URL
+  ======================================================== */
 
   function updateURL() {
 
     const keyword =
       input.value.trim();
+
 
     const selectedType =
       type.value;
@@ -797,44 +1042,74 @@ const blogs: Blog[] =
       params.toString();
 
 
+    const newURL =
+      query
+        ? `${location.pathname}?${query}`
+        : location.pathname;
+
+
     history.replaceState(
       {},
       "",
-      query
-        ? `${location.pathname}?${query}`
-        : location.pathname
+      newURL
     );
 
   }
 
 
-  /* =====================================================
-     SUBMIT
-  ====================================================== */
+  /* =======================================================
+     FORM SUBMIT
+     
+     ENTER + BUTTON
+  ======================================================== */
 
-  input.addEventListener(
-    "keydown",
-    event => {
+  form?.addEventListener(
+    "submit",
+    (event) => {
 
-      if (
-        event.key === "Enter"
-      ) {
+      event.preventDefault();
 
-        event.preventDefault();
+      searchItems();
 
-        search();
-
-        updateURL();
-
-      }
+      updateURL();
 
     }
   );
 
 
-  /* =====================================================
-     LOAD QUERY URL
-  ====================================================== */
+  /* =======================================================
+     FILTER CHANGE
+  ======================================================== */
+
+  type?.addEventListener(
+    "change",
+    () => {
+
+      if (
+        input.value.trim()
+      ) {
+
+        searchItems();
+
+      }
+
+      updateURL();
+
+    }
+  );
+
+
+  /* =======================================================
+     LOAD FROM URL
+     
+     Contoh:
+     
+     /search/?q=css&type=tool
+     
+     /search/?q=ai&type=blog
+     
+     /search/?q=keyboard&type=product
+  ======================================================== */
 
   const params =
     new URLSearchParams(
@@ -855,9 +1130,12 @@ const blogs: Blog[] =
 
 
   if (
-    urlType === "tool" ||
-    urlType === "blog" ||
-    urlType === "all"
+    [
+      "all",
+      "tool",
+      "blog",
+      "product"
+    ].includes(urlType)
   ) {
 
     type.value =
@@ -866,15 +1144,15 @@ const blogs: Blog[] =
   }
 
 
-  /*
-   * HANYA SEARCH KALAU ADA q
-   */
+  /* =====================================================
+     HANYA SEARCH JIKA q ADA
+  ====================================================== */
 
   if (
     urlKeyword.trim()
   ) {
 
-    search();
+    searchItems();
 
   }
 
@@ -883,25 +1161,72 @@ const blogs: Blog[] =
 
 <style>
 
+/* =========================================================
+   SEARCH SECTION
+========================================================= */
+
 .search-section {
 
-  width: 100%;
+  width:
+    100%;
 
   padding:
-    50px 20px;
+    60px 20px 90px;
 
-  box-sizing: border-box;
+  box-sizing:
+    border-box;
 
 }
 
 
 .search-container {
 
-  width: 100%;
+  width:
+    100%;
 
-  max-width: 1000px;
+  max-width:
+    1000px;
 
-  margin: 0 auto;
+  margin:
+    0 auto;
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.search-header {
+
+  margin-bottom:
+    30px;
+
+  text-align:
+    center;
+
+}
+
+
+.search-label {
+
+  display:
+    inline-block;
+
+  margin-bottom:
+    8px;
+
+  color:
+    var(--primary);
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    1.6px;
 
 }
 
@@ -909,33 +1234,43 @@ const blogs: Blog[] =
 .search-container h1 {
 
   margin:
-    0 0 10px;
-
-  text-align:
-    center;
+    0;
 
   font-size:
-    32px;
+    clamp(
+      28px,
+      5vw,
+      40px
+    );
+
+  line-height:
+    1.2;
 
 }
 
 
 .search-description {
 
+  max-width:
+    650px;
+
   margin:
-    0 0 25px;
+    10px auto 0;
 
-  text-align:
-    center;
+  color:
+    var(--text-secondary);
 
-  opacity:
-    .75;
+  font-size:
+    14px;
+
+  line-height:
+    1.7;
 
 }
 
 
 /* =========================================================
-   FORM
+   SEARCH FORM
 ========================================================= */
 
 .search-form {
@@ -952,74 +1287,188 @@ const blogs: Blog[] =
     10px;
 
   margin-bottom:
+    18px;
+
+}
+
+
+/* =========================================================
+   INPUT WRAP
+========================================================= */
+
+.search-input-wrap {
+
+  position:
+    relative;
+
+}
+
+
+.search-input-wrap svg {
+
+  position:
+    absolute;
+
+  top:
+    50%;
+
+  left:
     15px;
 
-}
-
-
-.search-form input,
-.search-form select,
-.search-form button {
+  width:
+    18px;
 
   height:
-    52px;
+    18px;
 
-  box-sizing:
-    border-box;
+  transform:
+    translateY(-50%);
 
-  border-radius:
-    10px;
+  color:
+    var(--text-secondary);
 
-  font-family:
-    inherit;
+  pointer-events:
+    none;
 
 }
 
+
+/* =========================================================
+   INPUT
+========================================================= */
 
 .search-form input {
 
   width:
     100%;
 
+  height:
+    50px;
+
   padding:
-    0 18px;
+    0 16px 0 44px;
+
+  box-sizing:
+    border-box;
 
   border:
-    1px solid #ccc;
+    1px solid var(--border);
+
+  border-radius:
+    10px;
 
   outline:
     none;
 
-  font-size:
-    16px;
-
   background:
-    #fff;
+    var(--surface);
+
+  color:
+    var(--text);
+
+  font-family:
+    inherit;
+
+  font-size:
+    14px;
 
 }
 
+
+.search-form input::placeholder {
+
+  color:
+    var(--text-secondary);
+
+  opacity:
+    .8;
+
+}
+
+
+.search-form input:focus {
+
+  border-color:
+    var(--primary);
+
+  box-shadow:
+    0 0 0 3px
+    color-mix(
+      in srgb,
+      var(--primary) 10%,
+      transparent
+    );
+
+}
+
+
+/* =========================================================
+   SELECT
+========================================================= */
 
 .search-form select {
 
   width:
     100%;
 
+  height:
+    50px;
+
   padding:
     0 12px;
 
+  box-sizing:
+    border-box;
+
   border:
-    1px solid #ccc;
+    1px solid var(--border);
+
+  border-radius:
+    10px;
+
+  outline:
+    none;
 
   background:
-    #fff;
+    var(--surface);
+
+  color:
+    var(--text);
+
+  font-family:
+    inherit;
+
+  font-size:
+    13px;
 
 }
 
 
-.search-form button {
+.search-form select:focus {
+
+  border-color:
+    var(--primary);
+
+}
+
+
+/* =========================================================
+   SEARCH BUTTON
+========================================================= */
+
+.search-button {
+
+  width:
+    100%;
+
+  height:
+    50px;
 
   border:
     0;
+
+  border-radius:
+    10px;
 
   background:
     var(--bgbtn);
@@ -1027,38 +1476,61 @@ const blogs: Blog[] =
   color:
     var(--textbtn);
 
+  font-family:
+    inherit;
+
+  font-size:
+    12px;
+
   font-weight:
     800;
 
   cursor:
     pointer;
 
+  transition:
+    transform .2s ease,
+    filter .2s ease;
+
 }
 
 
-.search-form input:focus,
-.search-form select:focus {
+.search-button:hover {
 
-  border-color:
-    #2563eb;
+  transform:
+    translateY(-1px);
+
+  filter:
+    brightness(1.08);
+
+}
+
+
+.search-button:active {
+
+  transform:
+    translateY(0);
 
 }
 
 
 /* =========================================================
-   INFO
+   RESULT INFO
 ========================================================= */
 
 .search-info {
 
+  min-height:
+    18px;
+
   margin:
-    10px 0 15px;
+    8px 0 15px;
+
+  color:
+    var(--text-secondary);
 
   font-size:
-    14px;
-
-  opacity:
-    .7;
+    12px;
 
 }
 
@@ -1079,10 +1551,14 @@ const blogs: Blog[] =
     );
 
   gap:
-    15px;
+    14px;
 
 }
 
+
+/* =========================================================
+   SEARCH CARD
+========================================================= */
 
 .search-card {
 
@@ -1093,24 +1569,27 @@ const blogs: Blog[] =
     20px;
 
   border:
-    1px solid #ddd;
+    1px solid var(--border);
 
   border-radius:
     12px;
 
+  background:
+    var(--surface);
+
+  color:
+    var(--text);
+
   text-decoration:
     none;
 
-  color:
-    inherit;
-
-  background:
-    #fff;
+  box-shadow:
+    var(--shadow);
 
   transition:
     transform .2s ease,
-    box-shadow .2s ease,
-    border-color .2s ease;
+    border-color .2s ease,
+    box-shadow .2s ease;
 
 }
 
@@ -1121,44 +1600,11 @@ const blogs: Blog[] =
     translateY(-2px);
 
   border-color:
-    #2563eb;
-
-  box-shadow:
-    0 8px 25px
-    rgba(
-      0,
-      0,
-      0,
-      .08
+    color-mix(
+      in srgb,
+      var(--primary) 45%,
+      var(--border)
     );
-
-}
-
-
-.search-card h2 {
-
-  margin:
-    0 0 8px;
-
-  font-size:
-    18px;
-
-}
-
-
-.search-card p {
-
-  margin:
-    0;
-
-  line-height:
-    1.6;
-
-  font-size:
-    14px;
-
-  opacity:
-    .75;
 
 }
 
@@ -1170,55 +1616,202 @@ const blogs: Blog[] =
 .search-badge {
 
   display:
-    inline-block;
+    inline-flex;
+
+  align-items:
+    center;
+
+  min-height:
+    22px;
 
   margin-bottom:
     10px;
 
   padding:
-    4px 9px;
+    0 9px;
+
+  box-sizing:
+    border-box;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--primary) 20%,
+      var(--border)
+    );
 
   border-radius:
     999px;
 
   background:
-    rgba(
-      37,
-      99,
-      235,
-      .08
+    color-mix(
+      in srgb,
+      var(--primary) 7%,
+      transparent
     );
 
   color:
-    #2563eb;
+    var(--primary);
 
   font-size:
-    10px;
+    9px;
 
   font-weight:
     800;
+
+  letter-spacing:
+    .5px;
+
+  text-transform:
+    uppercase;
 
 }
 
 
 /* =========================================================
-   EMPTY
+   TITLE
+========================================================= */
+
+.search-card h2 {
+
+  margin:
+    0 0 8px;
+
+  font-size:
+    17px;
+
+  line-height:
+    1.4;
+
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.search-card p {
+
+  margin:
+    0;
+
+  color:
+    var(--text-secondary);
+
+  font-size:
+    12px;
+
+  line-height:
+    1.65;
+
+}
+
+
+/* =========================================================
+   EMPTY STATE
 ========================================================= */
 
 .empty-search,
 .no-results {
 
   padding:
-    30px 20px;
+    55px 20px;
 
   text-align:
     center;
 
-  opacity:
-    .65;
+  border:
+    1px dashed var(--border);
+
+  border-radius:
+    14px;
+
+  background:
+    var(--surface);
 
 }
 
+
+.empty-icon {
+
+  width:
+    52px;
+
+  height:
+    52px;
+
+  margin:
+    0 auto 15px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--surface-hover);
+
+  color:
+    var(--text-secondary);
+
+}
+
+
+.empty-icon svg {
+
+  width:
+    24px;
+
+  height:
+    24px;
+
+}
+
+
+.empty-search h2,
+.no-results h2 {
+
+  margin:
+    0;
+
+  font-size:
+    17px;
+
+}
+
+
+.empty-search p,
+.no-results p {
+
+  max-width:
+    430px;
+
+  margin:
+    8px auto 0;
+
+  color:
+    var(--text-secondary);
+
+  font-size:
+    12px;
+
+  line-height:
+    1.7;
+
+}
+
+
+/* =========================================================
+   NO RESULTS
+========================================================= */
 
 .no-results {
 
@@ -1232,20 +1825,14 @@ const blogs: Blog[] =
    MOBILE
 ========================================================= */
 
-@media(max-width:700px) {
+@media (
+  max-width: 700px
+) {
 
   .search-section {
 
     padding:
-      35px 15px;
-
-  }
-
-
-  .search-container h1 {
-
-    font-size:
-      26px;
+      35px 15px 60px;
 
   }
 
@@ -1258,10 +1845,26 @@ const blogs: Blog[] =
   }
 
 
+  .search-button {
+
+    width:
+      100%;
+
+  }
+
+
   .search-results {
 
     grid-template-columns:
       1fr;
+
+  }
+
+
+  .search-container h1 {
+
+    font-size:
+      28px;
 
   }
 
