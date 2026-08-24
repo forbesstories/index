@@ -47,12 +47,20 @@ const menus = [
     </button>
 
     <!-- LOGO -->
-    <a href={linkalt} class="header-logo" aria-label="AI Mr Ferdy">
+    <a
+      href={linkalt}
+      class="header-logo"
+      aria-label="AI Mr Ferdy"
+    >
       AI<span> Mr Ferdy</span>
     </a>
 
     <!-- NAVIGATION -->
-    <nav class="nav" id="nav" aria-label="Main navigation">
+    <nav
+      class="nav"
+      id="nav"
+      aria-label="Main navigation"
+    >
 
       <a href="/">Home</a>
 
@@ -136,7 +144,6 @@ const menus = [
 
       </a>
 
-
       <!-- LOGIN -->
       <a
         href="/login"
@@ -144,7 +151,6 @@ const menus = [
       >
         Login
       </a>
-
 
       <!-- THEME TOGGLE -->
       <button
@@ -222,7 +228,6 @@ const menus = [
   justify-content:center;
 
   color:var(--text);
-
   background:var(--surface);
 
   border:1px solid var(--border);
@@ -244,7 +249,6 @@ const menus = [
 .cart-btn:hover{
   background:var(--surface-hover);
   border-color:var(--primary);
-
   transform:translateY(-1px);
 }
 
@@ -478,7 +482,6 @@ const menus = [
     width:100%;
 
     margin:0;
-
     padding:0;
 
     border:0;
@@ -545,11 +548,15 @@ const menus = [
 
 <script>
 
-const CART_KEY = 'ai-mr-ferdy-cart';
+/* =========================================================
+   CART STORAGE
+========================================================= */
+
+const CART_KEY = 'cart';
 
 
 /* =========================================================
-   CART COUNT
+   UPDATE CART COUNT
 ========================================================= */
 
 function updateCartCount(){
@@ -559,6 +566,7 @@ function updateCartCount(){
 
   if(!badge) return;
 
+
   try{
 
     const cart =
@@ -566,18 +574,32 @@ function updateCartCount(){
         localStorage.getItem(CART_KEY) || '[]'
       );
 
+
     const count =
-      cart.reduce(
-        (total, item) =>
-          total + Number(item.quantity || 0),
-        0
-      );
+      Array.isArray(cart)
+        ? cart.reduce(
+            (total, item) =>
+              total +
+              Math.max(
+                0,
+                Number(item.quantity || 0)
+              ),
+            0
+          )
+        : 0;
+
 
     badge.textContent =
-      count > 99 ? '99+' : String(count);
+      count > 99
+        ? '99+'
+        : String(count);
+
 
     badge.style.display =
-      count > 0 ? 'flex' : 'none';
+      count > 0
+        ? 'flex'
+        : 'none';
+
 
   }catch(error){
 
@@ -587,6 +609,7 @@ function updateCartCount(){
     );
 
     badge.textContent = '0';
+
     badge.style.display = 'none';
 
   }
@@ -595,7 +618,7 @@ function updateCartCount(){
 
 
 /* =========================================================
-   INITIAL LOAD
+   INITIALIZE HEADER
 ========================================================= */
 
 function initHeader(){
@@ -613,12 +636,17 @@ function initHeader(){
   const nav =
     document.getElementById('nav');
 
+
   menuToggle?.addEventListener(
     'click',
-    () => {
+    (event) => {
+
+      event.stopPropagation();
+
 
       const open =
         nav?.classList.toggle('open');
+
 
       menuToggle.setAttribute(
         'aria-expanded',
@@ -643,8 +671,10 @@ function initHeader(){
 
           event.stopPropagation();
 
+
           const dropdown =
             button.closest('.dropdown');
+
 
           if(!dropdown) return;
 
@@ -653,12 +683,20 @@ function initHeader(){
             dropdown.classList.contains('open');
 
 
+          /* CLOSE OTHER DROPDOWNS */
+
           document
-            .querySelectorAll('.dropdown.open')
+            .querySelectorAll(
+              '.dropdown.open'
+            )
             .forEach((item) => {
 
               if(item !== dropdown){
-                item.classList.remove('open');
+
+                item.classList.remove(
+                  'open'
+                );
+
 
                 item
                   .querySelector('.drop-btn')
@@ -666,15 +704,19 @@ function initHeader(){
                     'aria-expanded',
                     'false'
                   );
+
               }
 
             });
 
 
+          /* TOGGLE CURRENT */
+
           dropdown.classList.toggle(
             'open',
             !isOpen
           );
+
 
           button.setAttribute(
             'aria-expanded',
@@ -688,34 +730,68 @@ function initHeader(){
 
 
   /* =======================================================
-     CLOSE DROPDOWN
+     CLOSE MENU / DROPDOWN
   ======================================================= */
 
   document.addEventListener(
     'click',
-    () => {
+    (event) => {
+
+      const target =
+        event.target;
+
+
+      /* CLOSE DROPDOWNS */
 
       document
-        .querySelectorAll('.dropdown.open')
+        .querySelectorAll(
+          '.dropdown.open'
+        )
         .forEach((dropdown) => {
 
-          dropdown.classList.remove('open');
+          if(!dropdown.contains(target)){
 
-          dropdown
-            .querySelector('.drop-btn')
-            ?.setAttribute(
-              'aria-expanded',
-              'false'
+            dropdown.classList.remove(
+              'open'
             );
 
+
+            dropdown
+              .querySelector('.drop-btn')
+              ?.setAttribute(
+                'aria-expanded',
+                'false'
+              );
+
+          }
+
         });
+
+
+      /* CLOSE MOBILE NAV */
+
+      if(
+        nav &&
+        nav.classList.contains('open') &&
+        !nav.contains(target) &&
+        !menuToggle?.contains(target)
+      ){
+
+        nav.classList.remove('open');
+
+        menuToggle?.setAttribute(
+          'aria-expanded',
+          'false'
+        );
+
+      }
 
     }
   );
 
 
   /* =======================================================
-     CART EVENT
+     CART UPDATED EVENT
   ======================================================= */
 
   window.addEventListener(
@@ -725,15 +801,19 @@ function initHeader(){
 
 
   /* =======================================================
-     OTHER TAB
+     OTHER TAB / WINDOW
   ======================================================= */
 
   window.addEventListener(
     'storage',
     (event) => {
 
-      if(event.key === CART_KEY){
+      if(
+        event.key === CART_KEY
+      ){
+
         updateCartCount();
+
       }
 
     }
@@ -743,7 +823,7 @@ function initHeader(){
 
 
 /* =========================================================
-   ASTRO / NORMAL LOAD
+   ASTRO LOAD
 ========================================================= */
 
 if(
