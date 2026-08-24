@@ -1,505 +1,203 @@
 ---
-import MainLayout from "../../layouts/MainLayout.astro";
-import { SITE } from "../../lib/site";
-
+import MainLayout from '../../layouts/MainLayout.astro';
+import { SITE } from '../../lib/site';
 import "../../styles/blog.css";
-
 import TOC from "../../components/TOC.astro";
 import RelatedPosts from "../../components/RelatedPosts.astro";
 
-import {
-  getCollection,
-  render
-} from "astro:content";
-
-
-/* =====================================
-   STATIC PATHS
-===================================== */
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
-
-  const posts = await getCollection("blog");
+  const posts = await getCollection('blog');
 
   return posts.map((post) => ({
     params: {
       slug: post.slug
     },
-
     props: {
       post
     }
   }));
-
 }
-
-
-/* =====================================
-   CURRENT POST
-===================================== */
 
 const { post } = Astro.props;
 
-const {
-  Content,
-  headings
-} = await render(post);
-
-
-/* =====================================
-   ALL POSTS
-===================================== */
+const { Content, headings } = await render(post);
 
 const posts = await getCollection("blog");
-
-
-/* =====================================
-   ARTICLE IMAGE
-===================================== */
 
 const displayImage =
   post.data.image?.trim()
   || `/api/og/${post.slug}.svg`;
 
 
-/* =====================================
-   ARTICLE URL
-===================================== */
-
-const articleUrl =
-  SITE.url(`/blog/${post.slug}/`);
-
-
-/* =====================================
-   ARTICLE SCHEMA
-===================================== */
-
 const articleSchema = {
-
   "@context": "https://schema.org",
-
   "@type": "Article",
 
-  headline:
-    post.data.title,
+  headline: post.data.title,
 
-  description:
-    post.data.description || "",
+  description: post.data.description,
 
-  image:
-    SITE.url(displayImage),
+  image: displayImage,
 
-  url:
-    articleUrl,
-
-  mainEntityOfPage: {
-    "@type": "WebPage",
-    "@id": articleUrl
-  },
+  url: SITE.url(`/blog/${post.slug}/`),
 
   author: {
-
     "@type": "Organization",
-
-    name:
-      SITE.name,
-
-    url:
-      SITE.url("/")
+    name: SITE.name
   },
 
   publisher: {
-
     "@type": "Organization",
-
-    name:
-      SITE.name,
-
-    url:
-      SITE.url("/"),
-
-    logo: {
-
-      "@type": "ImageObject",
-
-      url:
-        SITE.url("/aimrferdy.png")
-    }
-  },
-
-  datePublished:
-    post.data.date
-      ? new Date(post.data.date).toISOString()
-      : undefined,
-
-  dateModified:
-    post.data.updated
-      ? new Date(post.data.updated).toISOString()
-      : post.data.date
-        ? new Date(post.data.date).toISOString()
-        : undefined
-};
-
-
-/* =====================================
-   BREADCRUMBS
-===================================== */
-
-const breadcrumbs = [
-
-  {
-    name: "Home",
-    url: "/"
-  },
-
-  {
-    name: "Blog",
-    url: "/blog/"
-  },
-
-  {
-    name: post.data.title,
-    url: `/blog/${post.slug}/`
+    name: SITE.name
   }
-
-];
+};
 
 ---
 
 <MainLayout
   title={`${post.data.title} | ${SITE.title}`}
   description={post.data.description}
-  canonical={articleUrl}
   articleSchema={articleSchema}
-  breadcrumbs={breadcrumbs}
   amp={SITE.url(`/blog/${post.slug}/amp/`)}
   slug={post.slug}
 >
 
+<main class="article">
 
-  <!-- =====================================
-       ARTICLE
-  ===================================== -->
+  <div class="container">
 
-  <main class="article">
+    <div class="article-wrap">
 
-    <div class="container-page">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
 
-      <div class="article-wrap">
+        <a href="/">Home</a>
 
+        <span>/</span>
 
-        <!-- =====================================
-             BREADCRUMB
-        ===================================== -->
+        <a href="/blog/">Blog</a>
 
-        <nav
-          class="breadcrumb article-breadcrumb"
-          aria-label="Breadcrumb"
-        >
+        <span>/</span>
 
-          <a href="/">
-            Home
-          </a>
+        <span>{post.data.title}</span>
 
-          <span
-            class="separator"
-            aria-hidden="true"
-          >
-            /
-          </span>
+      </nav>
 
-          <a href="/blog/">
-            Blog
-          </a>
+      <!-- Header -->
+      <header class="article-header">
 
-          <span
-            class="separator"
-            aria-hidden="true"
-          >
-            /
-          </span>
+        <h1>
+          {post.data.title}
+        </h1>
 
-          <span>
-            {post.data.title}
-          </span>
+        {post.data.description && (
+          <p class="article-excerpt">
+            {post.data.description}
+          </p>
+        )}
 
-        </nav>
+      </header>
 
+      <!-- Sticky CTA -->
+      <div class="sticky-cta">
 
-        <!-- =====================================
-             ARTICLE HEADER
-        ===================================== -->
+        <div class="sticky-content">
 
-        <header class="article-header">
+          <div class="sticky-text">
 
-          <span class="article-label">
-            AI MR FERDY BLOG
-          </span>
+            <strong>
+              {post.data.title}
+            </strong>
 
-          <h1>
-            {post.data.title}
-          </h1>
-
-          {
-            post.data.description && (
-
-              <p class="article-excerpt">
+            {post.data.description && (
+              <p>
                 {post.data.description}
               </p>
-
-            )
-          }
-
-
-          <!-- ARTICLE META -->
-
-          <div class="article-meta">
-
-            {
-              post.data.date && (
-
-                <time
-                  datetime={
-                    new Date(
-                      post.data.date
-                    ).toISOString()
-                  }
-                >
-
-                  {
-                    new Date(
-                      post.data.date
-                    ).toLocaleDateString(
-                      "id-ID",
-                      {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric"
-                      }
-                    )
-                  }
-
-                </time>
-
-              )
-            }
-
-            {
-              post.data.updated && (
-
-                <>
-
-                  <span>
-                    •
-                  </span>
-
-                  <span>
-                    Diperbarui{" "}
-
-                    {
-                      new Date(
-                        post.data.updated
-                      ).toLocaleDateString(
-                        "id-ID",
-                        {
-                          day: "numeric",
-                          month: "long",
-                          year: "numeric"
-                        }
-                      )
-                    }
-
-                  </span>
-
-                </>
-
-              )
-            }
+            )}
 
           </div>
 
-        </header>
-
-
-        <!-- =====================================
-             STICKY CTA
-        ===================================== -->
-
-        <div class="sticky-cta">
-
-          <div class="sticky-content">
-
-            <div class="sticky-text">
-
-              <strong>
-                {post.data.title}
-              </strong>
-
-              {
-                post.data.description && (
-
-                  <p>
-                    {post.data.description}
-                  </p>
-
-                )
-              }
-
-            </div>
-
-
-            <a
-              href="/tools/"
-              class="cta-btn"
-            >
-              Coba Sekarang
-            </a>
-
-          </div>
+          <a
+            href="/tools/"
+            class="cta-btn"
+          >
+            Coba Sekarang
+          </a>
 
         </div>
 
+      </div>
 
-        <!-- =====================================
-             FEATURED IMAGE
-        ===================================== -->
+      <!-- Featured -->
+      <div class="article-cover">
 
-        <figure class="article-cover">
-
-          <img
-            src={displayImage}
-            alt={`${post.data.title} - AI Mr Ferdy`}
-            loading="eager"
-            decoding="async"
-            fetchpriority="high"
-            width="1200"
-            height="630"
-          />
-
-        </figure>
-
-
-        <!-- =====================================
-             TABLE OF CONTENTS
-        ===================================== -->
-
-        {
-          headings.length > 0 && (
-
-            <details class="toc">
-
-              <summary class="toc-title">
-
-                <span>
-                  📑 Daftar Isi
-                </span>
-
-                <span
-                  class="toc-toggle"
-                  aria-hidden="true"
-                >
-                </span>
-
-              </summary>
-
-
-              <ul>
-
-                {
-                  headings.map((heading) => (
-
-                    <li
-                      class={`depth-${heading.depth}`}
-                    >
-
-                      <a
-                        href={`#${heading.slug}`}
-                      >
-                        {heading.text}
-                      </a>
-
-                    </li>
-
-                  ))
-                }
-
-              </ul>
-
-            </details>
-
-          )
-        }
-
-
-        <!-- =====================================
-             ARTICLE CONTENT
-        ===================================== -->
-
-        <article class="article-content">
-
-          <Content />
-
-        </article>
-
-
-        <!-- =====================================
-             RELATED POSTS
-        ===================================== -->
-
-        <RelatedPosts
-          posts={posts}
-          currentSlug={post.slug}
-          title="Artikel Terkait"
-          baseUrl="/blog"
-        />
-
-
-        <!-- =====================================
-             ARTICLE CTA
-        ===================================== -->
-
-        <section class="article-bottom-cta">
-
-          <div class="article-bottom-cta-content">
-
-            <h2>
-              Temukan Lebih Banyak Konten AI
-            </h2>
-
-            <p>
-              Jelajahi artikel lainnya seputar AI,
-              teknologi, SEO, otomasi, dan berbagai
-              topik digital di AI Mr Ferdy.
-            </p>
-
-            <div class="article-bottom-actions">
-
-              <a
-                href="/blog/"
-                class="btn btn-outline"
-              >
-                ← Semua Artikel
-              </a>
-
-              <a
-                href="/tools/"
-                class="btn btn-primary"
-              >
-                Jelajahi AI Tools
-              </a>
-
-            </div>
-
-          </div>
-
-        </section>
-
+<img
+  src={displayImage}
+  alt={post.data.title}
+  loading="eager"
+  decoding="async"
+  fetchpriority="high"
+  width="1200"
+  height="630"
+/>
 
       </div>
 
+      <!-- TOC -->
+      {headings.length > 0 && (
+
+        <details class="toc">
+
+          <summary class="toc-title">
+    <span>
+      📑 Daftar Isi
+    </span>
+
+    <span class="toc-toggle">
+    </span>
+          </summary>
+
+          <ul>
+
+            {headings.map((heading) => (
+
+              <li class={`depth-${heading.depth}`}>
+
+                <a href={`#${heading.slug}`}>
+                  {heading.text}
+                </a>
+
+              </li>
+
+            ))}
+
+          </ul>
+
+        </details>
+
+      )}
+
+      <!-- Content -->
+      <article class="article-content">
+        <Content />
+      </article>
+
+
+ <!-- Related -->
+<RelatedPosts
+  posts={posts}
+  currentSlug={post.slug}
+  title="Artikel Terkait"
+  baseUrl="/blog"
+/>
+
     </div>
 
-  </main>
+  </div>
+
+</main>
 
 
 </MainLayout>
