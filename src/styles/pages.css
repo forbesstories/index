@@ -107,6 +107,29 @@
 }
 
 /* ==========================================================
+   SECTION HEADING
+========================================================== */
+
+.page-section-heading {
+  max-width: 760px;
+  margin: 0 auto 50px;
+  text-align: center;
+}
+
+.page-section-heading .page-label {
+  margin-bottom: 14px;
+}
+
+.page-section-heading h2 {
+  margin: 0 0 14px;
+}
+
+.page-section-heading p {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+/* ==========================================================
    LEGAL PAGES
    /privacy
    /disclaimer
