@@ -40,6 +40,8 @@ const galleryImages =
 
 const productTitle = product.data.title;
 const productDescription = product.data.description;
+const productCategory = product.data.category || 'Product';
+const productPrice = product.data.price || 'Rp 0';
 ---
 
 <MainLayout
@@ -225,9 +227,9 @@ const productDescription = product.data.description;
             </p>
 
             {
-              product.data.category && (
+              productCategory && (
                 <p>
-                  Category: {product.data.category}
+                  Category: {productCategory}
                 </p>
               )
             }
@@ -287,7 +289,7 @@ const productDescription = product.data.description;
           <div class="accordion-content">
 
             <p>
-              {product.data.category}
+              {productCategory}
             </p>
 
           </div>
@@ -362,7 +364,7 @@ const productDescription = product.data.description;
 
 
         <div class="price">
-          {product.data.price}
+          {productPrice}
         </div>
 
 
@@ -393,7 +395,7 @@ const productDescription = product.data.description;
           type="button"
           class="option"
         >
-          {product.data.category}
+          {productCategory}
         </button>
 
 
@@ -444,8 +446,9 @@ const productDescription = product.data.description;
               id="addToCart"
               data-slug={product.slug}
               data-title={productTitle}
-              data-price={product.data.price}
+              data-price={productPrice}
               data-image={productImage}
+              data-category={productCategory}
             >
               Add to cart
             </button>
@@ -782,6 +785,46 @@ const productDescription = product.data.description;
 
 
   /* =========================================
+     THUMBNAIL SCROLL
+  ========================================== */
+
+  const thumbnails =
+    document.querySelector('#thumbnails');
+
+  const thumbLeft =
+    document.querySelector('#thumbLeft');
+
+  const thumbRight =
+    document.querySelector('#thumbRight');
+
+
+  thumbLeft?.addEventListener(
+    'click',
+    () => {
+
+      thumbnails?.scrollBy({
+        left: -220,
+        behavior: 'smooth'
+      });
+
+    }
+  );
+
+
+  thumbRight?.addEventListener(
+    'click',
+    () => {
+
+      thumbnails?.scrollBy({
+        left: 220,
+        behavior: 'smooth'
+      });
+
+    }
+  );
+
+
+  /* =========================================
      QUANTITY
   ========================================== */
 
@@ -853,10 +896,14 @@ const productDescription = product.data.description;
 
   /* =========================================
      CART
+     
+     Semua halaman menggunakan:
+     
+     localStorage key = "cart"
   ========================================== */
 
   const CART_KEY =
-    'ai-mr-ferdy-cart';
+    'cart';
 
 
   function getCart() {
@@ -902,7 +949,8 @@ const productDescription = product.data.description;
 
 
     /*
-     * Update Header
+     * Beritahu Header / Cart
+     * bahwa isi cart berubah.
      */
 
     window.dispatchEvent(
@@ -937,7 +985,9 @@ const productDescription = product.data.description;
 
     if (existing) {
 
-      existing.quantity += amount;
+      existing.quantity =
+        Number(existing.quantity || 1) +
+        amount;
 
     } else {
 
@@ -954,6 +1004,9 @@ const productDescription = product.data.description;
 
         image:
           product.image,
+
+        category:
+          product.category || 'Product',
 
         quantity:
           amount
@@ -1012,7 +1065,11 @@ const productDescription = product.data.description;
           button.dataset.price,
 
         image:
-          button.dataset.image
+          button.dataset.image,
+
+        category:
+          button.dataset.category ||
+          'Product'
 
       };
 
@@ -1115,9 +1172,24 @@ const productDescription = product.data.description;
           button.dataset.price,
 
         image:
-          button.dataset.image
+          button.dataset.image,
+
+        category:
+          button.dataset.category ||
+          'Product'
 
       };
+
+
+      if (!product.slug) {
+
+        console.error(
+          'Product slug tidak ditemukan.'
+        );
+
+        return;
+
+      }
 
 
       addToCart(
@@ -1196,7 +1268,7 @@ const productDescription = product.data.description;
   }
 
   .product-breadcrumb a:hover{
-    color:var(--product-accent);
+    color:var(--primary);
     opacity:1;
   }
 
@@ -1320,6 +1392,8 @@ const productDescription = product.data.description;
     box-shadow:var(--shadow);
 
     transition:var(--transition);
+
+    cursor:pointer;
   }
 
   .image-arrow:hover{
@@ -1413,6 +1487,8 @@ const productDescription = product.data.description;
     overflow:hidden;
 
     transition:var(--transition);
+
+    cursor:pointer;
   }
 
   .thumbnail:hover{
@@ -1458,6 +1534,13 @@ const productDescription = product.data.description;
     box-shadow:var(--shadow);
 
     z-index:2;
+
+    cursor:pointer;
+  }
+
+  .thumbnail-arrow:hover{
+    color:var(--primary);
+    background:var(--surface-hover);
   }
 
   .thumbnail-arrow.left{
@@ -1488,7 +1571,8 @@ const productDescription = product.data.description;
   }
 
   .description-title{
-    margin-bottom:20px;
+    margin:
+      0 0 20px;
 
     font-size:22px;
 
@@ -1558,6 +1642,8 @@ const productDescription = product.data.description;
     font-size:14px;
 
     font-weight:600;
+
+    cursor:pointer;
   }
 
   .accordion-button:hover{
@@ -1644,6 +1730,11 @@ const productDescription = product.data.description;
   }
 
   .product-title{
+    margin:
+      0;
+
+    color:var(--text);
+
     font-size:36px;
 
     line-height:1.1;
@@ -1677,6 +1768,8 @@ const productDescription = product.data.description;
 
   .price{
     margin-top:19px;
+
+    color:var(--text);
 
     font-size:29px;
 
@@ -1733,6 +1826,8 @@ const productDescription = product.data.description;
 
   .option-title{
     margin-bottom:9px;
+
+    color:var(--text);
 
     font-size:12px;
 
@@ -1811,6 +1906,8 @@ const productDescription = product.data.description;
     color:var(--text);
 
     font-size:18px;
+
+    cursor:pointer;
   }
 
   .quantity button:hover{
@@ -1854,10 +1951,14 @@ const productDescription = product.data.description;
     font-weight:700;
 
     transition:var(--transition);
+
+    cursor:pointer;
   }
 
   .add-cart:hover{
     transform:translateY(-1px);
+
+    filter:brightness(1.05);
   }
 
   .add-cart.added{
@@ -1891,6 +1992,8 @@ const productDescription = product.data.description;
     font-weight:700;
 
     transition:var(--transition);
+
+    cursor:pointer;
   }
 
   .buy-now:hover{
@@ -1980,6 +2083,8 @@ const productDescription = product.data.description;
   .side-title{
     margin-bottom:7px;
 
+    color:var(--text);
+
     font-size:11px;
 
     font-weight:800;
@@ -2001,6 +2106,8 @@ const productDescription = product.data.description;
     color:var(--text-secondary);
 
     font-size:12px;
+
+    text-decoration:none;
   }
 
   .side-link:last-child{
@@ -2486,6 +2593,14 @@ const productDescription = product.data.description;
 
     .thumbnail-arrow{
       display:none;
+    }
+
+    .buy-row{
+      grid-template-columns:1fr;
+    }
+
+    .quantity{
+      width:100%;
     }
 
   }
