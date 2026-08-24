@@ -1,8 +1,8 @@
 ---
 // src/pages/product/search/[query].astro
 
-import ProductLayout
-from '../../../layouts/ProductLayout.astro';
+import MainLayout
+from '../../../layouts/MainLayout.astro';
 
 import {
   getCollection
@@ -159,7 +159,7 @@ const filtered =
 
 ---
 
-<ProductLayout
+<MainLayout
   title={`Search: ${query}`}
   description={`Search results for ${query}`}
 >
@@ -470,4 +470,4 @@ height:300px;
 
 </style>
 
-</ProductLayout>
+</MainLayout>
