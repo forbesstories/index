@@ -186,7 +186,12 @@ const faqSchema = generateFaqSchema(html);
 
   <Footer />
 
+<script is:inline>
+const html=document.documentElement;const themeToggle=document.getElementById("themeToggle");const mediaQuery=window.matchMedia("(prefers-color-scheme: dark)");themeToggle.onclick=()=>{const nextTheme=html.dataset.theme==="dark"?"light":"dark";html.dataset.theme=nextTheme;localStorage.setItem("theme",nextTheme)};mediaQuery.addEventListener("change",event=>{const savedTheme=localStorage.getItem("theme");if(!savedTheme){html.dataset.theme=event.matches?"dark":"light"}});
 
+const menu=document.getElementById("menuToggle");const nav=document.getElementById("nav");menu.onclick=()=>{nav.classList.toggle("active");menu.textContent=nav.classList.contains("active")?"✕":"☰"};document.querySelectorAll(".nav a").forEach(link=>{link.onclick=()=>{nav.classList.remove("active");menu.textContent="☰"}})
+document.querySelectorAll(".drop-btn").forEach(btn=>{btn.onclick=e=>{if(window.innerWidth>768)return;e.preventDefault();btn.parentElement.classList.toggle("open")}})
+</script>
 </body>
 
 </html>
