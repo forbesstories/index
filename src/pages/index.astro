@@ -739,37 +739,41 @@ const pageDescription =
 
           </div>
 
-          <div class="blog-card-content">
+<div class="blog-card-content">
 
-            <span class="card-label">
-              Digital Product
-            </span>
+  <span class="card-label">
+    Digital Product
+  </span>
 
-            <h3>
-              {product.data.title}
-            </h3>
+  <div class="product-title-row">
 
-            {
-              product.data.description && (
-                <p>
-                  {product.data.description}
-                </p>
-              )
-            }
+    <h3>
+      {product.data.title}
+    </h3>
 
-            {
-              product.data.price && (
-               <div class="product-price">
-      {product.data.price}
-    </div>
-              )
-            }
+    {
+      product.data.price && (
+        <span class="product-price">
+          {product.data.price}
+        </span>
+      )
+    }
 
-            <span class="readmore">
-              Lihat Produk →
-            </span>
+  </div>
 
-          </div>
+  {
+    product.data.description && (
+      <p>
+        {product.data.description}
+      </p>
+    )
+  }
+
+  <span class="readmore">
+    Lihat Produk →
+  </span>
+
+</div>
 
         </a>
 
@@ -1038,26 +1042,60 @@ const pageDescription =
 
 <style is:global>
 /* =================================
+   PRODUCT TITLE
+================================= */
+
+.product-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.product-title-row h3 {
+  margin: 0;
+  min-width: 0;
+}
+
+
+/* =================================
    PRODUCT PRICE
 ================================= */
 
 .product-price {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
+  flex-shrink: 0;
 
-  margin-top: 14px;
-  padding: 8px 14px;
+  padding: 7px 11px;
 
-  border-radius: 10px;
-  border: 1px solid rgba(59, 130, 246, 0.25);
+  border: 1px solid rgba(59, 130, 246, .25);
+  border-radius: 9px;
 
-  background: rgba(59, 130, 246, 0.08);
+  background: rgba(59, 130, 246, .08);
   color: var(--primary);
 
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 800;
   line-height: 1;
+  white-space: nowrap;
+}
+
+
+/* =================================
+   MOBILE
+================================= */
+
+@media (max-width: 640px) {
+
+  .product-title-row {
+    gap: 10px;
+  }
+
+  .product-price {
+    padding: 6px 9px;
+    font-size: 12px;
+  }
+
 }
 </style>
 
