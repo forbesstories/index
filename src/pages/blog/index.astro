@@ -1,279 +1,252 @@
 ---
 import MainLayout from "../../layouts/MainLayout.astro";
-import "../../styles/blog.css";
-
 import { SITE } from "../../lib/site";
+import "../../styles/blog.css";
 import { getCollection } from "astro:content";
 
-const posts = await getCollection("blog");
+const POSTS_PER_PAGE = 9;
 
-/* =====================================
-   SORT ARTICLES
-===================================== */
+let posts = await getCollection("blog");
 
-const sortedPosts = [...posts].sort(
-  (a, b) =>
-    new Date(b.data.date).getTime() -
-    new Date(a.data.date).getTime()
+posts = posts.sort(
+  (a, b) => new Date(b.data.date) - new Date(a.data.date)
 );
 
-/* =====================================
-   SEO
-===================================== */
+// pagination
+const currentPage =
+  Number(Astro.url.searchParams.get("page")) || 1;
 
-const pageTitle =
-  "Blog AI Mr Ferdy | AI, SEO, Teknologi & Digital";
+const totalPages =
+  Math.ceil(posts.length / POSTS_PER_PAGE);
 
-const pageDescription =
-  "Baca artikel AI Mr Ferdy tentang kecerdasan buatan, SEO, teknologi, otomasi, pembuatan konten, dan perkembangan dunia digital.";
+const start =
+  (currentPage - 1) * POSTS_PER_PAGE;
+
+const end =
+  start + POSTS_PER_PAGE;
+
+const paginatedPosts =
+  posts.slice(start, end);
 ---
 
 <MainLayout
-  title={pageTitle}
-  description={pageDescription}
-  canonical={SITE.url("/blog/")}
+  title={`Blog | ${SITE.title}`}
+  description={SITE.description}
+  canonical={SITE.url("/blog")}
 >
 
-  <!-- =====================================
-       BLOG HERO
-  ===================================== -->
+<section class="blog-page">
 
-  <section class="blog-hero">
+  <div class="container">
 
-    <div class="container-page">
+    <div class="page-wrap">
 
-      <div class="blog-hero-content">
-
-        <span class="hero-badge">
-          AI MR FERDY BLOG
-        </span>
+      <div class="page-hero center small">
 
         <h1>
-          AI, Teknologi & Dunia Digital
+          Blog
         </h1>
 
         <p>
-          Temukan pembahasan seputar kecerdasan buatan,
-          SEO, otomasi, teknologi web, pembuatan konten,
-          dan berbagai perkembangan digital yang relevan
-          untuk kebutuhan masa kini.
+          Explore modern articles, AI tools,
+          Cloudflare Workers tutorials,
+          Astro guides, and web development insights.
         </p>
 
       </div>
 
     </div>
 
-  </section>
+    <!-- POSTS -->
+    <div class="blog-grid">
 
+      {paginatedPosts.map((post) => (
 
-  <!-- =====================================
-       ARTICLE LIST
-  ===================================== -->
+        <article class="blog-card">
 
-  <section class="section">
+          <a
+            href={`/blog/${post.slug}/`}
+            class="blog-card-link"
+          >
 
-    <div class="container-page">
+            <div class="blog-card-image">
 
-      <div class="section-heading">
+              <img
+                src={SITE.url(`/api/og/${post.slug}.svg`)}
+                alt={post.data.title}
+                loading="lazy"
+                width="1200"
+                height="630"
+              />
 
-        <h2 class="section-title">
-          Artikel Terbaru
-        </h2>
+            </div>
 
-        <p class="section-desc">
-          Jelajahi artikel dan panduan terbaru mengenai AI,
-          SEO, teknologi, otomasi, serta berbagai topik
-          digital lainnya.
-        </p>
+            <div class="blog-card-content">
 
-      </div>
+              <div class="blog-card-meta">
+                {post.data.date}
+              </div>
 
+              <h2>
+                {post.data.title}
+              </h2>
 
-      {
-        sortedPosts.length > 0 ? (
+              {post.data.description && (
+                <p>
+                  {post.data.description}
+                </p>
+              )}
 
-          <div class="blog-grid">
+              <span class="readmore">
+                Read Article →
+              </span>
 
-            {
-              sortedPosts.map((post) => (
+            </div>
 
-                <article class="blog-card">
+          </a>
 
-                  <a
-                    href={`/blog/${post.slug}/`}
-                    class="blog-card-link"
-                  >
+        </article>
 
-                    <!-- IMAGE -->
+      ))}
 
-                    <div class="blog-card-image">
+    </div>
 
-                      <img
-                        src={SITE.url(
-                          `/api/og/${post.slug}.svg`
-                        )}
-                        alt={`${post.data.title} - AI Mr Ferdy`}
-                        loading="lazy"
-                        width="1200"
-                        height="630"
-                      />
+    <!-- PAGINATION -->
+    {totalPages > 1 && (
 
-                    </div>
+      <div class="pagination">
 
-
-                    <!-- CONTENT -->
-
-                    <div class="blog-card-content">
-
-                      <div class="blog-card-meta">
-
-                        <time
-                          datetime={new Date(
-                            post.data.date
-                          ).toISOString()}
-                        >
-                          {
-                            new Date(
-                              post.data.date
-                            ).toLocaleDateString(
-                              "id-ID",
-                              {
-                                day: "numeric",
-                                month: "long",
-                                year: "numeric"
-                              }
-                            )
-                          }
-                        </time>
-
-                      </div>
-
-
-                      <h3>
-                        {post.data.title}
-                      </h3>
-
-
-                      {
-                        post.data.description && (
-
-                          <p>
-                            {post.data.description}
-                          </p>
-
-                        )
-                      }
-
-
-                      <span class="readmore">
-                        Baca Artikel →
-                      </span>
-
-                    </div>
-
-                  </a>
-
-                </article>
-
-              ))
+        {/* PREV */}
+        {currentPage > 1 && (
+          <a
+            href={
+              currentPage === 2
+                ? "/blog"
+                : `/blog?page=${currentPage - 1}`
             }
+            class="pagination-btn"
+          >
+            ← Previous
+          </a>
+        )}
 
-          </div>
+        {/* NUMBERS */}
+        <div class="pagination-pages">
 
-        ) : (
+          {Array.from(
+            { length: totalPages },
+            (_, i) => i + 1
+          ).map((page) => (
 
-          <!-- EMPTY STATE -->
+            <a
+              href={
+                page === 1
+                  ? "/blog"
+                  : `/blog?page=${page}`
+              }
+              class:list={[
+                "pagination-number",
+                page === currentPage && "active"
+              ]}
+            >
+              {page}
+            </a>
 
-          <div class="content-card blog-empty">
+          ))}
 
-            <h2>
-              Belum Ada Artikel
-            </h2>
+        </div>
 
-            <p>
-              Belum ada artikel yang tersedia saat ini.
-              Silakan kembali lagi untuk menemukan
-              pembahasan terbaru dari AI Mr Ferdy.
-            </p>
-
-          </div>
-
-        )
-      }
-
-    </div>
-
-  </section>
-
-
-  <!-- =====================================
-       ABOUT BLOG
-  ===================================== -->
-
-  <section class="section">
-
-    <div class="container-page">
-
-      <div class="content-card blog-information">
-
-        <h2>
-          Tentang Blog AI Mr Ferdy
-        </h2>
-
-        <p>
-          Blog AI Mr Ferdy menjadi ruang untuk membahas
-          perkembangan kecerdasan buatan, teknologi web,
-          SEO, otomasi, dan berbagai topik digital lainnya.
-          Konten disusun untuk membantu pembaca memahami
-          teknologi dengan cara yang lebih sederhana dan
-          mudah diterapkan.
-        </p>
-
-        <p>
-          Selain membahas perkembangan teknologi, artikel
-          di dalam blog juga dapat berisi panduan, tips,
-          penjelasan tools, serta wawasan praktis yang
-          berkaitan dengan aktivitas digital sehari-hari.
-        </p>
+        {/* NEXT */}
+        {currentPage < totalPages && (
+          <a
+            href={`/blog?page=${currentPage + 1}`}
+            class="pagination-btn"
+          >
+            Next →
+          </a>
+        )}
 
       </div>
 
-    </div>
+    )}
 
-  </section>
+  </div>
 
+</section>
 
-  <!-- =====================================
-       CTA
-  ===================================== -->
+<style>
+.pagination{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
 
-  <section class="cta">
+  margin-top:60px;
 
-    <div class="container-page">
+  flex-wrap:wrap;
+}
 
-      <div class="cta-content">
+.pagination-pages{
+  display:flex;
+  align-items:center;
+  gap:10px;
 
-        <h2>
-          Jelajahi AI Tools AI Mr Ferdy
-        </h2>
+  flex-wrap:wrap;
+}
 
-        <p>
-          Selain membaca artikel, Anda juga dapat mencoba
-          berbagai tools digital yang tersedia untuk
-          membantu pekerjaan menjadi lebih praktis.
-        </p>
+.pagination-btn,
+.pagination-number{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
 
-        <a
-          href="/tools/"
-          class="btn btn-primary"
-        >
-          Lihat AI Tools
-        </a>
+  min-width:44px;
+  height:44px;
 
-      </div>
+  padding:0 16px;
 
-    </div>
+  border:1px solid var(--border);
+  border-radius:14px;
 
-  </section>
+  background:var(--card);
+
+  color:var(--text-soft);
+  text-decoration:none;
+
+  backdrop-filter:var(--blur);
+
+  transition:var(--transition);
+}
+
+.pagination-btn:hover,
+.pagination-number:hover{
+  transform:translateY(-2px);
+
+  border-color:var(--border-strong);
+
+  color:var(--text);
+}
+
+.pagination-number.active{
+  background:var(--primary);
+
+  color:#fff;
+
+  border:none;
+}
+
+@media(max-width:640px){
+
+  .pagination{
+    gap:10px;
+  }
+
+  .pagination-btn{
+    width:100%;
+    justify-content:center;
+  }
+
+}
+</style>
 
 </MainLayout>
