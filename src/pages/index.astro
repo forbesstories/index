@@ -759,9 +759,9 @@ const pageDescription =
 
             {
               product.data.price && (
-                <div class="blog-card-meta">
-                  {product.data.price}
-                </div>
+               <div class="product-price">
+      {product.data.price}
+    </div>
               )
             }
 
@@ -1036,5 +1036,29 @@ const pageDescription =
 
   </section>
 
+<style is:global>
+/* =================================
+   PRODUCT PRICE
+================================= */
+
+.product-price {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+
+  margin-top: 14px;
+  padding: 8px 14px;
+
+  border-radius: 10px;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+
+  background: rgba(59, 130, 246, 0.08);
+  color: var(--primary);
+
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+}
+</style>
 
 </MainLayout>
