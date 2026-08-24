@@ -30,7 +30,6 @@ const displayImage =
   post.data.image?.trim()
   || `/api/og/${post.slug}.svg`;
 
-
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
@@ -53,7 +52,6 @@ const articleSchema = {
     name: SITE.name
   }
 };
-
 ---
 
 <MainLayout
@@ -64,140 +62,109 @@ const articleSchema = {
   slug={post.slug}
 >
 
-<main class="article">
+  <main class="article">
 
-  <div class="container">
+    <div class="container">
 
-    <div class="article-wrap">
+      <div class="article-wrap">
 
-      <!-- Breadcrumb -->
-      <nav class="breadcrumb">
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb">
 
-        <a href="/">Home</a>
+          <a href="/">Home</a>
 
-        <span>/</span>
+          <span>/</span>
 
-        <a href="/blog/">Blog</a>
+          <a href="/blog/">Blog</a>
 
-        <span>/</span>
+          <span>/</span>
 
-        <span>{post.data.title}</span>
+          <span>{post.data.title}</span>
 
-      </nav>
+        </nav>
 
-      <!-- Header -->
-      <header class="article-header">
+        <!-- Header -->
+        <header class="article-header">
 
-        <h1>
-          {post.data.title}
-        </h1>
+          <h1>
+            {post.data.title}
+          </h1>
 
-        {post.data.description && (
-          <p class="article-excerpt">
-            {post.data.description}
-          </p>
-        )}
+          {post.data.description && (
+            <p class="article-excerpt">
+              {post.data.description}
+            </p>
+          )}
 
-      </header>
+        </header>
 
-      <!-- Sticky CTA -->
-      <div class="sticky-cta">
+        <!-- Sticky CTA -->
+        <div class="sticky-cta">
 
-        <div class="sticky-content">
+          <div class="sticky-content">
 
-          <div class="sticky-text">
+            <div class="sticky-text">
 
-            <strong>
-              {post.data.title}
-            </strong>
+              <strong>
+                {post.data.title}
+              </strong>
 
-            {post.data.description && (
-              <p>
-                {post.data.description}
-              </p>
-            )}
+              {post.data.description && (
+                <p>
+                  {post.data.description}
+                </p>
+              )}
+
+            </div>
+
+            <a
+              href="/tools/"
+              class="cta-btn"
+            >
+              Coba Sekarang
+            </a>
 
           </div>
 
-          <a
-            href="/tools/"
-            class="cta-btn"
-          >
-            Coba Sekarang
-          </a>
+        </div>
+
+        <!-- Featured -->
+        <div class="article-cover">
+
+          <img
+            src={displayImage}
+            alt={post.data.title}
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+            width="1200"
+            height="630"
+          />
 
         </div>
 
+        <!-- TOC -->
+        <TOC headings={headings} />
+
+        <!-- Content -->
+        <article class="article-content">
+
+          <Content />
+
+        </article>
+
+        <!-- Related -->
+        <RelatedPosts
+          posts={posts}
+          currentSlug={post.slug}
+          title="Artikel Terkait"
+          baseUrl="/blog"
+        />
+
       </div>
-
-      <!-- Featured -->
-      <div class="article-cover">
-
-<img
-  src={displayImage}
-  alt={post.data.title}
-  loading="eager"
-  decoding="async"
-  fetchpriority="high"
-  width="1200"
-  height="630"
-/>
-
-      </div>
-
-      <!-- TOC -->
-      {headings.length > 0 && (
-
-        <details class="toc">
-
-          <summary class="toc-title">
-    <span>
-      📑 Daftar Isi
-    </span>
-
-    <span class="toc-toggle">
-    </span>
-          </summary>
-
-          <ul>
-
-            {headings.map((heading) => (
-
-              <li class={`depth-${heading.depth}`}>
-
-                <a href={`#${heading.slug}`}>
-                  {heading.text}
-                </a>
-
-              </li>
-
-            ))}
-
-          </ul>
-
-        </details>
-
-      )}
-
-      <!-- Content -->
-      <article class="article-content">
-        <Content />
-      </article>
-
-
- <!-- Related -->
-<RelatedPosts
-  posts={posts}
-  currentSlug={post.slug}
-  title="Artikel Terkait"
-  baseUrl="/blog"
-/>
 
     </div>
 
-  </div>
-
-</main>
-
+  </main>
 
 </MainLayout>
