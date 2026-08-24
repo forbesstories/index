@@ -1,183 +1,252 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import "../styles/pages.css";
+import "../styles/contact.css";
+
+const pageTitle = "Contact - Ai Mr Ferdy";
+
+const pageDescription =
+  "Hubungi Ai Mr Ferdy untuk konsultasi digital growth, SEO strategy, website optimization, dan kebutuhan teknologi digital.";
 ---
 
 <MainLayout
-  title="Contact - Ai Mr Ferdy"
-  description="Hubungi Ai Mr Ferdy untuk konsultasi digital growth, SEO strategy, dan website optimization."
+  title={pageTitle}
+  description={pageDescription}
 >
 
   <main class="page page-contact">
 
-    <section class="page-hero">
-      <div class="page-container">
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
 
-        <div class="page-grid">
+    <section class="page-hero contact-hero">
 
-          <div>
+      <div class="page-container contact-hero-grid">
 
-            <span class="page-label">
-              CONTACT AI MR FERDY
-            </span>
+        <div class="contact-content">
 
-            <h1 class="page-title">
-              Mari Diskusikan Growth Digital Anda
-            </h1>
+          <span class="page-label">
+            CONTACT AI MR FERDY
+          </span>
 
-            <p class="page-description">
-              Sampaikan kebutuhan SEO, website optimization,
-              content strategy, atau pengembangan digital Anda
-              untuk mendapatkan pembahasan yang lebih terarah.
-            </p>
+          <h1>
+            Mari Diskusikan Kebutuhan Digital Anda
+          </h1>
 
-            <div class="page-list">
+          <p class="page-hero-description">
+            Punya pertanyaan tentang SEO, website,
+            content strategy, atau pengembangan digital?
+            Sampaikan kebutuhan Anda dan mari cari solusi
+            yang sesuai.
+          </p>
 
-              <div class="page-item">
-                <strong>Email</strong>
-                <p>hello@aimrferdy.com</p>
-              </div>
+          <div class="contact-list">
 
-              <div class="page-item">
-                <strong>WhatsApp</strong>
-                <p>+62 812-3456-7890</p>
-              </div>
-
-              <div class="page-item">
-                <strong>Location</strong>
-                <p>Indonesia</p>
-              </div>
-
+            <div class="contact-item">
+              <strong>Email</strong>
+              <p>hello@aimrferdy.com</p>
             </div>
 
-          </div>
+            <div class="contact-item">
+              <strong>WhatsApp</strong>
+              <p>+62 812-3456-7890</p>
+            </div>
 
-
-          <div class="page-card">
-
-            <h2>
-              Konsultasi Digital
-            </h2>
-
-            <p>
-              Ceritakan kebutuhan proyek Anda melalui
-              formulir berikut.
-            </p>
-
-            <form class="page-form">
-
-              <div class="page-form-group">
-                <label for="name">Nama</label>
-
-                <input
-                  id="name"
-                  type="text"
-                  placeholder="Nama lengkap"
-                />
-              </div>
-
-              <div class="page-form-group">
-                <label for="email">Email</label>
-
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="email@domain.com"
-                />
-              </div>
-
-              <div class="page-form-group">
-                <label for="website">Website</label>
-
-                <input
-                  id="website"
-                  type="url"
-                  placeholder="https://websiteanda.com"
-                />
-              </div>
-
-              <div class="page-form-group">
-                <label for="message">Kebutuhan</label>
-
-                <textarea
-                  id="message"
-                  rows="5"
-                  placeholder="Ceritakan kebutuhan digital Anda..."
-                ></textarea>
-              </div>
-
-              <button
-                type="submit"
-                class="page-button"
-              >
-                Kirim Konsultasi
-                <span>→</span>
-              </button>
-
-            </form>
+            <div class="contact-item">
+              <strong>Location</strong>
+              <p>Indonesia</p>
+            </div>
 
           </div>
 
         </div>
 
+
+        <!-- FORM -->
+
+        <div class="contact-form-card">
+
+          <span class="page-label">
+            KONSULTASI
+          </span>
+
+          <h2>
+            Mulai Percakapan
+          </h2>
+
+          <p>
+            Ceritakan kebutuhan atau tujuan digital
+            yang ingin Anda capai.
+          </p>
+
+          <form class="contact-form">
+
+            <div class="contact-form-group">
+
+              <label for="name">
+                Nama
+              </label>
+
+              <input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Nama lengkap"
+                autocomplete="name"
+              />
+
+            </div>
+
+
+            <div class="contact-form-group">
+
+              <label for="email">
+                Email
+              </label>
+
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="email@domain.com"
+                autocomplete="email"
+              />
+
+            </div>
+
+
+            <div class="contact-form-group">
+
+              <label for="website">
+                Website
+              </label>
+
+              <input
+                id="website"
+                name="website"
+                type="url"
+                placeholder="https://websiteanda.com"
+              />
+
+            </div>
+
+
+            <div class="contact-form-group">
+
+              <label for="message">
+                Kebutuhan
+              </label>
+
+              <textarea
+                id="message"
+                name="message"
+                rows="5"
+                placeholder="Ceritakan kebutuhan Anda..."
+              ></textarea>
+
+            </div>
+
+
+            <button
+              type="submit"
+              class="page-button page-button-primary"
+            >
+              Kirim Konsultasi
+            </button>
+
+          </form>
+
+        </div>
+
       </div>
+
     </section>
 
+
+    <!-- =====================================================
+         SERVICES
+    ====================================================== -->
 
     <section class="page-section">
 
       <div class="page-container">
 
-        <div class="page-section-title">
+        <div class="page-section-heading">
 
           <span class="page-label">
             SERVICES
           </span>
 
           <h2>
-            Solusi Digital untuk Pertumbuhan
+            Layanan Digital
           </h2>
 
-          <p class="page-section-description">
-            Pendekatan yang berfokus pada SEO, website,
-            konten, performa, dan pengalaman pengguna.
+          <p>
+            Beberapa area yang dapat dibantu untuk
+            membangun dan mengembangkan aset digital.
           </p>
 
         </div>
 
 
-        <div class="page-grid">
+        <div class="contact-service-grid">
 
-          <article class="page-card">
-            <h3>SEO Strategy</h3>
+          <article class="contact-service-card">
+
+            <h3>
+              SEO Strategy
+            </h3>
+
             <p>
-              Strategi pencarian organik melalui riset,
-              evaluasi website, dan roadmap pertumbuhan.
+              Perencanaan SEO, riset keyword,
+              struktur konten, dan roadmap pertumbuhan
+              berdasarkan kebutuhan website.
             </p>
+
           </article>
 
-          <article class="page-card">
-            <h3>Technical Optimization</h3>
+
+          <article class="contact-service-card">
+
+            <h3>
+              Technical Optimization
+            </h3>
+
             <p>
-              Optimasi struktur website, indexing,
-              technical SEO, dan performa.
+              Optimasi struktur website, technical SEO,
+              performa, indexing, dan pengalaman pengguna.
             </p>
+
           </article>
 
-          <article class="page-card">
-            <h3>Content Strategy</h3>
+
+          <article class="contact-service-card">
+
+            <h3>
+              Content Strategy
+            </h3>
+
             <p>
-              Pengembangan struktur konten yang relevan
-              untuk membangun topical authority.
+              Pengembangan strategi konten dan topical
+              authority untuk membangun visibilitas
+              secara berkelanjutan.
             </p>
+
           </article>
 
-          <article class="page-card">
-            <h3>Conversion Optimization</h3>
+
+          <article class="contact-service-card">
+
+            <h3>
+              Website Optimization
+            </h3>
+
             <p>
-              Penyempurnaan UX dan alur halaman agar
-              pengunjung lebih mudah melakukan tindakan.
+              Penyempurnaan tampilan, struktur,
+              usability, dan performa website modern.
             </p>
+
           </article>
 
         </div>
@@ -187,59 +256,105 @@ import "../styles/pages.css";
     </section>
 
 
+    <!-- =====================================================
+         PROCESS
+    ====================================================== -->
+
     <section class="page-section page-section-alt">
 
       <div class="page-container">
 
-        <div class="page-section-title">
+        <div class="page-section-heading">
 
           <span class="page-label">
             PROCESS
           </span>
 
           <h2>
-            Bagaimana Proses Konsultasi?
+            Bagaimana Prosesnya?
           </h2>
+
+          <p>
+            Proses dibuat sederhana agar kebutuhan
+            dapat dipahami sebelum menentukan langkah
+            berikutnya.
+          </p>
 
         </div>
 
 
-        <div class="page-grid">
+        <div class="contact-process-grid">
 
-          <article class="page-card">
-            <span class="page-number">01</span>
-            <h3>Diskusi Awal</h3>
+          <article class="contact-process-card">
+
+            <span class="contact-process-number">
+              01
+            </span>
+
+            <h3>
+              Diskusi Awal
+            </h3>
+
             <p>
               Memahami kebutuhan, kondisi website,
-              target, dan tujuan proyek.
+              target, dan tujuan yang ingin dicapai.
             </p>
+
           </article>
 
-          <article class="page-card">
-            <span class="page-number">02</span>
-            <h3>Audit & Analysis</h3>
+
+          <article class="contact-process-card">
+
+            <span class="contact-process-number">
+              02
+            </span>
+
+            <h3>
+              Analisis
+            </h3>
+
             <p>
-              Mengevaluasi struktur, technical SEO,
-              konten, dan peluang pengembangan.
+              Meninjau masalah dan peluang yang
+              berkaitan dengan website atau strategi
+              digital.
             </p>
+
           </article>
 
-          <article class="page-card">
-            <span class="page-number">03</span>
-            <h3>Strategy Planning</h3>
+
+          <article class="contact-process-card">
+
+            <span class="contact-process-number">
+              03
+            </span>
+
+            <h3>
+              Rekomendasi
+            </h3>
+
             <p>
-              Menentukan prioritas dan menyusun
-              roadmap berdasarkan hasil analisis.
+              Menentukan pendekatan dan prioritas
+              berdasarkan kebutuhan yang ditemukan.
             </p>
+
           </article>
 
-          <article class="page-card">
-            <span class="page-number">04</span>
-            <h3>Execution</h3>
+
+          <article class="contact-process-card">
+
+            <span class="contact-process-number">
+              04
+            </span>
+
+            <h3>
+              Implementasi
+            </h3>
+
             <p>
-              Menerapkan strategi dan memantau
-              perkembangan berdasarkan target.
+              Melanjutkan ke tahap pengerjaan dan
+              evaluasi sesuai kesepakatan.
             </p>
+
           </article>
 
         </div>
@@ -249,11 +364,15 @@ import "../styles/pages.css";
     </section>
 
 
+    <!-- =====================================================
+         FAQ
+    ====================================================== -->
+
     <section class="page-section">
 
       <div class="page-container">
 
-        <div class="page-section-title">
+        <div class="page-section-heading">
 
           <span class="page-label">
             FAQ
@@ -266,39 +385,65 @@ import "../styles/pages.css";
         </div>
 
 
-        <div class="page-faq">
+        <div class="contact-faq">
 
-          <article class="page-faq-item">
-            <h3>Apakah konsultasi awal gratis?</h3>
+          <article class="contact-faq-item">
+
+            <h3>
+              Apakah konsultasi awal gratis?
+            </h3>
+
             <p>
-              Konsultasi awal digunakan untuk memahami
-              kebutuhan dan ruang lingkup proyek.
+              Konsultasi awal dapat digunakan untuk
+              menjelaskan kebutuhan dan menentukan
+              apakah solusi yang tersedia sesuai.
             </p>
+
           </article>
 
-          <article class="page-faq-item">
-            <h3>Berapa lama proses SEO?</h3>
+
+          <article class="contact-faq-item">
+
+            <h3>
+              Apa saja yang bisa dikonsultasikan?
+            </h3>
+
             <p>
-              Durasi berbeda pada setiap website,
-              tergantung kompetisi, kondisi teknis,
-              konten, dan target pencarian.
+              Topiknya dapat mencakup SEO, website,
+              content strategy, automation, tools,
+              dan pengembangan digital.
             </p>
+
           </article>
 
-          <article class="page-faq-item">
-            <h3>Apakah menerima proyek kecil?</h3>
+
+          <article class="contact-faq-item">
+
+            <h3>
+              Apakah bisa untuk website baru?
+            </h3>
+
             <p>
-              Ya. Setiap kebutuhan dapat dibahas terlebih
-              dahulu untuk menentukan pendekatan yang sesuai.
+              Bisa. Diskusi dapat dimulai dari tahap
+              perencanaan maupun dari website yang
+              sudah berjalan.
             </p>
+
           </article>
 
-          <article class="page-faq-item">
-            <h3>Apakah tersedia reporting?</h3>
+
+          <article class="contact-faq-item">
+
+            <h3>
+              Bagaimana cara menghubungi?
+            </h3>
+
             <p>
-              Monitoring dapat dilakukan menggunakan
-              indikator yang sesuai dengan tujuan proyek.
+              Gunakan informasi kontak yang tersedia
+              atau kirimkan kebutuhan melalui formulir
+              konsultasi di halaman ini.
             </p>
+
           </article>
 
         </div>
@@ -308,34 +453,33 @@ import "../styles/pages.css";
     </section>
 
 
+    <!-- =====================================================
+         CTA
+    ====================================================== -->
+
     <section class="page-cta">
 
       <div class="page-container">
 
-        <div class="page-cta-content">
+        <span class="page-label">
+          LET'S CONNECT
+        </span>
 
-          <span class="page-label">
-            START A CONVERSATION
-          </span>
+        <h2>
+          Punya Ide atau Kebutuhan Digital?
+        </h2>
 
-          <h2>
-            Punya Ide atau Proyek Digital?
-          </h2>
+        <p>
+          Mari mulai dengan membicarakan kebutuhan
+          dan tujuan yang ingin Anda capai.
+        </p>
 
-          <p>
-            Mari mulai dengan membahas kebutuhan dan
-            tujuan digital Anda.
-          </p>
-
-          <a
-            href="mailto:hello@aimrferdy.com"
-            class="page-button"
-          >
-            Hubungi Ai Mr Ferdy
-            <span>→</span>
-          </a>
-
-        </div>
+        <a
+          href="mailto:hello@aimrferdy.com"
+          class="page-button page-button-primary"
+        >
+          Hubungi Ai Mr Ferdy
+        </a>
 
       </div>
 
