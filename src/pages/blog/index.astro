@@ -1,6 +1,7 @@
 ---
 import MainLayout from "../../layouts/MainLayout.astro";
 import { SITE } from "../../lib/site";
+import "../../styles/blog.css";
 import { getCollection } from "astro:content";
 
 const posts = await getCollection("blog");
