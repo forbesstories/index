@@ -741,15 +741,11 @@ const pageDescription =
 
 <div class="blog-card-content">
 
-  <span class="card-label">
-    Digital Product
-  </span>
+  <div class="product-card-top">
 
-  <div class="product-title-row">
-
-    <h3>
-      {product.data.title}
-    </h3>
+    <span class="card-label">
+      Digital Product
+    </span>
 
     {
       product.data.price && (
@@ -760,6 +756,10 @@ const pageDescription =
     }
 
   </div>
+
+  <h3>
+    {product.data.title}
+  </h3>
 
   {
     product.data.description && (
@@ -774,7 +774,6 @@ const pageDescription =
   </span>
 
 </div>
-
         </a>
 
       </article>
@@ -1041,33 +1040,18 @@ const pageDescription =
   </section>
 
 <style is:global>
-/* =================================
-   PRODUCT TITLE
-================================= */
-
-.product-title-row {
+.product-card-top {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  margin-top: 10px;
+  gap: 12px;
+  margin-bottom: 12px;
 }
-
-.product-title-row h3 {
-  margin: 0;
-  min-width: 0;
-}
-
-
-/* =================================
-   PRODUCT PRICE
-================================= */
 
 .product-price {
   flex-shrink: 0;
 
   padding: 7px 11px;
-
   border: 1px solid rgba(59, 130, 246, .25);
   border-radius: 9px;
 
@@ -1080,22 +1064,19 @@ const pageDescription =
   white-space: nowrap;
 }
 
-
-/* =================================
-   MOBILE
-================================= */
+.blog-card-content h3 {
+  margin-top: 0;
+}
 
 @media (max-width: 640px) {
-
-  .product-title-row {
-    gap: 10px;
+  .product-card-top {
+    gap: 8px;
   }
 
   .product-price {
     padding: 6px 9px;
     font-size: 12px;
   }
-
 }
 </style>
 
