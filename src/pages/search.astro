@@ -1198,6 +1198,7 @@ const productItems: Product[] =
 
 .search-container h1 {
   margin: 0;
+  color: var(--text);
   font-size: clamp(28px, 5vw, 40px);
   line-height: 1.2;
 }
@@ -1212,7 +1213,7 @@ const productItems: Product[] =
 
 
 /* =========================================================
-   FORM
+   SEARCH FORM
 ========================================================= */
 
 .search-form {
@@ -1242,11 +1243,15 @@ const productItems: Product[] =
   height: 50px;
   padding: 0 16px 0 44px;
   box-sizing: border-box;
+
   border: 1px solid var(--border);
   border-radius: 10px;
+
   outline: none;
+
   background: var(--surface);
   color: var(--text);
+
   font-family: inherit;
   font-size: 14px;
 }
@@ -1258,6 +1263,7 @@ const productItems: Product[] =
 
 .search-form input:focus {
   border-color: var(--primary);
+
   box-shadow:
     0 0 0 3px
     color-mix(
@@ -1267,16 +1273,25 @@ const productItems: Product[] =
     );
 }
 
+
+/* =========================================================
+   SELECT
+========================================================= */
+
 .search-form select {
   width: 100%;
   height: 50px;
   padding: 0 12px;
   box-sizing: border-box;
+
   border: 1px solid var(--border);
   border-radius: 10px;
+
   outline: none;
+
   background: var(--surface);
   color: var(--text);
+
   font-family: inherit;
   font-size: 13px;
 }
@@ -1285,17 +1300,27 @@ const productItems: Product[] =
   border-color: var(--primary);
 }
 
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
 .search-button {
   width: 100%;
   height: 50px;
+
   border: 0;
   border-radius: 10px;
+
   background: var(--bgbtn);
   color: var(--textbtn);
+
   font-family: inherit;
   font-size: 12px;
   font-weight: 800;
+
   cursor: pointer;
+
   transition:
     transform .2s ease,
     filter .2s ease;
@@ -1318,21 +1343,28 @@ const productItems: Product[] =
 .search-info {
   min-height: 18px;
   margin: 8px 0 15px;
+
   color: var(--text-secondary);
+
   font-size: 12px;
 }
 
 
 /* =========================================================
-   RESULTS
-   :global DIPERLUKAN KARENA DIBUAT OLEH innerHTML
+   RESULT CONTAINER
 ========================================================= */
 
 :global(.search-results) {
+  width: 100%;
+
   display: grid;
+
   grid-template-columns:
     repeat(2, minmax(0, 1fr));
+
   gap: 14px;
+
+  box-sizing: border-box;
 }
 
 
@@ -1342,40 +1374,79 @@ const productItems: Product[] =
 
 :global(.search-card) {
   display: block;
+
+  width: 100%;
+
   padding: 20px;
-  border: 1px solid var(--border);
+
+  box-sizing: border-box;
+
+  border:
+    1px solid var(--border);
+
   border-radius: 12px;
-  background: var(--surface);
-  color: var(--text);
-  text-decoration: none;
-  box-shadow: var(--shadow);
+
+  background:
+    var(--surface);
+
+  color:
+    var(--text);
+
+  text-decoration:
+    none;
+
+  box-shadow:
+    var(--shadow);
+
+  overflow:
+    hidden;
+
   transition:
     transform .2s ease,
     border-color .2s ease,
-    box-shadow .2s ease;
+    box-shadow .2s ease,
+    background .2s ease;
 }
 
+
+/* =========================================================
+   CARD HOVER
+========================================================= */
+
 :global(.search-card:hover) {
-  transform: translateY(-2px);
+  transform:
+    translateY(-2px);
+
   border-color:
     color-mix(
       in srgb,
       var(--primary) 45%,
       var(--border)
     );
+
+  box-shadow:
+    var(--shadow);
+
+  background:
+    var(--surface);
 }
 
 
 /* =========================================================
-   BADGE
+   CARD BADGE
 ========================================================= */
 
 :global(.search-badge) {
   display: inline-flex;
+
   align-items: center;
+
   min-height: 22px;
+
   margin-bottom: 10px;
+
   padding: 0 9px;
+
   box-sizing: border-box;
 
   border:
@@ -1395,36 +1466,57 @@ const productItems: Product[] =
       transparent
     );
 
-  color: var(--primary);
+  color:
+    var(--primary);
 
   font-size: 9px;
+
   font-weight: 800;
+
   letter-spacing: .5px;
+
   text-transform: uppercase;
 }
 
 
 /* =========================================================
-   RESULT TITLE
+   CARD TITLE
 ========================================================= */
 
 :global(.search-card h2) {
-  margin: 0 0 8px;
-  color: var(--text);
-  font-size: 17px;
-  line-height: 1.4;
+  margin:
+    0 0 8px;
+
+  color:
+    var(--text);
+
+  font-size:
+    17px;
+
+  line-height:
+    1.4;
+
+  font-weight:
+    700;
 }
 
 
 /* =========================================================
-   RESULT DESCRIPTION
+   CARD DESCRIPTION
 ========================================================= */
 
 :global(.search-card p) {
-  margin: 0;
-  color: var(--text-secondary);
-  font-size: 12px;
-  line-height: 1.65;
+  margin:
+    0;
+
+  color:
+    var(--text-secondary);
+
+  font-size:
+    12px;
+
+  line-height:
+    1.65;
 }
 
 
@@ -1434,50 +1526,104 @@ const productItems: Product[] =
 
 .empty-search,
 .no-results {
-  padding: 55px 20px;
-  text-align: center;
-  border: 1px dashed var(--border);
-  border-radius: 14px;
-  background: var(--surface);
+  padding:
+    55px 20px;
+
+  text-align:
+    center;
+
+  border:
+    1px dashed var(--border);
+
+  border-radius:
+    14px;
+
+  background:
+    var(--surface);
+
+  color:
+    var(--text);
 }
+
 
 .empty-icon {
-  width: 52px;
-  height: 52px;
-  margin: 0 auto 15px;
+  width:
+    52px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height:
+    52px;
 
-  border-radius: 50%;
-  background: var(--surface-hover);
-  color: var(--text-secondary);
+  margin:
+    0 auto 15px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--surface-hover);
+
+  color:
+    var(--text-secondary);
 }
+
 
 .empty-icon svg {
-  width: 24px;
-  height: 24px;
+  width:
+    24px;
+
+  height:
+    24px;
 }
+
 
 .empty-search h2,
 .no-results h2 {
-  margin: 0;
-  color: var(--text);
-  font-size: 17px;
+  margin:
+    0;
+
+  color:
+    var(--text);
+
+  font-size:
+    17px;
 }
+
 
 .empty-search p,
 .no-results p {
-  max-width: 430px;
-  margin: 8px auto 0;
-  color: var(--text-secondary);
-  font-size: 12px;
-  line-height: 1.7;
+  max-width:
+    430px;
+
+  margin:
+    8px auto 0;
+
+  color:
+    var(--text-secondary);
+
+  font-size:
+    12px;
+
+  line-height:
+    1.7;
 }
 
+
+/* =========================================================
+   NO RESULT
+========================================================= */
+
 .no-results {
-  display: none;
+  display:
+    none;
 }
 
 
@@ -1488,23 +1634,33 @@ const productItems: Product[] =
 @media (max-width: 700px) {
 
   .search-section {
-    padding: 35px 15px 60px;
+    padding:
+      35px 15px 60px;
   }
 
   .search-form {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr;
   }
 
   .search-button {
-    width: 100%;
+    width:
+      100%;
   }
 
   :global(.search-results) {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr;
+  }
+
+  :global(.search-card) {
+    padding:
+      18px;
   }
 
   .search-container h1 {
-    font-size: 28px;
+    font-size:
+      28px;
   }
 
 }
