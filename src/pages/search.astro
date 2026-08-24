@@ -108,21 +108,15 @@ function extractValue(
 
   const patterns = [
 
-    /* const title = "..." */
-
     new RegExp(
       `(?:const|let|var)\\s+${name}\\s*=\\s*["'\`]([^"'\\\`]+)["'\`]`,
       "m"
     ),
 
-    /* title: "..." */
-
     new RegExp(
       `${name}\\s*:\\s*["'\`]([^"'\\\`]+)["'\`]`,
       "m"
     ),
-
-    /* title="..." */
 
     new RegExp(
       `${name}\\s*=\\s*["'\`]([^"'\\\`]+)["'\`]`,
@@ -176,15 +170,6 @@ function createToolUrl(
         ""
       );
 
-
-  /*
-   * /tools/category/index.astro
-   *
-   * menjadi:
-   *
-   * /tools/category
-   */
-
   if (
     relative.endsWith("/index")
   ) {
@@ -196,7 +181,6 @@ function createToolUrl(
       );
 
   }
-
 
   return `/tools/${relative}`;
 
@@ -225,20 +209,17 @@ const tools: Tool[] =
             "utf8"
           );
 
-
         const title =
           extractValue(
             content,
             "title"
           );
 
-
         const description =
           extractValue(
             content,
             "description"
           );
-
 
         return {
 
@@ -331,11 +312,9 @@ const productItems: Product[] =
   description="Cari tools, artikel, dan produk AI Mr Ferdy berdasarkan judul dan deskripsi."
 >
 
-
   <section class="search-section">
 
     <div class="search-container">
-
 
       <!-- =================================================
            HEADER
@@ -392,7 +371,6 @@ const productItems: Product[] =
 
           </svg>
 
-
           <input
             type="search"
             id="searchInput"
@@ -434,9 +412,7 @@ const productItems: Product[] =
           id="searchButton"
           class="search-button"
         >
-
           Search
-
         </button>
 
       </form>
@@ -458,7 +434,7 @@ const productItems: Product[] =
 
       <div
         id="searchResults"
-        class="search-results"
+        class="result-grid"
       ></div>
 
 
@@ -653,10 +629,6 @@ const productItems: Product[] =
       type.value;
 
 
-    /* =====================================================
-       TOOLS
-    ====================================================== */
-
     const toolData =
       tools.map(
         tool => ({
@@ -676,10 +648,6 @@ const productItems: Product[] =
         })
       );
 
-
-    /* =====================================================
-       BLOG
-    ====================================================== */
 
     const blogData =
       blogs.map(
@@ -701,10 +669,6 @@ const productItems: Product[] =
       );
 
 
-    /* =====================================================
-       PRODUCTS
-    ====================================================== */
-
     const productData =
       productItems.map(
         product => ({
@@ -724,10 +688,6 @@ const productItems: Product[] =
         })
       );
 
-
-    /* =====================================================
-       FILTER
-    ====================================================== */
 
     if (
       selectedType === "tool"
@@ -756,10 +716,6 @@ const productItems: Product[] =
     }
 
 
-    /* =====================================================
-       ALL
-    ====================================================== */
-
     return [
 
       ...toolData,
@@ -785,10 +741,6 @@ const productItems: Product[] =
         .toLowerCase();
 
 
-    /* =====================================================
-       BELUM ADA KEYWORD
-    ====================================================== */
-
     if (!keyword) {
 
       results.innerHTML =
@@ -808,17 +760,9 @@ const productItems: Product[] =
     }
 
 
-    /* =====================================================
-       DATA
-    ====================================================== */
-
     const data =
       getSearchData();
 
-
-    /* =====================================================
-       SEARCH TITLE + DESCRIPTION
-    ====================================================== */
 
     const found =
       data.filter(
@@ -851,17 +795,9 @@ const productItems: Product[] =
       );
 
 
-    /* =====================================================
-       HIDE EMPTY
-    ====================================================== */
-
     empty.style.display =
       "none";
 
-
-    /* =====================================================
-       RESULT LABEL
-    ====================================================== */
 
     let label =
       "hasil";
@@ -898,10 +834,6 @@ const productItems: Product[] =
     info.textContent =
       `${found.length} ${label} ditemukan`;
 
-
-    /* =====================================================
-       NO RESULT
-    ====================================================== */
 
     if (
       found.length === 0
@@ -957,14 +889,14 @@ const productItems: Product[] =
             return `
 
               <a
-                class="search-card"
+                class="result-card"
                 href="${escapeHTML(
                   item.url
                 )}"
               >
 
                 <span
-                  class="search-badge"
+                  class="result-badge"
                 >
                   ${badge}
                 </span>
@@ -1058,9 +990,7 @@ const productItems: Product[] =
 
 
   /* =======================================================
-     FORM SUBMIT
-     
-     ENTER + BUTTON
+     ENTER + BUTTON SEARCH
   ======================================================== */
 
   form?.addEventListener(
@@ -1101,14 +1031,6 @@ const productItems: Product[] =
 
   /* =======================================================
      LOAD FROM URL
-     
-     Contoh:
-     
-     /search/?q=css&type=tool
-     
-     /search/?q=ai&type=blog
-     
-     /search/?q=keyboard&type=product
   ======================================================== */
 
   const params =
@@ -1144,10 +1066,6 @@ const productItems: Product[] =
   }
 
 
-  /* =====================================================
-     HANYA SEARCH JIKA q ADA
-  ====================================================== */
-
   if (
     urlKeyword.trim()
   ) {
@@ -1159,22 +1077,37 @@ const productItems: Product[] =
 </script>
 
 
-<style is:global>
+<style>
 
 /* =========================================================
    SEARCH SECTION
 ========================================================= */
 
 .search-section {
-  width: 100%;
-  padding: 60px 20px 90px;
-  box-sizing: border-box;
+
+  width:
+    100%;
+
+  padding:
+    60px 20px 90px;
+
+  box-sizing:
+    border-box;
+
 }
 
+
 .search-container {
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
+
+  width:
+    100%;
+
+  max-width:
+    1000px;
+
+  margin:
+    0 auto;
+
 }
 
 
@@ -1183,32 +1116,77 @@ const productItems: Product[] =
 ========================================================= */
 
 .search-header {
-  margin-bottom: 30px;
-  text-align: center;
+
+  margin-bottom:
+    28px;
+
 }
+
 
 .search-label {
-  display: inline-block;
-  margin-bottom: 8px;
-  color: var(--primary);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.6px;
+
+  display:
+    inline-block;
+
+  margin-bottom:
+    8px;
+
+  color:
+    var(--primary);
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    1.6px;
+
 }
+
 
 .search-container h1 {
-  margin: 0;
-  color: var(--text);
-  font-size: clamp(28px, 5vw, 40px);
-  line-height: 1.2;
+
+  margin:
+    0;
+
+  text-align:
+    left;
+
+  color:
+    var(--text);
+
+  font-size:
+    clamp(
+      30px,
+      5vw,
+      42px
+    );
+
+  line-height:
+    1.15;
+
+  letter-spacing:
+    -1px;
+
 }
 
+
 .search-description {
-  max-width: 650px;
-  margin: 10px auto 0;
-  color: var(--text-secondary);
-  font-size: 14px;
-  line-height: 1.7;
+
+  margin:
+    10px 0 0;
+
+  color:
+    var(--text-secondary);
+
+  font-size:
+    14px;
+
+  line-height:
+    1.7;
+
 }
 
 
@@ -1217,52 +1195,142 @@ const productItems: Product[] =
 ========================================================= */
 
 .search-form {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 150px 110px;
-  gap: 10px;
-  margin-bottom: 18px;
+
+  display:
+    grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    150px
+    110px;
+
+  gap:
+    10px;
+
+  margin-bottom:
+    15px;
+
 }
+
 
 .search-input-wrap {
-  position: relative;
+
+  position:
+    relative;
+
 }
+
 
 .search-input-wrap svg {
-  position: absolute;
-  top: 50%;
-  left: 15px;
-  width: 18px;
-  height: 18px;
-  transform: translateY(-50%);
-  color: var(--text-secondary);
-  pointer-events: none;
+
+  position:
+    absolute;
+
+  top:
+    50%;
+
+  left:
+    14px;
+
+  width:
+    18px;
+
+  height:
+    18px;
+
+  transform:
+    translateY(-50%);
+
+  color:
+    var(--text-secondary);
+
+  pointer-events:
+    none;
+
 }
 
-.search-form input {
-  width: 100%;
-  height: 50px;
-  padding: 0 16px 0 44px;
-  box-sizing: border-box;
 
-  border: 1px solid var(--border);
-  border-radius: 10px;
+.search-input-wrap input {
 
-  outline: none;
+  width:
+    100%;
 
-  background: var(--surface);
-  color: var(--text);
+  height:
+    50px;
 
-  font-family: inherit;
-  font-size: 14px;
+  padding:
+    0 14px 0 43px;
+
+  box-sizing:
+    border-box;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    10px;
+
+  outline:
+    none;
+
+  background:
+    var(--surface);
+
+  color:
+    var(--text);
+
+  font-family:
+    inherit;
+
+  font-size:
+    13px;
+
 }
 
-.search-form input::placeholder {
-  color: var(--text-secondary);
-  opacity: .8;
+
+.search-form select {
+
+  width:
+    100%;
+
+  height:
+    50px;
+
+  padding:
+    0 12px;
+
+  box-sizing:
+    border-box;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    10px;
+
+  outline:
+    none;
+
+  background:
+    var(--surface);
+
+  color:
+    var(--text);
+
+  font-family:
+    inherit;
+
+  font-size:
+    13px;
+
 }
 
-.search-form input:focus {
-  border-color: var(--primary);
+
+.search-input-wrap input:focus,
+.search-form select:focus {
+
+  border-color:
+    var(--primary);
 
   box-shadow:
     0 0 0 3px
@@ -1271,68 +1339,61 @@ const productItems: Product[] =
       var(--primary) 10%,
       transparent
     );
+
 }
 
 
 /* =========================================================
-   SELECT
-========================================================= */
-
-.search-form select {
-  width: 100%;
-  height: 50px;
-  padding: 0 12px;
-  box-sizing: border-box;
-
-  border: 1px solid var(--border);
-  border-radius: 10px;
-
-  outline: none;
-
-  background: var(--surface);
-  color: var(--text);
-
-  font-family: inherit;
-  font-size: 13px;
-}
-
-.search-form select:focus {
-  border-color: var(--primary);
-}
-
-
-/* =========================================================
-   BUTTON
+   SEARCH BUTTON
 ========================================================= */
 
 .search-button {
-  width: 100%;
-  height: 50px;
 
-  border: 0;
-  border-radius: 10px;
+  width:
+    100%;
 
-  background: var(--bgbtn);
-  color: var(--textbtn);
+  height:
+    50px;
 
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 800;
+  border:
+    0;
 
-  cursor: pointer;
+  border-radius:
+    10px;
+
+  background:
+    var(--bgbtn);
+
+  color:
+    var(--textbtn);
+
+  font-family:
+    inherit;
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
 
   transition:
     transform .2s ease,
     filter .2s ease;
+
 }
+
 
 .search-button:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.08);
-}
 
-.search-button:active {
-  transform: translateY(0);
+  transform:
+    translateY(-1px);
+
+  filter:
+    brightness(1.08);
+
 }
 
 
@@ -1341,30 +1402,43 @@ const productItems: Product[] =
 ========================================================= */
 
 .search-info {
-  min-height: 18px;
-  margin: 8px 0 15px;
 
-  color: var(--text-secondary);
+  min-height:
+    18px;
 
-  font-size: 12px;
+  margin:
+    10px 0 15px;
+
+  color:
+    var(--text-secondary);
+
+  font-size:
+    12px;
+
 }
 
 
 /* =========================================================
-   RESULT CONTAINER
+   RESULT GRID
 ========================================================= */
 
-:global(.search-results) {
-  width: 100%;
+:global(.result-grid) {
 
-  display: grid;
+  display:
+    grid;
 
   grid-template-columns:
-    repeat(2, minmax(0, 1fr));
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
 
-  gap: 14px;
+  gap:
+    14px;
 
-  box-sizing: border-box;
+  width:
+    100%;
+
 }
 
 
@@ -1372,19 +1446,28 @@ const productItems: Product[] =
    RESULT CARD
 ========================================================= */
 
-:global(.search-card) {
-  display: block;
+:global(.result-card) {
 
-  width: 100%;
+  display:
+    block;
 
-  padding: 20px;
+  width:
+    100%;
 
-  box-sizing: border-box;
+  min-width:
+    0;
+
+  padding:
+    20px;
+
+  box-sizing:
+    border-box;
 
   border:
     1px solid var(--border);
 
-  border-radius: 12px;
+  border-radius:
+    12px;
 
   background:
     var(--surface);
@@ -1398,22 +1481,16 @@ const productItems: Product[] =
   box-shadow:
     var(--shadow);
 
-  overflow:
-    hidden;
-
   transition:
     transform .2s ease,
     border-color .2s ease,
-    box-shadow .2s ease,
-    background .2s ease;
+    box-shadow .2s ease;
+
 }
 
 
-/* =========================================================
-   CARD HOVER
-========================================================= */
+:global(.result-card:hover) {
 
-:global(.search-card:hover) {
   transform:
     translateY(-2px);
 
@@ -1427,27 +1504,32 @@ const productItems: Product[] =
   box-shadow:
     var(--shadow);
 
-  background:
-    var(--surface);
 }
 
 
 /* =========================================================
-   CARD BADGE
+   RESULT BADGE
 ========================================================= */
 
-:global(.search-badge) {
-  display: inline-flex;
+:global(.result-badge) {
 
-  align-items: center;
+  display:
+    inline-flex;
 
-  min-height: 22px;
+  align-items:
+    center;
 
-  margin-bottom: 10px;
+  min-height:
+    22px;
 
-  padding: 0 9px;
+  margin-bottom:
+    10px;
 
-  box-sizing: border-box;
+  padding:
+    0 9px;
+
+  box-sizing:
+    border-box;
 
   border:
     1px solid
@@ -1457,7 +1539,8 @@ const productItems: Product[] =
       var(--border)
     );
 
-  border-radius: 999px;
+  border-radius:
+    999px;
 
   background:
     color-mix(
@@ -1469,21 +1552,27 @@ const productItems: Product[] =
   color:
     var(--primary);
 
-  font-size: 9px;
+  font-size:
+    9px;
 
-  font-weight: 800;
+  font-weight:
+    800;
 
-  letter-spacing: .5px;
+  letter-spacing:
+    .5px;
 
-  text-transform: uppercase;
+  text-transform:
+    uppercase;
+
 }
 
 
 /* =========================================================
-   CARD TITLE
+   RESULT TITLE
 ========================================================= */
 
-:global(.search-card h2) {
+:global(.result-card h2) {
+
   margin:
     0 0 8px;
 
@@ -1496,16 +1585,15 @@ const productItems: Product[] =
   line-height:
     1.4;
 
-  font-weight:
-    700;
 }
 
 
 /* =========================================================
-   CARD DESCRIPTION
+   RESULT DESCRIPTION
 ========================================================= */
 
-:global(.search-card p) {
+:global(.result-card p) {
+
   margin:
     0;
 
@@ -1517,6 +1605,7 @@ const productItems: Product[] =
 
   line-height:
     1.65;
+
 }
 
 
@@ -1526,8 +1615,9 @@ const productItems: Product[] =
 
 .empty-search,
 .no-results {
+
   padding:
-    55px 20px;
+    50px 20px;
 
   text-align:
     center;
@@ -1542,11 +1632,13 @@ const productItems: Product[] =
     var(--surface);
 
   color:
-    var(--text);
+    var(--text-secondary);
+
 }
 
 
 .empty-icon {
+
   width:
     52px;
 
@@ -1573,20 +1665,24 @@ const productItems: Product[] =
 
   color:
     var(--text-secondary);
+
 }
 
 
 .empty-icon svg {
+
   width:
     24px;
 
   height:
     24px;
+
 }
 
 
 .empty-search h2,
 .no-results h2 {
+
   margin:
     0;
 
@@ -1595,11 +1691,13 @@ const productItems: Product[] =
 
   font-size:
     17px;
+
 }
 
 
 .empty-search p,
 .no-results p {
+
   max-width:
     430px;
 
@@ -1614,16 +1712,15 @@ const productItems: Product[] =
 
   line-height:
     1.7;
+
 }
 
 
-/* =========================================================
-   NO RESULT
-========================================================= */
-
 .no-results {
+
   display:
     none;
+
 }
 
 
@@ -1634,33 +1731,50 @@ const productItems: Product[] =
 @media (max-width: 700px) {
 
   .search-section {
+
     padding:
       35px 15px 60px;
+
   }
 
-  .search-form {
-    grid-template-columns:
-      1fr;
-  }
-
-  .search-button {
-    width:
-      100%;
-  }
-
-  :global(.search-results) {
-    grid-template-columns:
-      1fr;
-  }
-
-  :global(.search-card) {
-    padding:
-      18px;
-  }
 
   .search-container h1 {
+
     font-size:
       28px;
+
+  }
+
+
+  .search-form {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .search-button {
+
+    width:
+      100%;
+
+  }
+
+
+  :global(.result-grid) {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  :global(.result-card) {
+
+    padding:
+      18px;
+
   }
 
 }
