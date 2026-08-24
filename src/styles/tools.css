@@ -1,34 +1,17 @@
 /* =========================================================
    TOOLS
-   src/styles/tools.css
-========================================================= */
-
-
-/* =========================================================
-   TOOLS PAGE
-========================================================= */
+   ========================================================= */
 
 .tools-page {
   width: min(1200px, calc(100% - 32px));
   margin-inline: auto;
-  padding: 90px 0 50px;
-}
-
-
-/* =========================================================
-   CONTAINER
-========================================================= */
-
-.tools-page .container {
-  width: 100%;
-  max-width: 1200px;
-  margin-inline: auto;
+  padding: 70px 0 50px;
 }
 
 
 /* =========================================================
    PAGE HEADER
-========================================================= */
+   ========================================================= */
 
 .page-header {
   max-width: 760px;
@@ -39,15 +22,16 @@
 .tools-label {
   display: inline-block;
   margin-bottom: 10px;
-  color: var(--primary, #3b82f6);
+  color: var(--primary);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: .1em;
+  text-transform: uppercase;
 }
 
 .page-header h1 {
   margin: 0 0 14px;
-  color: var(--text, #f8fafc);
+  color: var(--text);
   font-size: clamp(32px, 5vw, 48px);
   line-height: 1.1;
 }
@@ -55,68 +39,55 @@
 .page-header p {
   max-width: 650px;
   margin: 0 auto;
-  color: var(--soft, #94a3b8);
+  color: var(--text-secondary);
   font-size: 16px;
   line-height: 1.7;
 }
 
 
 /* =========================================================
-   TOOL DETAIL HEADER
-========================================================= */
+   TOOLS CONTAINER
+   ========================================================= */
 
-.tool-header {
-  margin-bottom: 30px;
-}
-
-.tool-header h1 {
-  margin: 0 0 14px;
-  color: var(--text, #f8fafc);
-  font-size: clamp(30px, 5vw, 44px);
-  line-height: 1.15;
-}
-
-.tool-description {
-  max-width: 800px;
-  margin: 0;
-  color: var(--soft, #94a3b8);
-  font-size: 16px;
-  line-height: 1.7;
+.tools-page .container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
 }
 
 
 /* =========================================================
    BREADCRUMB
-========================================================= */
+   ========================================================= */
 
-.breadcrumb {
+.tools-page .breadcrumb {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: .5rem;
-  margin-bottom: 2rem;
-  color: var(--soft, #94a3b8);
-  font-size: .9rem;
+  gap: 8px;
+  margin-bottom: 30px;
+  color: var(--text-secondary);
+  font-size: 14px;
   line-height: 1.5;
 }
 
-.breadcrumb a {
-  color: var(--primary, #3b82f6);
+.tools-page .breadcrumb a {
+  color: var(--text-secondary);
   text-decoration: none;
 }
 
-.breadcrumb a:hover {
-  text-decoration: underline;
+.tools-page .breadcrumb a:hover {
+  color: var(--primary);
 }
 
-.breadcrumb span {
-  color: var(--soft, #94a3b8);
+.tools-page .breadcrumb span {
+  color: var(--text-secondary);
 }
 
 
 /* =========================================================
    STATS
-========================================================= */
+   ========================================================= */
 
 .tools-stats {
   display: grid;
@@ -124,9 +95,10 @@
   max-width: 700px;
   margin: 0 auto 32px;
   overflow: hidden;
-  border: 1px solid var(--border, rgba(255,255,255,.08));
-  border-radius: 16px;
-  background: var(--card, rgba(15,23,42,.72));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow);
 }
 
 .stat-item {
@@ -135,12 +107,12 @@
 }
 
 .stat-item + .stat-item {
-  border-left: 1px solid var(--border, rgba(255,255,255,.08));
+  border-left: 1px solid var(--border);
 }
 
 .stat-item strong {
   display: block;
-  color: var(--text, #f8fafc);
+  color: var(--text);
   font-size: 22px;
   line-height: 1.2;
 }
@@ -148,14 +120,14 @@
 .stat-item span {
   display: block;
   margin-top: 5px;
-  color: var(--soft, #94a3b8);
+  color: var(--text-secondary);
   font-size: 13px;
 }
 
 
 /* =========================================================
    SEARCH
-========================================================= */
+   ========================================================= */
 
 .tools-search {
   max-width: 650px;
@@ -165,7 +137,7 @@
 .search-label {
   display: block;
   margin-bottom: 8px;
-  color: var(--text, #f8fafc);
+  color: var(--text);
   font-size: 14px;
   font-weight: 600;
 }
@@ -174,11 +146,11 @@
   width: 100%;
   box-sizing: border-box;
   padding: 14px 18px;
-  border: 1px solid var(--border, rgba(255,255,255,.08));
-  border-radius: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   outline: none;
-  background: var(--card, rgba(15,23,42,.72));
-  color: var(--text, #f8fafc);
+  background: var(--surface);
+  color: var(--text);
   font: inherit;
   transition:
     border-color .2s ease,
@@ -186,26 +158,24 @@
 }
 
 .tools-search input::placeholder {
-  color: var(--soft, #94a3b8);
+  color: var(--text-secondary);
 }
 
 .tools-search input:focus {
-  border-color: var(--primary, #3b82f6);
-  box-shadow:
-    0 0 0 3px
-    rgba(59,130,246,.12);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
 }
 
 
 /* =========================================================
    TOOLS SECTION
-========================================================= */
+   ========================================================= */
 
 .tools-section {
   margin-bottom: 44px;
 }
 
-.section-heading {
+.tools-section .section-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -213,34 +183,33 @@
   margin-bottom: 20px;
 }
 
-.section-heading h2 {
+.tools-section .section-heading h2 {
   margin: 0;
-  color: var(--text, #f8fafc);
+  color: var(--text);
   font-size: 24px;
   line-height: 1.3;
 }
 
 .tool-count {
-  color: var(--soft, #94a3b8);
+  color: var(--text-secondary);
   font-size: 13px;
 }
 
 
 /* =========================================================
    TOOLS GRID
-========================================================= */
+   ========================================================= */
 
 .tools-grid {
   display: grid;
-  grid-template-columns:
-    repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
 }
 
 
 /* =========================================================
    TOOL CARD
-========================================================= */
+   ========================================================= */
 
 .tool-card {
   position: relative;
@@ -248,16 +217,10 @@
   flex-direction: column;
   min-width: 0;
   padding: 22px;
-
-  border:
-    1px solid
-    var(--border, rgba(255,255,255,.08));
-
-  border-radius: 18px;
-
-  background:
-    var(--card, rgba(15,23,42,.72));
-
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow);
   transition:
     transform .2s ease,
     border-color .2s ease,
@@ -266,66 +229,13 @@
 
 .tool-card:hover {
   transform: translateY(-4px);
-
-  border-color:
-    rgba(59,130,246,.4);
-
-  box-shadow:
-    0 12px 35px
-    rgba(0,0,0,.18);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-lg);
 }
-
-
-/* =========================================================
-   TOOL ICON
-========================================================= */
-
-.tool-icon {
-  width: 48px;
-  height: 48px;
-
-  display: grid;
-  place-items: center;
-
-  margin-bottom: 14px;
-
-  border-radius: 13px;
-
-  background:
-    rgba(59,130,246,.12);
-
-  font-size: 24px;
-}
-
-
-/* =========================================================
-   TOOL CATEGORY
-========================================================= */
-
-.tool-category {
-  margin-bottom: 7px;
-
-  color:
-    var(--primary, #3b82f6);
-
-  font-size: 11px;
-  font-weight: 700;
-
-  letter-spacing: .07em;
-  text-transform: uppercase;
-}
-
-
-/* =========================================================
-   TOOL TITLE
-========================================================= */
 
 .tool-card h3 {
   margin: 0 0 8px;
-
-  color:
-    var(--text, #f8fafc);
-
+  color: var(--text);
   font-size: 18px;
   line-height: 1.35;
 }
@@ -336,81 +246,92 @@
 }
 
 .tool-card h3 a:hover {
-  color:
-    var(--primary, #3b82f6);
+  color: var(--primary);
 }
-
-
-/* =========================================================
-   TOOL DESCRIPTION
-========================================================= */
 
 .tool-card p {
   margin: 0;
-
-  color:
-    var(--soft, #94a3b8);
-
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.6;
 }
 
 
 /* =========================================================
+   TOOL CATEGORY
+   ========================================================= */
+
+.tool-category {
+  margin-bottom: 7px;
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   TOOL ICON
+   ========================================================= */
+
+.tool-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-hover);
+  color: var(--primary);
+  font-size: 24px;
+}
+
+
+/* =========================================================
    TOOL BUTTON
-========================================================= */
+   ========================================================= */
 
 .tool-button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-
   width: fit-content;
-
-  margin-top: auto;
-  padding-top: 16px;
-
-  color:
-    var(--primary, #3b82f6);
-
+  margin-top: 16px;
+  color: var(--primary);
   font-size: 13px;
   font-weight: 700;
-
   text-decoration: none;
 }
 
 .tool-button:hover {
+  color: var(--accent);
   text-decoration: underline;
 }
 
 
 /* =========================================================
-   TOOL BADGE
-========================================================= */
+   HOT BADGE
+   ========================================================= */
 
 .tool-badge {
   position: absolute;
-
   top: 15px;
   right: 15px;
-
   padding: 4px 8px;
-
-  border-radius: 6px;
-
-  background:
-    var(--primary, #3b82f6);
-
-  color: #fff;
-
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: var(--surface);
   font-size: 10px;
   font-weight: 700;
+  letter-spacing: .04em;
 }
 
 
 /* =========================================================
    TOOL DETAIL
-========================================================= */
+   ========================================================= */
 
 .tool-content {
   max-width: 900px;
@@ -418,240 +339,72 @@
   padding: 2rem 1rem;
 }
 
+.tool-content h1 {
+  margin: 0 0 1rem;
+  color: var(--text);
+  font-size: clamp(30px, 5vw, 44px);
+  line-height: 1.15;
+}
 
-/* =========================================================
-   TOOL ARTICLE
-========================================================= */
-
-.tool-article {
-  color: var(--text, #f8fafc);
+.tool-description {
+  margin: 0 0 2rem;
+  color: var(--text-secondary);
   font-size: 16px;
-  line-height: 1.8;
-}
-
-.tool-article > * {
-  max-width: 100%;
-}
-
-.tool-article h2 {
-  margin-top: 2.5rem;
-  margin-bottom: 1rem;
-
-  color:
-    var(--text, #f8fafc);
-
-  font-size: 1.6rem;
-  line-height: 1.3;
-}
-
-.tool-article h3 {
-  margin-top: 2rem;
-  margin-bottom: .8rem;
-
-  color:
-    var(--text, #f8fafc);
-
-  font-size: 1.3rem;
-  line-height: 1.4;
-}
-
-.tool-article p {
-  margin: 0 0 1.2rem;
-
-  color:
-    var(--text-secondary,
-    var(--soft, #94a3b8));
-}
-
-.tool-article a {
-  color:
-    var(--primary, #3b82f6);
-}
-
-.tool-article img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 12px;
-}
-
-.tool-article ul,
-.tool-article ol {
-  margin: 1rem 0 1.5rem;
-  padding-left: 1.5rem;
-}
-
-.tool-article li {
-  margin: .45rem 0;
+  line-height: 1.7;
 }
 
 
 /* =========================================================
-   CODE
-========================================================= */
+   TOC
+   ========================================================= */
 
-.tool-article pre {
-  overflow-x: auto;
-
-  margin: 1.5rem 0;
-  padding: 1rem;
-
-  border:
-    1px solid
-    var(--border, rgba(255,255,255,.08));
-
-  border-radius: 12px;
-
-  background:
-    var(--surface,
-    rgba(15,23,42,.72));
-
-  font-size: .9rem;
-  line-height: 1.6;
-}
-
-.tool-article code {
-  font-family:
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    monospace;
-}
-
-.tool-article :not(pre) > code {
-  padding: .15rem .35rem;
-
-  border-radius: 5px;
-
-  background:
-    rgba(59,130,246,.08);
-
-  color:
-    var(--primary, #3b82f6);
-
-  font-size: .9em;
-}
-
-
-/* =========================================================
-   TABLE OF CONTENTS
-========================================================= */
-
-.toc {
+.tools-page .toc {
   margin-bottom: 2rem;
-
   padding: 1rem;
-
-  border:
-    1px solid
-    var(--border, rgba(255,255,255,.08));
-
-  border-radius: 12px;
-
-  background:
-    var(--card, rgba(15,23,42,.72));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
 }
 
-.toc-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
+.tools-page .toc summary {
   cursor: pointer;
-
-  color:
-    var(--text, #f8fafc);
-
-  font-weight: 700;
-  list-style: none;
+  color: var(--text);
+  font-weight: 600;
 }
 
-.toc-title::-webkit-details-marker {
-  display: none;
-}
-
-.toc-toggle::before {
-  content: "+";
-
-  color:
-    var(--primary, #3b82f6);
-
-  font-size: 20px;
-  font-weight: 400;
-}
-
-.toc[open] .toc-toggle::before {
-  content: "−";
-}
-
-.toc ul {
-  margin-top: 1rem;
+.tools-page .toc ul {
+  margin: 1rem 0 0;
   padding-left: 1.25rem;
 }
 
-.toc li {
+.tools-page .toc li {
   margin: .4rem 0;
 }
 
-.toc li a {
-  color:
-    var(--soft, #94a3b8);
-
+.tools-page .toc a {
+  color: var(--text-secondary);
   text-decoration: none;
-
-  line-height: 1.5;
 }
 
-.toc li a:hover {
-  color:
-    var(--primary, #3b82f6);
-}
-
-
-/* =========================================================
-   TOC DEPTH
-========================================================= */
-
-.toc .depth-2 {
-  margin-left: 0;
-}
-
-.toc .depth-3 {
-  margin-left: 1rem;
-}
-
-.toc .depth-4 {
-  margin-left: 2rem;
-}
-
-.toc .depth-5 {
-  margin-left: 3rem;
-}
-
-.toc .depth-6 {
-  margin-left: 4rem;
+.tools-page .toc a:hover {
+  color: var(--primary);
 }
 
 
 /* =========================================================
    EMPTY STATE
-========================================================= */
+   ========================================================= */
 
 .tools-empty {
   padding: 35px 20px;
   margin-bottom: 40px;
-
   text-align: center;
-
-  border:
-    1px dashed
-    var(--border, rgba(255,255,255,.08));
-
-  border-radius: 16px;
-
-  color:
-    var(--soft, #94a3b8);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  color: var(--text-secondary);
 }
 
 .tools-empty[hidden] {
@@ -661,9 +414,7 @@
 .tools-empty strong {
   display: block;
   margin-bottom: 5px;
-
-  color:
-    var(--text, #f8fafc);
+  color: var(--text);
 }
 
 .tools-empty p {
@@ -673,56 +424,12 @@
 
 /* =========================================================
    RESPONSIVE
-========================================================= */
+   ========================================================= */
 
 @media (max-width: 900px) {
 
   .tools-grid {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-  }
-
-}
-
-
-@media (max-width: 768px) {
-
-  .tools-page {
-    width:
-      min(100%, calc(100% - 24px));
-
-    padding:
-      70px 0 35px;
-  }
-
-  .tool-content {
-    padding:
-      1.5rem 0;
-  }
-
-  .page-header h1 {
-    font-size: 32px;
-  }
-
-  .tools-grid {
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-
-  .section-heading {
-    align-items: flex-start;
-  }
-
-  .section-heading h2 {
-    font-size: 21px;
-  }
-
-  .tool-header h1 {
-    font-size: 30px;
-  }
-
-  .tool-article {
-    font-size: 15px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
 }
@@ -730,25 +437,46 @@
 
 @media (max-width: 600px) {
 
+  .tools-page {
+    width: min(100%, calc(100% - 24px));
+    padding: 50px 0 35px;
+  }
+
+  .page-header h1 {
+    font-size: 32px;
+  }
+
   .tools-stats {
     margin-bottom: 24px;
   }
 
   .stat-item {
-    padding:
-      14px 8px;
+    padding: 14px 8px;
   }
 
   .stat-item strong {
     font-size: 18px;
   }
 
-  .breadcrumb {
-    font-size: .82rem;
+  .tools-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
   }
 
-  .tool-card {
-    padding: 18px;
+  .tools-section .section-heading {
+    align-items: flex-start;
+  }
+
+  .tools-section .section-heading h2 {
+    font-size: 21px;
+  }
+
+  .tool-content {
+    padding: 1rem 0;
+  }
+
+  .tools-page .breadcrumb {
+    margin-bottom: 20px;
   }
 
 }
