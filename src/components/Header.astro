@@ -201,8 +201,7 @@ const menus = [
 
 
 
-
-<script>
+<script is:inline>
 
 /* =========================================================
    CART STORAGE
@@ -222,14 +221,12 @@ function updateCartCount(){
 
   if(!badge) return;
 
-
   try{
 
     const cart =
       JSON.parse(
         localStorage.getItem(CART_KEY) || '[]'
       );
-
 
     const count =
       Array.isArray(cart)
@@ -244,18 +241,15 @@ function updateCartCount(){
           )
         : 0;
 
-
     badge.textContent =
       count > 99
         ? '99+'
         : String(count);
 
-
     badge.style.display =
       count > 0
         ? 'flex'
         : 'none';
-
 
   }catch(error){
 
@@ -274,212 +268,31 @@ function updateCartCount(){
 
 
 /* =========================================================
-   INITIALIZE HEADER
+   CART EVENTS
 ========================================================= */
 
-function initHeader(){
-
-  updateCartCount();
-
-
-  /* =======================================================
-     MOBILE MENU
-  ======================================================= */
-
-  const menuToggle =
-    document.getElementById('menuToggle');
-
-  const nav =
-    document.getElementById('nav');
+window.addEventListener(
+  'cartUpdated',
+  updateCartCount
+);
 
 
-  menuToggle?.addEventListener(
-    'click',
-    (event) => {
+window.addEventListener(
+  'storage',
+  (event) => {
 
-      event.stopPropagation();
+    if(event.key === CART_KEY){
 
-
-      const open =
-        nav?.classList.toggle('open');
-
-
-      menuToggle.setAttribute(
-        'aria-expanded',
-        String(!!open)
-      );
+      updateCartCount();
 
     }
-  );
 
-
-  /* =======================================================
-     DROPDOWN
-  ======================================================= */
-
-  document
-    .querySelectorAll('.drop-btn')
-    .forEach((button) => {
-
-      button.addEventListener(
-        'click',
-        (event) => {
-
-          event.stopPropagation();
-
-
-          const dropdown =
-            button.closest('.dropdown');
-
-
-          if(!dropdown) return;
-
-
-          const isOpen =
-            dropdown.classList.contains('open');
-
-
-          /* CLOSE OTHER DROPDOWNS */
-
-          document
-            .querySelectorAll(
-              '.dropdown.open'
-            )
-            .forEach((item) => {
-
-              if(item !== dropdown){
-
-                item.classList.remove(
-                  'open'
-                );
-
-
-                item
-                  .querySelector('.drop-btn')
-                  ?.setAttribute(
-                    'aria-expanded',
-                    'false'
-                  );
-
-              }
-
-            });
-
-
-          /* TOGGLE CURRENT */
-
-          dropdown.classList.toggle(
-            'open',
-            !isOpen
-          );
-
-
-          button.setAttribute(
-            'aria-expanded',
-            String(!isOpen)
-          );
-
-        }
-      );
-
-    });
-
-
-  /* =======================================================
-     CLOSE MENU / DROPDOWN
-  ======================================================= */
-
-  document.addEventListener(
-    'click',
-    (event) => {
-
-      const target =
-        event.target;
-
-
-      /* CLOSE DROPDOWNS */
-
-      document
-        .querySelectorAll(
-          '.dropdown.open'
-        )
-        .forEach((dropdown) => {
-
-          if(!dropdown.contains(target)){
-
-            dropdown.classList.remove(
-              'open'
-            );
-
-
-            dropdown
-              .querySelector('.drop-btn')
-              ?.setAttribute(
-                'aria-expanded',
-                'false'
-              );
-
-          }
-
-        });
-
-
-      /* CLOSE MOBILE NAV */
-
-      if(
-        nav &&
-        nav.classList.contains('open') &&
-        !nav.contains(target) &&
-        !menuToggle?.contains(target)
-      ){
-
-        nav.classList.remove('open');
-
-        menuToggle?.setAttribute(
-          'aria-expanded',
-          'false'
-        );
-
-      }
-
-    }
-  );
-
-
-  /* =======================================================
-     CART UPDATED EVENT
-  ======================================================= */
-
-  window.addEventListener(
-    'cartUpdated',
-    updateCartCount
-  );
-
-
-  /* =======================================================
-     OTHER TAB / WINDOW
-  ======================================================= */
-
-  window.addEventListener(
-    'storage',
-    (event) => {
-
-      if(
-        event.key === CART_KEY
-      ){
-
-        updateCartCount();
-
-      }
-
-    }
-  );
-
-}
+  }
+);
 
 
 /* =========================================================
-   ASTRO LOAD
+   INITIAL CART
 ========================================================= */
 
 if(
@@ -488,17 +301,18 @@ if(
 
   document.addEventListener(
     'DOMContentLoaded',
-    initHeader,
+    updateCartCount,
     { once:true }
   );
 
 }else{
 
-  initHeader();
+  updateCartCount();
 
 }
 
 </script>
+
 
 
 <style is:global>
