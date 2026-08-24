@@ -3,13 +3,21 @@ import MainLayout from "../layouts/MainLayout.astro";
 import { SITE } from "../lib/site";
 import { getCollection } from "astro:content";
 
+import "../styles/home.css";
+
+
+/* =================================
+   CONTENT COLLECTIONS
+================================= */
+
 const posts = await getCollection("blog");
 const tools = await getCollection("tools");
 const products = await getCollection("product");
 
-/* ================================
+
+/* =================================
    LATEST ARTICLES
-================================ */
+================================= */
 
 const latestPosts = [...posts]
   .sort(
@@ -19,20 +27,10 @@ const latestPosts = [...posts]
   )
   .slice(0, 3);
 
-/* ================================
-   POPULAR ARTICLES
-================================ */
 
-const popularPosts =
-  posts.filter((post) => post.data.popular).length > 0
-    ? posts
-        .filter((post) => post.data.popular)
-        .slice(0, 3)
-    : posts.slice(0, 3);
-
-/* ================================
+/* =================================
    POPULAR TOOLS
-================================ */
+================================= */
 
 const popularTools =
   tools.filter((tool) => tool.data.popular).length > 0
@@ -41,9 +39,10 @@ const popularTools =
         .slice(0, 3)
     : tools.slice(0, 3);
 
-/* ================================
+
+/* =================================
    POPULAR PRODUCTS
-================================ */
+================================= */
 
 const popularProducts =
   products.filter((product) => product.data.popular).length > 0
@@ -52,9 +51,10 @@ const popularProducts =
         .slice(0, 3)
     : products.slice(0, 3);
 
-/* ================================
+
+/* =================================
    SEO
-================================ */
+================================= */
 
 const pageTitle =
   "AI Mr Ferdy | Platform AI Indonesia untuk Produktivitas Digital";
@@ -63,20 +63,25 @@ const pageDescription =
   "AI Mr Ferdy adalah platform AI Indonesia yang menghadirkan tools, teknologi digital, SEO, otomasi, dan solusi produktivitas modern dalam satu ekosistem.";
 ---
 
+
 <MainLayout
   title={pageTitle}
   description={pageDescription}
   canonical={SITE.url()}
   isHome={true}
-  pageCSS={["home"]}
 >
+
 
   <!-- =================================
        HERO
   ================================== -->
 
   <section class="hero">
+
     <div class="hero-container">
+
+
+      <!-- HERO CONTENT -->
 
       <div class="hero-content">
 
@@ -84,22 +89,26 @@ const pageDescription =
           Website Resmi
         </span>
 
+
         <h1>
           AI Mr Ferdy
         </h1>
+
 
         <h2 class="hero-subtitle">
           Platform AI Indonesia untuk produktivitas,
           konten, SEO, dan otomasi digital.
         </h2>
 
+
         <p class="hero-description">
-          <strong>AI Mr Ferdy</strong> merupakan platform digital
-          yang menggabungkan teknologi kecerdasan buatan,
-          AI tools, SEO, otomasi, dan berbagai solusi digital
-          untuk membantu pekerjaan menjadi lebih praktis,
-          efisien, dan terarah.
+          <strong>AI Mr Ferdy</strong> merupakan platform
+          teknologi digital yang menggabungkan kecerdasan
+          buatan, AI tools, SEO, otomasi, dan berbagai
+          solusi digital untuk membantu aktivitas online
+          menjadi lebih praktis dan efisien.
         </p>
+
 
         <div class="hero-buttons">
 
@@ -112,6 +121,7 @@ const pageDescription =
             Gunakan AI Mr Ferdy
           </a>
 
+
           <a
             href="/about/"
             class="btn btn-outline"
@@ -121,44 +131,63 @@ const pageDescription =
 
         </div>
 
+
+        <!-- HERO FEATURES -->
+
         <div class="hero-features">
 
-          <div class="feature">
+
+          <article class="feature">
+
             <p class="feature-title">
               AI Tools
             </p>
 
             <p>
-              Kumpulan tools berbasis AI untuk membantu
-              berbagai kebutuhan digital.
+              Beragam tools berbasis AI untuk membantu
+              menyelesaikan berbagai kebutuhan digital
+              dengan lebih cepat.
             </p>
-          </div>
 
-          <div class="feature">
+          </article>
+
+
+          <article class="feature">
+
             <p class="feature-title">
               SEO & Automation
             </p>
 
             <p>
-              Solusi untuk pengelolaan website,
-              optimasi SEO, dan alur kerja digital.
+              Pendekatan teknologi untuk mendukung
+              pengelolaan website, optimasi SEO,
+              dan workflow digital.
             </p>
-          </div>
 
-          <div class="feature">
+          </article>
+
+
+          <article class="feature">
+
             <p class="feature-title">
               Ekosistem Digital
             </p>
 
             <p>
-              Satu tempat untuk menemukan tools,
-              artikel, dan produk digital.
+              Satu ruang untuk menemukan tools,
+              artikel teknologi, informasi, dan
+              produk digital.
             </p>
-          </div>
+
+          </article>
+
 
         </div>
 
       </div>
+
+
+      <!-- HERO IMAGE -->
 
       <div class="hero-image">
 
@@ -169,10 +198,11 @@ const pageDescription =
             fetchpriority="high"
             width="640"
             height="640"
-            alt="AI Mr Ferdy, platform AI Indonesia"
+            alt="AI Mr Ferdy - Platform AI Indonesia"
           />
 
         </div>
+
 
         <div class="floating-card floating-card-top">
 
@@ -185,6 +215,7 @@ const pageDescription =
           </p>
 
         </div>
+
 
         <div class="floating-card floating-card-bottom">
 
@@ -200,10 +231,14 @@ const pageDescription =
 
       </div>
 
+
     </div>
 
+
     <div class="hero-wave"></div>
+
   </section>
+
 
 
   <!-- =================================
@@ -216,32 +251,39 @@ const pageDescription =
 
       <div class="section-heading">
 
+        <span class="section-label">
+          Tentang Platform
+        </span>
+
         <h2 class="section-title">
           Mengenal AI Mr Ferdy
         </h2>
 
         <p class="section-desc">
           AI Mr Ferdy adalah platform teknologi yang
-          menghadirkan berbagai solusi berbasis kecerdasan
-          buatan untuk kebutuhan digital sehari-hari.
+          menyediakan berbagai solusi berbasis kecerdasan
+          buatan untuk membantu kebutuhan digital sehari-hari.
         </p>
 
       </div>
 
+
       <div class="content-card">
 
         <p>
-          Melalui satu ekosistem, pengguna dapat menemukan
-          AI tools, informasi mengenai SEO, otomasi digital,
-          pembuatan konten, artikel teknologi, hingga produk
-          digital yang dikembangkan untuk mendukung aktivitas
-          online.
+          Melalui satu ekosistem digital, pengguna dapat
+          menemukan AI tools, pembahasan SEO, otomasi,
+          pembuatan konten, artikel teknologi, serta
+          produk digital yang dikembangkan untuk mendukung
+          aktivitas online.
         </p>
 
+
         <p>
-          Fokusnya bukan sekadar menyediakan teknologi,
+          Tujuannya bukan hanya menghadirkan teknologi,
           tetapi membuat teknologi tersebut lebih mudah
-          dipahami dan digunakan dalam pekerjaan nyata.
+          dipahami dan diterapkan dalam berbagai kebutuhan
+          nyata.
         </p>
 
       </div>
@@ -249,6 +291,7 @@ const pageDescription =
     </div>
 
   </section>
+
 
 
   <!-- =================================
@@ -261,19 +304,25 @@ const pageDescription =
 
       <div class="section-heading">
 
+        <span class="section-label">
+          Ekosistem
+        </span>
+
         <h2 class="section-title">
-          Ekosistem AI & Teknologi Digital
+          AI & Teknologi Digital
         </h2>
 
         <p class="section-desc">
-          Jelajahi berbagai bagian utama dari ekosistem
-          AI Mr Ferdy, mulai dari website hingga tools dan
-          artikel teknologi.
+          Jelajahi bagian utama dari ekosistem AI Mr Ferdy,
+          mulai dari website, artikel, hingga berbagai
+          tools digital yang tersedia.
         </p>
 
       </div>
 
+
       <div class="content-grid">
+
 
         <article class="content-card">
 
@@ -286,8 +335,8 @@ const pageDescription =
           </h3>
 
           <p>
-            Pusat informasi dan berbagai layanan digital
-            yang berkaitan dengan AI Mr Ferdy.
+            Pusat informasi dan layanan digital yang
+            berkaitan dengan AI Mr Ferdy.
           </p>
 
           <a
@@ -311,8 +360,9 @@ const pageDescription =
           </h3>
 
           <p>
-            Bacaan seputar AI, SEO, otomasi, teknologi,
-            dan perkembangan dunia digital.
+            Informasi dan pembahasan seputar AI,
+            SEO, otomasi, teknologi, dan perkembangan
+            dunia digital.
           </p>
 
           <a
@@ -336,8 +386,9 @@ const pageDescription =
           </h3>
 
           <p>
-            Berbagai utilitas online dan tools digital
-            untuk membantu pekerjaan lebih efisien.
+            Berbagai utilitas dan tools digital yang
+            dirancang untuk membantu pekerjaan menjadi
+            lebih praktis.
           </p>
 
           <a
@@ -349,11 +400,13 @@ const pageDescription =
 
         </article>
 
+
       </div>
 
     </div>
 
   </section>
+
 
 
   <!-- =================================
@@ -366,19 +419,24 @@ const pageDescription =
 
       <div class="section-heading">
 
+        <span class="section-label">
+          Teknologi
+        </span>
+
         <h2 class="section-title">
           AI & Digital Services
         </h2>
 
         <p class="section-desc">
-          Teknologi AI Mr Ferdy dikembangkan untuk berbagai
-          kebutuhan digital, mulai dari eksperimen AI hingga
-          pengembangan website dan sistem yang lebih modern.
+          Berbagai pendekatan teknologi yang menjadi
+          bagian dari pengembangan ekosistem AI Mr Ferdy.
         </p>
 
       </div>
 
+
       <div class="content-grid">
+
 
         <article class="content-card">
 
@@ -389,10 +447,11 @@ const pageDescription =
           <p>
             Eksplorasi aplikasi AI, sistem cerdas,
             pemrosesan bahasa, dan otomasi workflow
-            untuk kebutuhan digital.
+            untuk berbagai kebutuhan digital.
           </p>
 
         </article>
+
 
         <article class="content-card">
 
@@ -402,11 +461,12 @@ const pageDescription =
 
           <p>
             Pendekatan teknis untuk membangun website
-            yang terstruktur, mudah ditemukan mesin pencari,
+            yang terstruktur, mudah dipahami mesin pencari,
             dan siap dikembangkan.
           </p>
 
         </article>
+
 
         <article class="content-card">
 
@@ -415,18 +475,20 @@ const pageDescription =
           </h3>
 
           <p>
-            Antarmuka yang sederhana, responsif,
+            Antarmuka yang responsif, sederhana,
             cepat, dan nyaman digunakan pada berbagai
-            ukuran perangkat.
+            perangkat.
           </p>
 
         </article>
+
 
       </div>
 
     </div>
 
   </section>
+
 
 
   <!-- =================================
@@ -439,16 +501,21 @@ const pageDescription =
 
       <div class="section-heading">
 
+        <span class="section-label">
+          AI Tools
+        </span>
+
         <h2 class="section-title">
           AI Tools Pilihan
         </h2>
 
         <p class="section-desc">
-          Beberapa tools yang dapat membantu menyelesaikan
-          pekerjaan digital dengan lebih praktis.
+          Beberapa tools yang dapat membantu pekerjaan
+          digital menjadi lebih praktis dan efisien.
         </p>
 
       </div>
+
 
       <div class="blog-grid">
 
@@ -462,6 +529,7 @@ const pageDescription =
                 class="blog-card-link"
               >
 
+
                 <div class="blog-card-image">
 
                   <img
@@ -474,29 +542,36 @@ const pageDescription =
 
                 </div>
 
+
                 <div class="blog-card-content">
 
                   <span class="card-label">
                     AI Tool
                   </span>
 
+
                   <h3>
                     {tool.data.title}
                   </h3>
 
+
                   {
                     tool.data.description && (
+
                       <p>
                         {tool.data.description}
                       </p>
+
                     )
                   }
+
 
                   <span class="readmore">
                     Buka Tool →
                   </span>
 
                 </div>
+
 
               </a>
 
@@ -512,6 +587,7 @@ const pageDescription =
   </section>
 
 
+
   <!-- =================================
        LATEST ARTICLES
   ================================== -->
@@ -522,16 +598,21 @@ const pageDescription =
 
       <div class="section-heading">
 
+        <span class="section-label">
+          Blog
+        </span>
+
         <h2 class="section-title">
           Artikel Terbaru
         </h2>
 
         <p class="section-desc">
-          Informasi dan pembahasan terbaru mengenai AI,
-          SEO, teknologi, dan dunia digital.
+          Pembahasan terbaru mengenai AI, SEO,
+          teknologi, dan perkembangan dunia digital.
         </p>
 
       </div>
+
 
       <div class="blog-grid">
 
@@ -545,6 +626,7 @@ const pageDescription =
                 class="blog-card-link"
               >
 
+
                 <div class="blog-card-image">
 
                   <img
@@ -557,29 +639,36 @@ const pageDescription =
 
                 </div>
 
+
                 <div class="blog-card-content">
 
                   <div class="blog-card-meta">
                     {post.data.date}
                   </div>
 
+
                   <h3>
                     {post.data.title}
                   </h3>
 
+
                   {
                     post.data.description && (
+
                       <p>
                         {post.data.description}
                       </p>
+
                     )
                   }
+
 
                   <span class="readmore">
                     Baca Artikel →
                   </span>
 
                 </div>
+
 
               </a>
 
@@ -595,6 +684,7 @@ const pageDescription =
   </section>
 
 
+
   <!-- =================================
        PRODUCTS
   ================================== -->
@@ -605,16 +695,22 @@ const pageDescription =
 
       <div class="section-heading">
 
-        <h2 class="section-title">
+        <span class="section-label">
           Produk Digital
+        </span>
+
+        <h2 class="section-title">
+          Produk Digital Pilihan
         </h2>
 
         <p class="section-desc">
-          Pilihan produk digital yang dikembangkan
-          untuk mendukung kebutuhan pengguna.
+          Produk digital yang dikembangkan untuk
+          membantu kebutuhan pengguna dalam aktivitas
+          teknologi dan pekerjaan online.
         </p>
 
       </div>
+
 
       <div class="blog-grid">
 
@@ -628,6 +724,7 @@ const pageDescription =
                 class="blog-card-link"
               >
 
+
                 <div class="blog-card-image">
 
                   <img
@@ -640,37 +737,47 @@ const pageDescription =
 
                 </div>
 
+
                 <div class="blog-card-content">
 
                   <span class="card-label">
                     Digital Product
                   </span>
 
+
                   <h3>
                     {product.data.title}
                   </h3>
 
+
                   {
                     product.data.description && (
+
                       <p>
                         {product.data.description}
                       </p>
+
                     )
                   }
 
+
                   {
                     product.data.price && (
+
                       <div class="blog-card-meta">
                         {product.data.price}
                       </div>
+
                     )
                   }
+
 
                   <span class="readmore">
                     Lihat Produk →
                   </span>
 
                 </div>
+
 
               </a>
 
@@ -686,6 +793,7 @@ const pageDescription =
   </section>
 
 
+
   <!-- =================================
        FAQ
   ================================== -->
@@ -696,33 +804,45 @@ const pageDescription =
 
       <div class="section-heading">
 
+        <span class="section-label">
+          FAQ
+        </span>
+
         <h2 class="section-title">
           Pertanyaan Umum tentang AI Mr Ferdy
         </h2>
 
         <p class="section-desc">
-          Berikut beberapa pertanyaan yang sering muncul
-          mengenai platform, tools, dan layanan AI Mr Ferdy.
+          Jawaban singkat mengenai platform, tools,
+          layanan, dan penggunaan AI Mr Ferdy.
         </p>
 
       </div>
 
+
       <div class="faq-list">
+
 
         <details class="faq-item">
 
           <summary class="faq-question">
-            Apa itu AI Mr Ferdy?
+
+            <span>
+              Apa itu AI Mr Ferdy?
+            </span>
+
             <span class="faq-icon"></span>
+
           </summary>
+
 
           <div class="faq-answer">
 
             <p>
               AI Mr Ferdy adalah platform digital yang
-              menyediakan berbagai tools berbasis AI,
+              menghadirkan berbagai tools berbasis AI,
               informasi teknologi, solusi otomasi,
-              SEO, dan produk digital untuk membantu
+              SEO, serta produk digital untuk membantu
               aktivitas online menjadi lebih praktis.
             </p>
 
@@ -731,20 +851,27 @@ const pageDescription =
         </details>
 
 
+
         <details class="faq-item">
 
           <summary class="faq-question">
-            Apa saja yang tersedia di AI Mr Ferdy?
+
+            <span>
+              Apa saja yang tersedia di AI Mr Ferdy?
+            </span>
+
             <span class="faq-icon"></span>
+
           </summary>
+
 
           <div class="faq-answer">
 
             <p>
               Pengguna dapat menemukan AI tools,
               artikel mengenai teknologi dan SEO,
-              berbagai solusi otomasi, serta produk
-              digital yang dikembangkan dalam ekosistem
+              solusi otomasi, serta berbagai produk
+              digital yang menjadi bagian dari ekosistem
               AI Mr Ferdy.
             </p>
 
@@ -753,20 +880,27 @@ const pageDescription =
         </details>
 
 
+
         <details class="faq-item">
 
           <summary class="faq-question">
-            Apakah AI Mr Ferdy menyediakan tools gratis?
+
+            <span>
+              Apakah AI Mr Ferdy menyediakan tools gratis?
+            </span>
+
             <span class="faq-icon"></span>
+
           </summary>
+
 
           <div class="faq-answer">
 
             <p>
-              Ya. Beberapa tools tersedia untuk digunakan
-              secara gratis. Layanan atau fitur tertentu
-              dapat memiliki pilihan premium dengan
-              kemampuan tambahan.
+              Ya. Sebagian tools dapat digunakan secara
+              gratis. Layanan atau fitur tertentu dapat
+              menyediakan pilihan premium dengan kemampuan
+              tambahan.
             </p>
 
           </div>
@@ -774,12 +908,19 @@ const pageDescription =
         </details>
 
 
+
         <details class="faq-item">
 
           <summary class="faq-question">
-            Apakah AI Mr Ferdy dapat digunakan melalui smartphone?
+
+            <span>
+              Apakah AI Mr Ferdy bisa digunakan di smartphone?
+            </span>
+
             <span class="faq-icon"></span>
+
           </summary>
+
 
           <div class="faq-answer">
 
@@ -795,33 +936,70 @@ const pageDescription =
         </details>
 
 
+
         <details class="faq-item">
 
           <summary class="faq-question">
-            Di mana website resmi AI Mr Ferdy?
+
+            <span>
+              Apakah AI Mr Ferdy cocok untuk kebutuhan digital?
+            </span>
+
             <span class="faq-icon"></span>
+
           </summary>
+
 
           <div class="faq-answer">
 
             <p>
-              Website utama AI Mr Ferdy dapat diakses
-              melalui domain resmi
-              <strong>aimrferdy.com</strong>.
-              Di dalamnya tersedia informasi, artikel,
-              tools, dan produk digital yang berkaitan
-              dengan ekosistem AI Mr Ferdy.
+              Ekosistem AI Mr Ferdy ditujukan untuk berbagai
+              kebutuhan digital, termasuk eksplorasi AI,
+              pembuatan konten, pengelolaan website,
+              SEO, otomasi, dan penggunaan tools online.
             </p>
 
           </div>
 
         </details>
 
+
+
+        <details class="faq-item">
+
+          <summary class="faq-question">
+
+            <span>
+              Di mana website resmi AI Mr Ferdy?
+            </span>
+
+            <span class="faq-icon"></span>
+
+          </summary>
+
+
+          <div class="faq-answer">
+
+            <p>
+              Website utama AI Mr Ferdy dapat diakses
+              melalui domain
+              <strong>aimrferdy.com</strong>.
+              Website ini menjadi pusat informasi,
+              artikel, tools, dan produk digital
+              yang berkaitan dengan ekosistem AI Mr Ferdy.
+            </p>
+
+          </div>
+
+        </details>
+
+
       </div>
 
     </div>
 
   </section>
+
 
 
   <!-- =================================
@@ -834,15 +1012,22 @@ const pageDescription =
 
       <div class="cta-content">
 
+        <span class="section-label">
+          Mulai Sekarang
+        </span>
+
+
         <h2>
           Jelajahi AI Tools dan Teknologi Digital
         </h2>
 
+
         <p>
           Temukan berbagai tools, artikel, dan solusi
-          digital yang dapat membantu aktivitas online
-          menjadi lebih sederhana.
+          digital yang dirancang untuk membantu aktivitas
+          online menjadi lebih sederhana.
         </p>
+
 
         <a
           href="https://ai.termsofuse.workers.dev/"
@@ -858,5 +1043,6 @@ const pageDescription =
     </div>
 
   </section>
+
 
 </MainLayout>
