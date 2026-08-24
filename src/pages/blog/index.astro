@@ -1,252 +1,279 @@
 ---
 import MainLayout from "../../layouts/MainLayout.astro";
-import { SITE } from "../../lib/site";
 import "../../styles/blog.css";
+
+import { SITE } from "../../lib/site";
 import { getCollection } from "astro:content";
 
-const POSTS_PER_PAGE = 9;
+const posts = await getCollection("blog");
 
-let posts = await getCollection("blog");
+/* =====================================
+   SORT ARTICLES
+===================================== */
 
-posts = posts.sort(
-  (a, b) => new Date(b.data.date) - new Date(a.data.date)
+const sortedPosts = [...posts].sort(
+  (a, b) =>
+    new Date(b.data.date).getTime() -
+    new Date(a.data.date).getTime()
 );
 
-// pagination
-const currentPage =
-  Number(Astro.url.searchParams.get("page")) || 1;
+/* =====================================
+   SEO
+===================================== */
 
-const totalPages =
-  Math.ceil(posts.length / POSTS_PER_PAGE);
+const pageTitle =
+  "Blog AI Mr Ferdy | AI, SEO, Teknologi & Digital";
 
-const start =
-  (currentPage - 1) * POSTS_PER_PAGE;
-
-const end =
-  start + POSTS_PER_PAGE;
-
-const paginatedPosts =
-  posts.slice(start, end);
+const pageDescription =
+  "Baca artikel AI Mr Ferdy tentang kecerdasan buatan, SEO, teknologi, otomasi, pembuatan konten, dan perkembangan dunia digital.";
 ---
 
 <MainLayout
-  title={`Blog | ${SITE.title}`}
-  description={SITE.description}
-  canonical={SITE.url("/blog")}
+  title={pageTitle}
+  description={pageDescription}
+  canonical={SITE.url("/blog/")}
 >
 
-<section class="blog-page">
+  <!-- =====================================
+       BLOG HERO
+  ===================================== -->
 
-  <div class="container">
+  <section class="blog-hero">
 
-    <div class="page-wrap">
+    <div class="container-page">
 
-      <div class="page-hero center small">
+      <div class="blog-hero-content">
+
+        <span class="hero-badge">
+          AI MR FERDY BLOG
+        </span>
 
         <h1>
-          Blog
+          AI, Teknologi & Dunia Digital
         </h1>
 
         <p>
-          Explore modern articles, AI tools,
-          Cloudflare Workers tutorials,
-          Astro guides, and web development insights.
+          Temukan pembahasan seputar kecerdasan buatan,
+          SEO, otomasi, teknologi web, pembuatan konten,
+          dan berbagai perkembangan digital yang relevan
+          untuk kebutuhan masa kini.
         </p>
 
       </div>
 
     </div>
 
-    <!-- POSTS -->
-    <div class="blog-grid">
+  </section>
 
-      {paginatedPosts.map((post) => (
 
-        <article class="blog-card">
+  <!-- =====================================
+       ARTICLE LIST
+  ===================================== -->
 
-          <a
-            href={`/blog/${post.slug}/`}
-            class="blog-card-link"
-          >
+  <section class="section">
 
-            <div class="blog-card-image">
+    <div class="container-page">
 
-              <img
-                src={SITE.url(`/api/og/${post.slug}.svg`)}
-                alt={post.data.title}
-                loading="lazy"
-                width="1200"
-                height="630"
-              />
+      <div class="section-heading">
 
-            </div>
+        <h2 class="section-title">
+          Artikel Terbaru
+        </h2>
 
-            <div class="blog-card-content">
-
-              <div class="blog-card-meta">
-                {post.data.date}
-              </div>
-
-              <h2>
-                {post.data.title}
-              </h2>
-
-              {post.data.description && (
-                <p>
-                  {post.data.description}
-                </p>
-              )}
-
-              <span class="readmore">
-                Read Article →
-              </span>
-
-            </div>
-
-          </a>
-
-        </article>
-
-      ))}
-
-    </div>
-
-    <!-- PAGINATION -->
-    {totalPages > 1 && (
-
-      <div class="pagination">
-
-        {/* PREV */}
-        {currentPage > 1 && (
-          <a
-            href={
-              currentPage === 2
-                ? "/blog"
-                : `/blog?page=${currentPage - 1}`
-            }
-            class="pagination-btn"
-          >
-            ← Previous
-          </a>
-        )}
-
-        {/* NUMBERS */}
-        <div class="pagination-pages">
-
-          {Array.from(
-            { length: totalPages },
-            (_, i) => i + 1
-          ).map((page) => (
-
-            <a
-              href={
-                page === 1
-                  ? "/blog"
-                  : `/blog?page=${page}`
-              }
-              class:list={[
-                "pagination-number",
-                page === currentPage && "active"
-              ]}
-            >
-              {page}
-            </a>
-
-          ))}
-
-        </div>
-
-        {/* NEXT */}
-        {currentPage < totalPages && (
-          <a
-            href={`/blog?page=${currentPage + 1}`}
-            class="pagination-btn"
-          >
-            Next →
-          </a>
-        )}
+        <p class="section-desc">
+          Jelajahi artikel dan panduan terbaru mengenai AI,
+          SEO, teknologi, otomasi, serta berbagai topik
+          digital lainnya.
+        </p>
 
       </div>
 
-    )}
 
-  </div>
+      {
+        sortedPosts.length > 0 ? (
 
-</section>
+          <div class="blog-grid">
 
-<style>
-.pagination{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:14px;
+            {
+              sortedPosts.map((post) => (
 
-  margin-top:60px;
+                <article class="blog-card">
 
-  flex-wrap:wrap;
-}
+                  <a
+                    href={`/blog/${post.slug}/`}
+                    class="blog-card-link"
+                  >
 
-.pagination-pages{
-  display:flex;
-  align-items:center;
-  gap:10px;
+                    <!-- IMAGE -->
 
-  flex-wrap:wrap;
-}
+                    <div class="blog-card-image">
 
-.pagination-btn,
-.pagination-number{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
+                      <img
+                        src={SITE.url(
+                          `/api/og/${post.slug}.svg`
+                        )}
+                        alt={`${post.data.title} - AI Mr Ferdy`}
+                        loading="lazy"
+                        width="1200"
+                        height="630"
+                      />
 
-  min-width:44px;
-  height:44px;
+                    </div>
 
-  padding:0 16px;
 
-  border:1px solid var(--border);
-  border-radius:14px;
+                    <!-- CONTENT -->
 
-  background:var(--card);
+                    <div class="blog-card-content">
 
-  color:var(--text-soft);
-  text-decoration:none;
+                      <div class="blog-card-meta">
 
-  backdrop-filter:var(--blur);
+                        <time
+                          datetime={new Date(
+                            post.data.date
+                          ).toISOString()}
+                        >
+                          {
+                            new Date(
+                              post.data.date
+                            ).toLocaleDateString(
+                              "id-ID",
+                              {
+                                day: "numeric",
+                                month: "long",
+                                year: "numeric"
+                              }
+                            )
+                          }
+                        </time>
 
-  transition:var(--transition);
-}
+                      </div>
 
-.pagination-btn:hover,
-.pagination-number:hover{
-  transform:translateY(-2px);
 
-  border-color:var(--border-strong);
+                      <h3>
+                        {post.data.title}
+                      </h3>
 
-  color:var(--text);
-}
 
-.pagination-number.active{
-  background:var(--primary);
+                      {
+                        post.data.description && (
 
-  color:#fff;
+                          <p>
+                            {post.data.description}
+                          </p>
 
-  border:none;
-}
+                        )
+                      }
 
-@media(max-width:640px){
 
-  .pagination{
-    gap:10px;
-  }
+                      <span class="readmore">
+                        Baca Artikel →
+                      </span>
 
-  .pagination-btn{
-    width:100%;
-    justify-content:center;
-  }
+                    </div>
 
-}
-</style>
+                  </a>
+
+                </article>
+
+              ))
+            }
+
+          </div>
+
+        ) : (
+
+          <!-- EMPTY STATE -->
+
+          <div class="content-card blog-empty">
+
+            <h2>
+              Belum Ada Artikel
+            </h2>
+
+            <p>
+              Belum ada artikel yang tersedia saat ini.
+              Silakan kembali lagi untuk menemukan
+              pembahasan terbaru dari AI Mr Ferdy.
+            </p>
+
+          </div>
+
+        )
+      }
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================
+       ABOUT BLOG
+  ===================================== -->
+
+  <section class="section">
+
+    <div class="container-page">
+
+      <div class="content-card blog-information">
+
+        <h2>
+          Tentang Blog AI Mr Ferdy
+        </h2>
+
+        <p>
+          Blog AI Mr Ferdy menjadi ruang untuk membahas
+          perkembangan kecerdasan buatan, teknologi web,
+          SEO, otomasi, dan berbagai topik digital lainnya.
+          Konten disusun untuk membantu pembaca memahami
+          teknologi dengan cara yang lebih sederhana dan
+          mudah diterapkan.
+        </p>
+
+        <p>
+          Selain membahas perkembangan teknologi, artikel
+          di dalam blog juga dapat berisi panduan, tips,
+          penjelasan tools, serta wawasan praktis yang
+          berkaitan dengan aktivitas digital sehari-hari.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================
+       CTA
+  ===================================== -->
+
+  <section class="cta">
+
+    <div class="container-page">
+
+      <div class="cta-content">
+
+        <h2>
+          Jelajahi AI Tools AI Mr Ferdy
+        </h2>
+
+        <p>
+          Selain membaca artikel, Anda juga dapat mencoba
+          berbagai tools digital yang tersedia untuk
+          membantu pekerjaan menjadi lebih praktis.
+        </p>
+
+        <a
+          href="/tools/"
+          class="btn btn-primary"
+        >
+          Lihat AI Tools
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
 
 </MainLayout>
