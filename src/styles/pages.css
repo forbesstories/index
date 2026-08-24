@@ -1,268 +1,157 @@
-/* =========================================================
-   PAGES
-   Generic styles for:
+/* ==========================================================
+   GENERAL PAGES
    /about
    /privacy
    /disclaimer
    /terms
-   /contact
-   and other standalone pages.
-
-   IMPORTANT:
-   All selectors are scoped with .page-* to avoid
-   interfering with global.css, header, footer, tools, etc.
-========================================================= */
-
-
-/* =========================================================
-   PAGE
-========================================================= */
+   /cookies
+========================================================== */
 
 .page {
   width: 100%;
-  min-width: 0;
-  color: var(--text);
 }
 
+.page-container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 20px;
+}
 
-/* =========================================================
-   PAGE HERO
-========================================================= */
+/* ==========================================================
+   HERO
+========================================================== */
 
 .page-hero {
-  width: min(1100px, calc(100% - 32px));
-  margin: 0 auto;
-  padding: 80px 0 60px;
+  padding: 120px 20px 70px;
   text-align: center;
 }
 
-.page-hero h1 {
+.page-hero .page-container {
   max-width: 900px;
-  margin: 0 auto 18px;
+}
 
-  color: var(--text);
+.page-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  margin-bottom: 18px;
 
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 800;
+  border: 1px solid rgba(59,130,246,.25);
+  border-radius: 999px;
+
+  background: rgba(59,130,246,.10);
+  color: #93c5fd;
+
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+.page-hero h1 {
+  margin: 0 0 18px;
+
+  font-size: clamp(38px, 6vw, 60px);
   line-height: 1.1;
-  letter-spacing: -0.025em;
 }
 
 .page-hero p {
   max-width: 720px;
   margin: 0 auto;
 
-  color: var(--text-soft, var(--text-secondary));
-
-  font-size: 1.05rem;
-  line-height: 1.75;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.8;
 }
 
-
-/* =========================================================
-   PAGE CONTAINER
-========================================================= */
-
-.page-container {
-  width: min(1100px, calc(100% - 32px));
-  margin: 0 auto;
-}
-
-
-/* =========================================================
-   PAGE LABEL
-========================================================= */
-
-.page-label {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  margin-bottom: 14px;
-  padding: 7px 12px;
-
-  border: 1px solid var(--border);
-  border-radius: 999px;
-
-  background: var(--surface);
-
-  color: var(--primary);
-
-  font-size: .75rem;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
-
-/* =========================================================
-   PAGE SECTION
-========================================================= */
+/* ==========================================================
+   CONTENT SECTION
+========================================================== */
 
 .page-section {
-  width: 100%;
-  padding: 64px 0;
+  padding: 70px 20px;
 }
 
 .page-section + .page-section {
-  padding-top: 20px;
+  padding-top: 0;
 }
 
 .page-section h2 {
-  margin: 0 0 14px;
+  margin: 0 0 16px;
 
-  color: var(--text);
-
-  font-size: clamp(1.5rem, 3vw, 2.1rem);
-  font-weight: 750;
-  line-height: 1.25;
-  letter-spacing: -.02em;
+  font-size: clamp(26px, 4vw, 36px);
+  line-height: 1.2;
 }
 
 .page-section h3 {
   margin: 28px 0 10px;
 
-  color: var(--text);
-
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 20px;
   line-height: 1.4;
+}
+
+.page-section p,
+.page-section li {
+  color: var(--muted);
+  line-height: 1.8;
 }
 
 .page-section p {
   margin: 0 0 18px;
-
-  color: var(--text-soft, var(--text-secondary));
-
-  font-size: 1rem;
-  line-height: 1.8;
-}
-
-.page-section p:last-child {
-  margin-bottom: 0;
 }
 
 .page-section ul,
 .page-section ol {
-  margin: 0 0 20px;
-  padding-left: 1.4rem;
-
-  color: var(--text-soft, var(--text-secondary));
-
-  line-height: 1.8;
+  margin: 0 0 22px;
+  padding-left: 22px;
 }
 
-.page-section li {
-  margin-bottom: 7px;
-}
-
-.page-section a {
-  color: var(--primary);
-  text-decoration: none;
-}
-
-.page-section a:hover {
-  text-decoration: underline;
-}
-
-
-/* =========================================================
-   PAGE LEGAL
-   Privacy / Disclaimer / Terms
-========================================================= */
+/* ==========================================================
+   LEGAL PAGES
+   /privacy
+   /disclaimer
+   /terms
+========================================================== */
 
 .page-legal {
-  width: min(900px, calc(100% - 32px));
+  max-width: 900px;
   margin: 0 auto;
-  padding: 20px 0 80px;
 }
-
-.page-legal > h1 {
-  margin: 0 0 16px;
-
-  color: var(--text);
-
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -.025em;
-}
-
-.page-legal > p {
-  color: var(--text-soft, var(--text-secondary));
-  line-height: 1.8;
-}
-
-
-/* =========================================================
-   PAGE LEGAL SECTION
-========================================================= */
 
 .page-legal-section {
-  margin-top: 36px;
-  padding: 28px;
+  padding: 28px 0;
 
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg, 18px);
-
-  background: var(--surface);
-
-  box-shadow: var(--shadow, 0 8px 24px rgba(0,0,0,.06));
+  border-bottom: 1px solid var(--border);
 }
 
-.page-legal-section:first-of-type {
-  margin-top: 28px;
+.page-legal-section:first-child {
+  padding-top: 0;
+}
+
+.page-legal-section:last-child {
+  border-bottom: 0;
 }
 
 .page-legal-section h2 {
   margin: 0 0 14px;
 
-  color: var(--text);
-
-  font-size: 1.35rem;
-  font-weight: 750;
-  line-height: 1.35;
+  font-size: 24px;
 }
 
 .page-legal-section h3 {
-  margin: 24px 0 9px;
+  margin: 24px 0 10px;
 
-  color: var(--text);
-
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-size: 18px;
 }
 
-.page-legal-section p {
-  margin: 0 0 16px;
-
-  color: var(--text-soft, var(--text-secondary));
-
-  line-height: 1.8;
-}
-
-.page-legal-section p:last-child {
-  margin-bottom: 0;
-}
-
-.page-legal-section ul,
-.page-legal-section ol {
-  margin: 0 0 16px;
-  padding-left: 1.35rem;
-
-  color: var(--text-soft, var(--text-secondary));
-
-  line-height: 1.8;
-}
-
+.page-legal-section p,
 .page-legal-section li {
-  margin-bottom: 7px;
+  color: var(--muted);
+  line-height: 1.8;
 }
 
 .page-legal-section a {
   color: var(--primary);
-  font-weight: 600;
   text-decoration: none;
 }
 
@@ -270,206 +159,95 @@
   text-decoration: underline;
 }
 
-
-/* =========================================================
-   PAGE DIVIDER
-========================================================= */
+/* ==========================================================
+   DIVIDER
+========================================================== */
 
 .page-divider {
   width: 100%;
   height: 1px;
-  margin: 32px 0;
-
-  border: 0;
+  margin: 10px 0;
 
   background: var(--border);
-  opacity: .8;
 }
 
-
-/* =========================================================
-   PAGE CTA
-========================================================= */
+/* ==========================================================
+   CTA
+========================================================== */
 
 .page-cta {
-  width: min(1000px, calc(100% - 32px));
-  margin: 40px auto 80px;
-  padding: 48px 32px;
-
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg, 18px);
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--surface),
-      var(--surface-alt, var(--surface))
-    );
-
-  box-shadow: var(--shadow, 0 12px 30px rgba(0,0,0,.08));
-
+  padding: 80px 20px;
   text-align: center;
+
+  background: rgba(255,255,255,.02);
+  border-top: 1px solid var(--border);
+}
+
+.page-cta .page-container {
+  max-width: 800px;
 }
 
 .page-cta h2 {
-  margin: 0 0 12px;
+  margin: 0 0 14px;
 
-  color: var(--text);
-
-  font-size: clamp(1.5rem, 3vw, 2.1rem);
-  font-weight: 800;
-  line-height: 1.25;
+  font-size: clamp(28px, 5vw, 42px);
+  line-height: 1.2;
 }
 
 .page-cta p {
   max-width: 650px;
-  margin: 0 auto 24px;
+  margin: 0 auto 28px;
 
-  color: var(--text-soft, var(--text-secondary));
-
-  line-height: 1.7;
+  color: var(--muted);
+  line-height: 1.8;
 }
 
-
-/* =========================================================
-   PAGE BUTTON
-========================================================= */
+/* ==========================================================
+   BUTTON
+========================================================== */
 
 .page-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
 
-  min-height: 44px;
-  padding: 11px 20px;
+  padding: 14px 24px;
 
-  border: 1px solid var(--primary);
-  border-radius: var(--radius, 12px);
+  border: 1px solid transparent;
+  border-radius: 14px;
 
   background: var(--primary);
-  color: var(--surface, #fff);
-
-  font-size: .95rem;
-  font-weight: 700;
-  line-height: 1;
+  color: #fff;
 
   text-decoration: none;
-
-  cursor: pointer;
+  font-weight: 700;
 
   transition:
     transform .2s ease,
-    box-shadow .2s ease,
-    opacity .2s ease;
+    background .2s ease;
 }
 
 .page-button:hover {
+  background: var(--primary-hover);
   transform: translateY(-2px);
-
-  opacity: .94;
-
-  box-shadow:
-    0 8px 22px
-    rgba(0, 0, 0, .12);
 }
 
-.page-button:active {
-  transform: translateY(0);
-}
-
-.page-button:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 3px;
-}
-
-
-/* =========================================================
-   PAGE BUTTON - SECONDARY
-   Tetap menggunakan namespace page-button
-========================================================= */
-
-.page-button.page-button-secondary {
-  border-color: var(--border);
-
-  background: var(--surface);
-  color: var(--text);
-}
-
-.page-button.page-button-secondary:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-
-/* =========================================================
+/* ==========================================================
    RESPONSIVE
-========================================================= */
+========================================================== */
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
 
   .page-hero {
-    padding: 60px 0 42px;
-  }
-
-  .page-hero h1 {
-    font-size: clamp(1.9rem, 8vw, 2.7rem);
-  }
-
-  .page-hero p {
-    font-size: .98rem;
+    padding: 90px 20px 55px;
   }
 
   .page-section {
-    padding: 48px 0;
-  }
-
-  .page-legal {
-    padding-bottom: 55px;
-  }
-
-  .page-legal-section {
-    margin-top: 24px;
-    padding: 22px 20px;
+    padding: 50px 20px;
   }
 
   .page-cta {
-    margin-bottom: 55px;
-    padding: 36px 22px;
-  }
-
-}
-
-
-/* =========================================================
-   SMALL MOBILE
-========================================================= */
-
-@media (max-width: 480px) {
-
-  .page-hero,
-  .page-container,
-  .page-legal,
-  .page-cta {
-    width: min(100% - 24px, 1100px);
-  }
-
-  .page-label {
-    font-size: .68rem;
-  }
-
-  .page-section {
-    padding: 38px 0;
-  }
-
-  .page-legal-section {
-    padding: 20px 17px;
-    border-radius: var(--radius, 12px);
-  }
-
-  .page-cta {
-    padding: 30px 18px;
-    border-radius: var(--radius, 12px);
+    padding: 60px 20px;
   }
 
   .page-button {
