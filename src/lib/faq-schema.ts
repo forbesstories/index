@@ -1,7 +1,10 @@
-
 function clean(value = "") {
   return value
     .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -9,27 +12,29 @@ function clean(value = "") {
 export function generateFaqSchema(html = "") {
   const faqBlocks = [
     ...html.matchAll(
-      /<div class="faq-item">([\s\S]*?)<\/div>/gi
+      /<div\b[^>]*class=["'][^"']*\bfaq-item\b[^"']*["'][^>]*>([\s\S]*?)<\/div>/gi
     ),
     ...html.matchAll(
-      /<details class="faq-item">([\s\S]*?)<\/details>/gi
+      /<details\b[^>]*class=["'][^"']*\bfaq-item\b[^"']*["'][^>]*>([\s\S]*?)<\/details>/gi
     )
   ];
 
-  const unique = new Set();
+  const unique = new Set<string>();
 
   const entities = faqBlocks
     .map((block) => {
       const source = block[1];
 
       const question =
-        source.match(/<h3>(.*?)<\/h3>/i)?.[1] ||
-        source.match(/<summary>(.*?)<\/summary>/i)?.[1] ||
+        source.match(/<h3\b[^>]*>([\s\S]*?)<\/h3>/i)?.[1] ||
+        source.match(/<summary\b[^>]*>([\s\S]*?)<\/summary>/i)?.[1] ||
         "";
 
       const answer =
-        source.match(/<p>(.*?)<\/p>/i)?.[1] ||
-        source.match(/<div class="answer">(.*?)<\/div>/i)?.[1] ||
+        source.match(/<p\b[^>]*>([\s\S]*?)<\/p>/i)?.[1] ||
+        source.match(
+          /<div\b[^>]*class=["'][^"']*\banswer\b[^"']*["'][^>]*>([\s\S]*?)<\/div>/i
+        )?.[1] ||
         "";
 
       const q = clean(question);
@@ -39,22 +44,35 @@ export function generateFaqSchema(html = "") {
         return null;
       }
 
-      if (unique.has(q)) {
+      const key = q.toLowerCase();
+
+      if (unique.has(key)) {
         return null;
       }
 
-      unique.add(q);
+      unique.add(key);
 
       return {
         "@type": "Question",
-        name: q,
-        acceptedAnswer: {
+        "name": q,
+        "acceptedAnswer": {
           "@type": "Answer",
-          text: a
+          "text": a
         }
       };
     })
-    .filter(Boolean);
+    .filter(
+      (
+        item
+      ): item is {
+        "@type": "Question";
+        name: string;
+        acceptedAnswer: {
+          "@type": "Answer";
+          text: string;
+        };
+      } => item !== null
+    );
 
   if (!entities.length) {
     return null;
@@ -63,6 +81,6 @@ export function generateFaqSchema(html = "") {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: entities
+    "mainEntity": entities
   };
 }
