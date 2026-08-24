@@ -1,77 +1,65 @@
 ---
-import {
-  slugify
-} from "../lib/slug";
+const { html = "" } = Astro.props;
 
-const {
-  html = ""
-} = Astro.props;
+function slugify(text = "") {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
 
-const regex =
-  /^(##|###|####)\s+(.*)$/gm;
+const regex = /^(#{2,4})\s+(.+)$/gm;
 
 const items = [];
+const usedIds = new Map();
 
 let match;
 
 while ((match = regex.exec(html)) !== null) {
+  const level = match[1].length;
+  const text = match[2].trim();
 
-  const level =
-    match[1].length;
+  if (!text) continue;
 
-  const text =
-    match[2].trim();
+  const baseId = slugify(text);
+
+  const count = usedIds.get(baseId) || 0;
+  usedIds.set(baseId, count + 1);
+
+  const id =
+    count === 0
+      ? baseId
+      : `${baseId}-${count + 1}`;
 
   items.push({
-
     level,
-
     text,
-
-    id:
-      slugify(text)
-
+    id
   });
-
 }
 ---
 
 {items.length > 0 && (
+  <details class="toc" open>
+    <summary class="toc-title">
+      <span>📑 Daftar Isi</span>
+      <span
+        class="toc-toggle"
+        aria-hidden="true"
+      ></span>
+    </summary>
 
-<details
-  class="toc"
-  open>
-
-  <summary class="toc-title">
-
-    <span>
-      📑 Daftar Isi
-    </span>
-
-    <span class="toc-toggle">
-    </span>
-
-  </summary>
-
-  <ul>
-
-    {items.map((item) => (
-
-      <li
-        class={`toc-level-${item.level}`}>
-
-        <a href={`#${item.id}`}>
-
-          {item.text}
-
-        </a>
-
-      </li>
-
-    ))}
-
-  </ul>
-
-</details>
-
+    <nav aria-label="Daftar Isi">
+      <ul>
+        {items.map((item) => (
+          <li class={`toc-level-${item.level}`}>
+            <a href={`#${item.id}`}>
+              {item.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </details>
 )}
