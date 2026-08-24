@@ -1,96 +1,293 @@
 ---
-import MainLayout from '../layouts/MainLayout.astro';
-import { SITE } from '../lib/site';
+import MainLayout from "../layouts/MainLayout.astro";
+import { SITE } from "../lib/site";
+import "../styles/pages.css";
 
-const pageTitle =
-  'Syarat dan Ketentuan AI Mr Ferdy';
+const pageTitle = "Terms of Service - Ai Mr Ferdy";
 
 const pageDescription =
-  'Selamat datang di AI Mr Ferdy. Dengan mengakses dan menggunakan layanan yang tersedia pada platform ini, Anda dianggap telah membaca, memahami, dan menyetujui seluruh Syarat dan Ketentuan yang berlaku. Apabila Anda tidak menyetujui salah satu atau seluruh ketentuan yang tercantum, disarankan untuk tidak menggunakan layanan AI Mr Ferdy.';
+  "Terms of Service Ai Mr Ferdy mengenai aturan penggunaan website, konten, tools, dan layanan digital.";
+
+const canonical = `${SITE.url()}/tos`;
 ---
 
 <MainLayout
   title={pageTitle}
   description={pageDescription}
-  canonical={`${SITE.url()}/tos`}
+  canonical={canonical}
 >
 
+  <!-- =====================================================
+       HERO
+  ====================================================== -->
 
-  <section class="content-section">
-    <div class="container">
-      <div class="content-card">
-        <div class="content-block">
-		
-		
-<h1>Syarat dan Ketentuan AI Mr Ferdy</h1>
+  <section class="page-hero">
+    <div class="page-container">
 
-<p>Selamat datang di AI Mr Ferdy. Dengan mengakses dan menggunakan layanan yang tersedia pada platform ini, Anda dianggap telah membaca, memahami, dan menyetujui seluruh Syarat dan Ketentuan yang berlaku. Apabila Anda tidak menyetujui salah satu atau seluruh ketentuan yang tercantum, disarankan untuk tidak menggunakan layanan AI Mr Ferdy.</p>
+      <span class="page-label">
+        TERMS OF SERVICE
+      </span>
 
-<h2>1. Definisi Layanan</h2>
+      <h1>
+        Ketentuan Layanan
+      </h1>
 
-<p>AI Mr Ferdy adalah platform berbasis kecerdasan buatan (Artificial Intelligence) yang menyediakan fitur analisis pintar, pemrosesan algoritma, serta berbagai informasi yang dihasilkan melalui sistem otomatis. Seluruh layanan yang tersedia bertujuan membantu pengguna memperoleh insight dan informasi secara lebih cepat dan efisien.</p>
+      <p>
+        Ketentuan yang menjelaskan aturan penggunaan
+        website, konten, tools, dan layanan digital
+        yang tersedia di Ai Mr Ferdy.
+      </p>
 
-<h2>2. Penggunaan Platform</h2>
-
-<p>Pengguna setuju untuk menggunakan AI Mr Ferdy secara wajar, sesuai dengan hukum yang berlaku, dan tidak melakukan aktivitas yang dapat merugikan sistem, pengguna lain, maupun pihak ketiga.</p>
-
-<p>Pengguna dilarang melakukan tindakan yang meliputi namun tidak terbatas pada:</p>
-
-<ul>
-<li>Mengakses sistem tanpa izin.</li>
-<li>Menyebarkan malware, virus, atau kode berbahaya lainnya.</li>
-<li>Menyalahgunakan layanan untuk tujuan yang melanggar hukum.</li>
-<li>Mencoba mengganggu stabilitas atau keamanan platform.</li>
-</ul>
-
-<h2>3. Akurasi Informasi</h2>
-
-<p>AI Mr Ferdy menggunakan teknologi kecerdasan buatan dan algoritma otomatis dalam menghasilkan informasi dan analisis. Meskipun sistem dirancang untuk memberikan hasil yang relevan dan informatif, AI Mr Ferdy tidak menjamin bahwa seluruh informasi yang dihasilkan akan selalu akurat, lengkap, atau sesuai dengan kebutuhan setiap pengguna.</p>
-
-<p>Pengguna bertanggung jawab untuk melakukan penilaian dan pertimbangan secara mandiri terhadap informasi yang diperoleh melalui platform.</p>
-
-<h2>4. Hak Kekayaan Intelektual</h2>
-
-<p>Seluruh konten, logo, desain, teks, teknologi, sistem, dan identitas visual yang terdapat pada AI Mr Ferdy merupakan hak milik yang dilindungi oleh peraturan perundang-undangan yang berlaku.</p>
-
-<p>Pengguna tidak diperkenankan menyalin, mendistribusikan, memodifikasi, atau menggunakan materi yang tersedia tanpa izin tertulis dari pihak AI Mr Ferdy.</p>
-
-<h2>5. Pembatasan Tanggung Jawab</h2>
-
-<p>AI Mr Ferdy tidak bertanggung jawab atas kerugian langsung maupun tidak langsung yang timbul akibat penggunaan informasi, analisis, atau layanan yang tersedia pada platform ini.</p>
-
-<p>Seluruh keputusan yang diambil berdasarkan informasi yang diperoleh dari AI Mr Ferdy sepenuhnya menjadi tanggung jawab pengguna.</p>
-
-<h2>6. Perubahan Layanan</h2>
-
-<p>AI Mr Ferdy berhak melakukan perubahan, pembaruan, penyesuaian fitur, maupun penghentian sebagian atau seluruh layanan tanpa pemberitahuan sebelumnya apabila dianggap diperlukan untuk pengembangan dan peningkatan kualitas platform.</p>
-
-<h2>7. Tautan ke Situs Pihak Ketiga</h2>
-
-<p>Platform AI Mr Ferdy dapat memuat tautan menuju situs atau layanan pihak ketiga. AI Mr Ferdy tidak memiliki kendali atas isi, kebijakan, maupun aktivitas yang dilakukan oleh pihak ketiga tersebut dan tidak bertanggung jawab atas segala risiko yang mungkin timbul dari penggunaannya.</p>
-
-<h2>8. Privasi Pengguna</h2>
-
-<p>Penggunaan data dan informasi pengguna diatur lebih lanjut dalam Kebijakan Privasi AI Mr Ferdy. Dengan menggunakan layanan ini, pengguna dianggap telah memahami dan menyetujui kebijakan privasi yang berlaku.</p>
-
-<h2>9. Perubahan Syarat dan Ketentuan</h2>
-
-<p>AI Mr Ferdy berhak mengubah, memperbarui, atau menyesuaikan isi Syarat dan Ketentuan ini sewaktu-waktu tanpa pemberitahuan terlebih dahulu. Pengguna disarankan untuk meninjau halaman ini secara berkala guna mengetahui perubahan terbaru.</p>
-
-<h2>10. Persetujuan Pengguna</h2>
-
-<p>Dengan terus mengakses dan menggunakan layanan AI Mr Ferdy, pengguna dianggap telah menyetujui seluruh isi Syarat dan Ketentuan yang berlaku pada platform ini.</p>
-
-<h2>Hubungi Kami</h2>
-
-<p>Jika Anda memiliki pertanyaan terkait Syarat dan Ketentuan ini, silakan menghubungi tim AI Mr Ferdy melalui halaman kontak resmi yang tersedia pada website.</p>
-
-<p><strong>Terakhir diperbarui:</strong> Juni 2026</p>
-
-
-      </div>
     </div>
   </section>
-  
-  
+
+
+  <!-- =====================================================
+       CONTENT
+  ====================================================== -->
+
+  <section class="page-section">
+    <div class="page-container page-legal">
+
+      <div class="page-legal-section">
+
+        <h2>
+          1. Penerimaan Ketentuan
+        </h2>
+
+        <p>
+          Dengan mengakses atau menggunakan Ai Mr Ferdy,
+          Anda menyatakan bahwa telah membaca dan memahami
+          ketentuan layanan yang tercantum pada halaman ini.
+        </p>
+
+        <p>
+          Apabila Anda tidak menyetujui ketentuan tersebut,
+          harap menghentikan penggunaan website dan layanan
+          yang tersedia.
+        </p>
+
+      </div>
+
+
+      <div class="page-legal-section">
+
+        <h2>
+          2. Penggunaan Website
+        </h2>
+
+        <p>
+          Ai Mr Ferdy menyediakan informasi, artikel,
+          tools, dan berbagai sumber daya digital untuk
+          membantu pengguna memperoleh informasi serta
+          melakukan aktivitas digital tertentu.
+        </p>
+
+        <p>
+          Pengguna wajib menggunakan layanan secara wajar,
+          sah, dan tidak mengganggu keamanan maupun
+          ketersediaan website.
+        </p>
+
+      </div>
+
+
+      <div class="page-legal-section">
+
+        <h2>
+          3. Akun dan Informasi Pengguna
+        </h2>
+
+        <p>
+          Apabila suatu fitur di masa mendatang memerlukan
+          informasi atau akun pengguna, pengguna bertanggung
+          jawab untuk memberikan informasi yang benar dan
+          menjaga keamanan akses tersebut.
+        </p>
+
+        <p>
+          Pengguna tidak diperkenankan menggunakan identitas
+          atau informasi pihak lain tanpa izin.
+        </p>
+
+      </div>
+
+
+      <div class="page-legal-section">
+
+        <h2>
+          4. Tools dan Layanan Digital
+        </h2>
+
+        <p>
+          Beberapa tools dapat digunakan secara langsung
+          melalui browser tanpa memerlukan instalasi tambahan.
+        </p>
+
+        <p>
+          Hasil tools dapat bergantung pada input pengguna,
+          teknologi browser, konfigurasi perangkat, serta
+          kondisi teknis lainnya.
+        </p>
+
+        <p>
+          Pengguna bertanggung jawab untuk memeriksa hasil
+          sebelum digunakan untuk kebutuhan penting,
+          komersial, atau produksi.
+        </p>
+
+      </div>
+
+
+      <div class="page-legal-section">
+
+        <h2>
+          5. Hak Kekayaan Intelektual
+        </h2>
+
+        <p>
+          Nama, identitas visual, desain, struktur halaman,
+          teks, kode, dan materi lain yang menjadi bagian
+          dari Ai Mr Ferdy dapat memiliki perlindungan
+          berdasarkan ketentuan kekayaan intelektual yang
+          berlaku.
+        </p>
+
+        <p>
+          Penggunaan kembali materi tersebut untuk tujuan
+          komersial atau publikasi ulang tanpa izin yang
+          sesuai tidak diperbolehkan.
+        </p>
+
+      </div>
+
+
+      <div class="page-legal-section">
+
+        <h2>
+          6. Konten Pihak Ketiga
+        </h2>
+
+        <p>
+          Website dapat memuat tautan atau referensi menuju
+          layanan dan website pihak ketiga.
+        </p>
+
+        <p>
+          Ai Mr Ferdy tidak mengendalikan kebijakan,
+          keamanan, konten, maupun praktik operasional
+          dari layanan eksternal tersebut.
+        </p>
+
+      </div>
+
+
+      <div class="page-legal-section">
+
+        <h2>
+          7. Ketersediaan Layanan
+        </h2>
+
+        <p>
+          Kami berupaya menjaga website dan tools tetap
+          tersedia serta berfungsi dengan baik.
+          Namun, gangguan teknis, pemeliharaan, pembaruan,
+          atau perubahan layanan dapat terjadi sewaktu-waktu.
+        </p>
+
+        <p>
+          Fitur tertentu dapat ditambahkan, diperbarui,
+          dibatasi, atau dihentikan tanpa pemberitahuan
+          sebelumnya.
+        </p>
+
+      </div>
+
+
+      <div class="page-legal-section">
+
+        <h2>
+          8. Batasan Tanggung Jawab
+        </h2>
+
+        <p>
+          Ai Mr Ferdy berusaha menyediakan informasi dan
+          layanan dengan kualitas yang baik, tetapi tidak
+          menjamin bahwa seluruh konten atau hasil tools
+          selalu bebas dari kesalahan.
+        </p>
+
+        <p>
+          Penggunaan informasi dan tools dilakukan atas
+          pertimbangan serta tanggung jawab pengguna sendiri.
+        </p>
+
+      </div>
+
+
+      <div class="page-legal-section">
+
+        <h2>
+          9. Perubahan Ketentuan
+        </h2>
+
+        <p>
+          Ketentuan layanan dapat diperbarui dari waktu
+          ke waktu untuk menyesuaikan perubahan teknologi,
+          fitur, maupun operasional Ai Mr Ferdy.
+        </p>
+
+        <p>
+          Ketentuan terbaru akan berlaku setelah
+          dipublikasikan pada halaman ini.
+        </p>
+
+      </div>
+
+
+      <div class="page-legal-section">
+
+        <h2>
+          10. Hubungi Kami
+        </h2>
+
+        <p>
+          Apabila Anda memiliki pertanyaan mengenai
+          ketentuan layanan ini, silakan menghubungi
+          Ai Mr Ferdy melalui halaman kontak.
+        </p>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       CTA
+  ====================================================== -->
+
+  <section class="page-cta">
+    <div class="page-container">
+
+      <h2>
+        Butuh Informasi Lebih Lanjut?
+      </h2>
+
+      <p>
+        Jika terdapat pertanyaan mengenai penggunaan
+        Ai Mr Ferdy atau layanan yang tersedia,
+        silakan hubungi kami.
+      </p>
+
+      <a
+        href="/contact/"
+        class="page-button"
+      >
+        Hubungi Kami
+      </a>
+
+    </div>
+  </section>
+
 </MainLayout>
