@@ -16,13 +16,11 @@ const products =
 
 /* =========================================================
    TOOLS
-   Semua halaman Astro di:
+   Semua halaman:
 
    src/pages/tools/**/*.astro
 
-   Dibaca sebagai RAW SOURCE supaya title,
-   description, dan isi halaman bisa digunakan
-   untuk pencarian.
+   Dibaca sebagai RAW SOURCE.
 ========================================================= */
 
 const toolFiles =
@@ -34,21 +32,6 @@ const toolFiles =
       import: "default"
     }
   );
-
-
-/* =========================================================
-   ESCAPE REGEX
-========================================================= */
-
-function escapeRegex(value) {
-
-  return String(value || "")
-    .replace(
-      /[.*+?^${}()|[\]\\]/g,
-      "\\$&"
-    );
-
-}
 
 
 /* =========================================================
@@ -72,7 +55,7 @@ function cleanText(value) {
 
 
 /* =========================================================
-   CREATE TOOL TITLE FROM FILE NAME
+   TITLE DARI FILE NAME
 ========================================================= */
 
 function titleFromFilename(filename) {
@@ -105,7 +88,7 @@ function titleFromFilename(filename) {
 
 
 /* =========================================================
-   CREATE CATEGORY
+   CATEGORY DARI PATH
 ========================================================= */
 
 function categoryFromPath(path) {
@@ -124,6 +107,7 @@ function categoryFromPath(path) {
   const parts =
     relative.split("/");
 
+
   if (
     parts.length < 2
   ) {
@@ -131,6 +115,7 @@ function categoryFromPath(path) {
     return "Tools";
 
   }
+
 
   return parts[0]
     .replace(
@@ -147,11 +132,11 @@ function categoryFromPath(path) {
 
 
 /* =========================================================
-   PARSE TOOL FILE
+   PARSE TOOL
 ========================================================= */
 
 function parseTool(
-  path,
+  filePath,
   source
 ) {
 
@@ -164,7 +149,7 @@ function parseTool(
   ======================================================= */
 
   const relativePath =
-    path
+    filePath
       .replace(
         /^\.\/tools\//,
         ""
@@ -201,10 +186,7 @@ function parseTool(
 
 
   /*
-   * Support:
-
    * title="..."
-   * title='...'
    */
 
   const titleMatch =
@@ -224,8 +206,6 @@ function parseTool(
 
 
   /*
-   * Support:
-
    * const title = "..."
    */
 
@@ -250,7 +230,31 @@ function parseTool(
 
 
   /*
-   * Fallback dari filename
+   * title: "..."
+   */
+
+  if (!title) {
+
+    const objectTitleMatch =
+      raw.match(
+        /(?:^|\n)\s*title\s*:\s*["']([^"']+)["']/
+      );
+
+
+    if (objectTitleMatch) {
+
+      title =
+        cleanText(
+          objectTitleMatch[1]
+        );
+
+    }
+
+  }
+
+
+  /*
+   * FALLBACK
    */
 
   if (!title) {
@@ -270,6 +274,10 @@ function parseTool(
   let description = "";
 
 
+  /*
+   * description="..."
+   */
+
   const descriptionMatch =
     raw.match(
       /(?:^|\s)description\s*=\s*["']([^"']+)["']/
@@ -287,8 +295,6 @@ function parseTool(
 
 
   /*
-   * Support:
-
    * const description = "..."
    */
 
@@ -315,7 +321,33 @@ function parseTool(
 
 
   /*
-   * Fallback
+   * description: "..."
+   */
+
+  if (!description) {
+
+    const objectDescriptionMatch =
+      raw.match(
+        /(?:^|\n)\s*description\s*:\s*["']([^"']+)["']/
+      );
+
+
+    if (
+      objectDescriptionMatch
+    ) {
+
+      description =
+        cleanText(
+          objectDescriptionMatch[1]
+        );
+
+    }
+
+  }
+
+
+  /*
+   * FALLBACK
    */
 
   if (!description) {
@@ -332,28 +364,19 @@ function parseTool(
 
   const category =
     categoryFromPath(
-      path
+      filePath
     );
 
 
   /* =======================================================
-     SEARCH CONTENT
+     SEARCH TEXT
   ======================================================= */
 
   /*
    * SELURUH SOURCE ikut dimasukkan.
-
-   * Jadi keyword seperti:
    *
-   * Audio
-   * MP3
-   * Converter
-   * PDF
-   * Image
-   * JSON
-   *
-   * tetap bisa ditemukan walaupun tidak
-   * ada pada filename.
+   * Jadi pencarian bisa menemukan keyword
+   * yang ada di dalam source .astro.
    */
 
   const searchText =
@@ -395,9 +418,9 @@ const tools =
   )
 
   .map(
-    ([path, source]) =>
+    ([filePath, source]) =>
       parseTool(
-        path,
+        filePath,
         source
       )
   )
@@ -413,7 +436,16 @@ const tools =
   )
 
   /*
-   * Urutkan berdasarkan title
+   * Pastikan title ada
+   */
+
+  .filter(
+    tool =>
+      tool.title
+  )
+
+  /*
+   * Urutkan A-Z
    */
 
   .sort(
@@ -425,6 +457,7 @@ const tools =
   );
 
 ---
+
 
 <MainLayout
   title="Search - AI Mr Ferdy"
@@ -600,11 +633,13 @@ const tools =
 
     <!-- =====================================================
          RESULTS
+         SEMUA ITEM DEFAULT TERSEMBUNYI MELALUI CSS
     ====================================================== -->
 
     <div
       id="results"
       class="results"
+      aria-live="polite"
     >
 
 
@@ -617,7 +652,7 @@ const tools =
           (post) => (
 
             <a
-              class="item"
+              class="item search-item"
               data-type="blog"
               data-search={`
                 ${post.data.title}
@@ -656,7 +691,7 @@ const tools =
           (tool) => (
 
             <a
-              class="item"
+              class="item search-item"
               data-type="tool"
               data-search={tool.searchText}
               href={tool.href}
@@ -690,7 +725,7 @@ const tools =
           (product) => (
 
             <a
-              class="item"
+              class="item search-item"
               data-type="product"
               data-search={`
                 ${product.data.title}
@@ -749,7 +784,7 @@ const filter =
 
 const items =
   document.querySelectorAll(
-    ".item"
+    ".search-item"
   );
 
 const emptyState =
@@ -761,20 +796,6 @@ const resultInfo =
   document.getElementById(
     "resultInfo"
   );
-
-
-/* =========================================================
-   HIDE ALL RESULTS INITIALLY
-========================================================= */
-
-items.forEach(
-  (item) => {
-
-    item.style.display =
-      "none";
-
-  }
-);
 
 
 /* =========================================================
@@ -847,12 +868,11 @@ function runSearch() {
     filter.value;
 
 
-  let found =
-    0;
+  let found = 0;
 
 
   /* =======================================================
-     EMPTY KEYWORD
+     TIDAK ADA KEYWORD
   ======================================================= */
 
   if (!keyword) {
@@ -892,7 +912,6 @@ function runSearch() {
       const text =
         (
           item.dataset.search ||
-          item.textContent ||
           ""
         )
           .toLowerCase();
@@ -935,7 +954,7 @@ function runSearch() {
 
 
   /* =======================================================
-     RESULTS FOUND
+     ADA HASIL
   ======================================================= */
 
   if (found > 0) {
@@ -953,7 +972,7 @@ function runSearch() {
 
 
   /* =======================================================
-     NO RESULTS
+     TIDAK ADA HASIL
   ======================================================= */
 
   resultInfo.textContent =
@@ -1052,7 +1071,22 @@ filter?.addEventListener(
 
 
 /* =========================================================
-   LOAD FROM URL
+   LIVE SEARCH
+   Ketik langsung → hasil langsung berubah
+========================================================= */
+
+input?.addEventListener(
+  "input",
+  () => {
+
+    runSearch();
+
+  }
+);
+
+
+/* =========================================================
+   LOAD QUERY DARI URL
 ========================================================= */
 
 const urlParams =
@@ -1088,7 +1122,13 @@ if (
 }
 
 
-if (urlKeyword.trim()) {
+/* =========================================================
+   JIKA ADA ?q=...
+========================================================= */
+
+if (
+  urlKeyword.trim()
+) {
 
   runSearch();
 
@@ -1409,10 +1449,20 @@ if (urlKeyword.trim()) {
 }
 
 
-.item{
+/* =========================================================
+   PENTING:
+   SEMUA HASIL TERSEMBUNYI SEBELUM SEARCH
+========================================================= */
+
+.search-item{
 
   display:
-    block;
+    none;
+
+}
+
+
+.item{
 
   padding:
     18px;
@@ -1546,10 +1596,13 @@ if (urlKeyword.trim()) {
 
 
 /* =========================================================
-   EMPTY
+   EMPTY STATE
 ========================================================= */
 
 .empty-state{
+
+  display:
+    block;
 
   padding:
     55px 20px;
