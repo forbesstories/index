@@ -6,11 +6,11 @@ oldPrice: ""
 category: "Turbocharger"
 image: "https://bcpturbo.com/cdn/shop/files/DSC_1940_c00da42c-a195-4475-ac96-afc90e1edb27.jpg?v=1764449527"
 gallery:
-- "https://bcpturbo.com/cdn/shop/files/DSC_1940_c00da42c-a195-4475-ac96-afc90e1edb27.jpg?v=1764449527"
-- "https://bcpturbo.com/cdn/shop/files/DSC_1941_35daab40-4139-4e7d-825b-3d014230e103.jpg?v=1764449527"
-- "https://bcpturbo.com/cdn/shop/files/DSC_2033_4b4ee3f2-729e-4752-b7d7-7617566753a5.jpg?v=1764449527"
-  badge: "Bestseller"
-  featured: true
+  - "https://bcpturbo.com/cdn/shop/files/DSC_1940_c00da42c-a195-4475-ac96-afc90e1edb27.jpg?v=1764449527"
+  - "https://bcpturbo.com/cdn/shop/files/DSC_1941_35daab40-4139-4e7d-825b-3d014230e103.jpg?v=1764449527"
+  - "https://bcpturbo.com/cdn/shop/files/DSC_2033_4b4ee3f2-729e-4752-b7d7-7617566753a5.jpg?v=1764449527"
+badge: "Bestseller"
+featured: true
 ---
 
 Upgrade your 2015-2021 Subaru WRX FA20 with the **BCP X500 turbocharger**, a performance-focused drop-in turbo designed for enthusiasts looking for a substantial step up from the factory turbo system.
