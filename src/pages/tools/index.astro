@@ -21,15 +21,6 @@ const modules = Object.entries(
 const tools = modules
   .map(([file, mod]) => {
 
-    /*
-     * Contoh:
-     *
-     * ./generator/emoji-text.astro
-     *
-     * category = generator
-     * slug     = emoji-text
-     */
-
     const match = file.match(
       /^\.\/([^/]+)\/(.+)\.astro$/
     );
@@ -41,22 +32,12 @@ const tools = modules
     const category = match[1];
     const slug = match[2];
 
-    /*
-     * Abaikan halaman category dinamis
-     * dan file index.
-     */
-
     if (
       category === "[category]" ||
       slug === "index"
     ) {
       return null;
     }
-
-    /*
-     * Metadata harus tersedia
-     * pada file masing-masing tool.
-     */
 
     if (!mod.meta) {
       return null;
@@ -98,6 +79,7 @@ const pageUrl = SITE.url("/tools/");
 
 const jsonLd = {
   "@context": "https://schema.org",
+
   "@type": "CollectionPage",
 
   name: `Tools | ${SITE.title}`,
@@ -108,20 +90,26 @@ const jsonLd = {
   url: pageUrl,
 
   mainEntity: {
+
     "@type": "ItemList",
 
     numberOfItems: totalTools,
 
-    itemListElement: tools.map((tool, index) => ({
-      "@type": "ListItem",
+    itemListElement:
+      tools.map((tool, index) => ({
 
-      position: index + 1,
+        "@type": "ListItem",
 
-      name: tool.title,
+        position: index + 1,
 
-      url: SITE.url(tool.url)
-    }))
+        name: tool.title,
+
+        url: SITE.url(tool.url)
+
+      }))
+
   }
+
 };
 ---
 
@@ -132,11 +120,11 @@ const jsonLd = {
 
   <section class="tools-page">
 
-    <!-- ================================================
-         HEADER
-    ================================================= -->
+    <!-- =================================================
+         TOOLS HEADER
+    ================================================== -->
 
-    <header class="page-header">
+    <header class="tools-page-header">
 
       <span class="tools-label">
         AI TOOLS
@@ -154,16 +142,16 @@ const jsonLd = {
     </header>
 
 
-    <!-- ================================================
+    <!-- =================================================
          STATS
-    ================================================= -->
+    ================================================== -->
 
     <section
       class="tools-stats"
       aria-label="Statistik tools"
     >
 
-      <div class="stat-item">
+      <div class="tools-stat-item">
 
         <strong>
           {totalTools}
@@ -176,7 +164,7 @@ const jsonLd = {
       </div>
 
 
-      <div class="stat-item">
+      <div class="tools-stat-item">
 
         <strong>
           {totalCategories}
@@ -189,7 +177,7 @@ const jsonLd = {
       </div>
 
 
-      <div class="stat-item">
+      <div class="tools-stat-item">
 
         <strong>
           100%
@@ -204,15 +192,15 @@ const jsonLd = {
     </section>
 
 
-    <!-- ================================================
+    <!-- =================================================
          SEARCH
-    ================================================= -->
+    ================================================== -->
 
     <div class="tools-search">
 
       <label
         for="toolSearch"
-        class="search-label"
+        class="tools-search-label"
       >
         Cari tools
       </label>
@@ -228,9 +216,9 @@ const jsonLd = {
     </div>
 
 
-    <!-- ================================================
-         TOOLS
-    ================================================= -->
+    <!-- =================================================
+         TOOL LIST
+    ================================================== -->
 
     {
       tools.length > 0 ? (
@@ -240,13 +228,13 @@ const jsonLd = {
           aria-labelledby="tools-title"
         >
 
-          <div class="section-heading">
+          <div class="tools-section-heading">
 
             <h2 id="tools-title">
               Semua Tools
             </h2>
 
-            <span class="tool-count">
+            <span class="tools-count">
               {totalTools} tools
             </span>
 
@@ -262,7 +250,7 @@ const jsonLd = {
               tools.map((tool) => (
 
                 <article
-                  class="tool-card"
+                  class="tools-card"
                   data-search={`
                     ${tool.title || ""}
                     ${tool.description || ""}
@@ -273,7 +261,7 @@ const jsonLd = {
                   {
                     tool.featured && (
 
-                      <span class="tool-badge">
+                      <span class="tools-badge">
                         HOT
                       </span>
 
@@ -285,7 +273,7 @@ const jsonLd = {
                     tool.icon && (
 
                       <div
-                        class="tool-icon"
+                        class="tools-icon"
                         aria-hidden="true"
                       >
                         {tool.icon}
@@ -295,7 +283,7 @@ const jsonLd = {
                   }
 
 
-                  <div class="tool-category">
+                  <div class="tools-category">
 
                     {
                       tool.category
@@ -330,7 +318,7 @@ const jsonLd = {
 
                   <a
                     href={tool.url}
-                    class="tool-button"
+                    class="tools-button"
                     aria-label={`Buka ${tool.title}`}
                   >
 
@@ -350,9 +338,9 @@ const jsonLd = {
           </div>
 
 
-          <!-- ==========================================
+          <!-- =================================================
                EMPTY SEARCH
-          =========================================== -->
+          ================================================== -->
 
           <div
             id="emptyState"
@@ -392,9 +380,9 @@ const jsonLd = {
   </section>
 
 
-  <!-- ================================================
+  <!-- =================================================
        SEARCH SCRIPT
-  ================================================= -->
+  ================================================== -->
 
   <script>
 
@@ -402,7 +390,7 @@ const jsonLd = {
       document.querySelector("#toolSearch");
 
     const cards =
-      document.querySelectorAll(".tool-card");
+      document.querySelectorAll(".tools-card");
 
     const emptyState =
       document.querySelector("#emptyState");
@@ -417,6 +405,7 @@ const jsonLd = {
             .toLowerCase()
             .trim();
 
+
         let visible = 0;
 
 
@@ -427,12 +416,15 @@ const jsonLd = {
             card.textContent ||
             "";
 
+
           const match =
             text
               .toLowerCase()
               .includes(query);
 
+
           card.hidden = !match;
+
 
           if (match) {
             visible++;
@@ -454,9 +446,9 @@ const jsonLd = {
   </script>
 
 
-  <!-- ================================================
+  <!-- =================================================
        JSON-LD
-  ================================================= -->
+  ================================================== -->
 
   <script
     type="application/ld+json"
