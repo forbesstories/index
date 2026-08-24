@@ -712,81 +712,73 @@ const pageDescription =
       </div>
 
 
-      <div class="blog-grid">
+ <div class="blog-grid">
 
-        {
-          popularProducts.map((product) => (
+  {
+    popularProducts.map((product) => (
 
-            <article class="blog-card">
+      <article class="blog-card">
 
-              <a
-                href={`/product/${product.slug}/`}
-                class="blog-card-link"
-              >
+        <a
+          href={`/product/${product.slug}/`}
+          class="blog-card-link"
+        >
 
+          <div class="blog-card-image">
 
-                <div class="blog-card-image">
+            <img
+              src={
+                product.data.image ||
+                SITE.url(`/api/og/${product.slug}.svg`)
+              }
+              alt={product.data.title}
+              loading="lazy"
+              width="1200"
+              height="630"
+            />
 
-                  <img
-                    src={SITE.url(`/api/og/${product.slug}.svg`)}
-                    alt={product.data.title}
-                    loading="lazy"
-                    width="1200"
-                    height="630"
-                  />
+          </div>
 
+          <div class="blog-card-content">
+
+            <span class="card-label">
+              Digital Product
+            </span>
+
+            <h3>
+              {product.data.title}
+            </h3>
+
+            {
+              product.data.description && (
+                <p>
+                  {product.data.description}
+                </p>
+              )
+            }
+
+            {
+              product.data.price && (
+                <div class="blog-card-meta">
+                  {product.data.price}
                 </div>
+              )
+            }
 
+            <span class="readmore">
+              Lihat Produk →
+            </span>
 
-                <div class="blog-card-content">
+          </div>
 
-                  <span class="card-label">
-                    Digital Product
-                  </span>
+        </a>
 
+      </article>
 
-                  <h3>
-                    {product.data.title}
-                  </h3>
+    ))
+  }
 
-
-                  {
-                    product.data.description && (
-
-                      <p>
-                        {product.data.description}
-                      </p>
-
-                    )
-                  }
-
-
-                  {
-                    product.data.price && (
-
-                      <div class="blog-card-meta">
-                        {product.data.price}
-                      </div>
-
-                    )
-                  }
-
-
-                  <span class="readmore">
-                    Lihat Produk →
-                  </span>
-
-                </div>
-
-
-              </a>
-
-            </article>
-
-          ))
-        }
-
-      </div>
+</div>
 
     </div>
 
