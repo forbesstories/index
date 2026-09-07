@@ -4,7 +4,7 @@ description: "SEO Content Tool dari AI Mr Ferdy membantu membuat struktur dan ko
 price: "Gratis"
 oldPrice: ""
 category: "SEO Tools"
-image: "/images/products/seo-content-tool.webp"
+image: "/images/products/seo-content.jpeg"
 featured: true
 ---
 
